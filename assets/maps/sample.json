@@ -1,43 +1,36 @@
 {
-    "width": 24,
-    "height": 40,
-    "background": {
-        "sprites": [
-            {
-                "source": "assets/sprites/background/BTL/BlueDragonLair.jpg",
-                "top": 1,
-                "left": 3, 
-                "width": 34,
-                "height": 22
-            },
-            {
-                "source": "assets/sprites/background/DDM/5x7-FrozenChasm.jpg",
-                "top": 2,
-                "left": 0, 
-                "width": 5,
-                "height": 7
-            }
-        ]
-    },
-    "foreground": {
-        "sprites": [
-            {
-                "uuid": 0,
-                "source": "assets/sprites/background/DE/Kobold%20Skirmisher.jpg",
-                "top": 1,
-                "left": 1,
-                "width": 1,
-                "height": 1
-            },
-            {
-                "uuid": 1,
-                "source": "assets/sprites/background/DE/Black%20Dragon.jpg",
-                "top": 1,
-                "left": 4,
-                "width": 2,
-                "height": 2
-            }
-        ]
-
+    "width": 40,
+    "height": 24,
+    "tiles": [
+        {
+            "source": "assets/sprites/background/BTL/BlueDragonLair.jpg",
+            "top": 1,
+            "left": 3, 
+            "width": 34,
+            "height": 22
+        },
+        {
+            "source": "assets/sprites/background/DDM/5x7-FrozenChasm.jpg",
+            "top": 2,
+            "left": 0, 
+            "width": 5,
+            "height": 7
+        }
+    ],
+    "sprites": {
+        "alpha": {
+            "source": "assets/sprites/background/DE/Kobold%20Skirmisher.jpg",
+            "top": 1,
+            "left": 1,
+            "width": 1,
+            "height": 1
+        },
+        "beta": {
+            "source": "assets/sprites/background/DE/Black%20Dragon.jpg",
+            "top": 1,
+            "left": 4,
+            "width": 2,
+            "height": 2
+        }
     }
 }
