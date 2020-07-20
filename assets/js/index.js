@@ -15,8 +15,32 @@ function startup() {
   grid = document.getElementById("grid");
   gridDimensions = {rows: 0, columns: 0};
   loadMapFile("assets/maps/sample.json");
+  document.getElementById('file-upload').addEventListener('change', onChange);
 }
 
+/**
+ * Load map json file.
+ * https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
+ */
+function onChange(event) {
+    var reader = new FileReader();
+    reader.onload = onReaderLoad;
+    reader.readAsText(event.target.files[0]);
+}
+
+function onReaderLoad(event){
+    console.log(event.target.result);
+    try {
+      map = JSON.parse(event.target.result);
+      render();
+    } catch (exception) {
+      alert("Invalid json file.");
+    }
+}
+
+/**
+ * Load map json file from filepath.
+ */
 function loadMapFile(mapFile) {
   var request = new XMLHttpRequest();
   request.open("GET", mapFile);
@@ -47,7 +71,7 @@ function renderGrid() {
     for (column = 0; column < map.width; column++) {
       var cell = document.createElement("DIV");
       cell.id = "cell-" + parseInt(row) + "-" + parseInt(column);
-      cell.classList.add("grid-item")
+      cell.classList.add("cell")
       cell.innerHTML = parseInt(map.width * row + column);
       grid.appendChild(cell);
     }
@@ -70,8 +94,7 @@ function renderTile(tile) {
   );
   if (cell) {
     var image = document.createElement("IMG");
-    image.classList.add("sprite");
-    image.classList.add("sprite-tile");
+    image.classList.add("tile");
     image.classList.add("crispy");
     image.src = tile.source;
     image.width = parseInt(tile.width * scale);
@@ -90,7 +113,6 @@ function renderSprite(sprite) {
     var image = document.createElement("IMG");
     image.id = sprite.id;
     image.classList.add("sprite");
-    image.classList.add("sprite-mobile");
     image.classList.add("crispy");
     image.src = sprite.source;
     image.width = parseInt(sprite.width * scale);
@@ -133,7 +155,7 @@ function makeDraggable(element) { // https://www.w3schools.com/howto/howto_js_dr
 
   function closeDragElement() {
     var gridCoords = getGridCoords(element.getBoundingClientRect());
-    var column = Math.max(0, Math.min(Math.round(gridCoords.left), map.width - 1));
+    var column = Math.max(0, Math.min(Math.round(gridCoords.left), map.width - Math.round(element.width / scale)));
     var row = Math.max(0, Math.min(Math.round(gridCoords.top), map.height - 1));
     map.sprites[element.id].left = column;
     map.sprites[element.id].top = row;

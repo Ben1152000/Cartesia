@@ -1,0 +1,14 @@
+{
+    "width": 10,
+    "height": 10,
+    "tiles": [
+        {
+            "source": "assets/sprites/background/DDM/5x7-FrozenChasm.jpg",
+            "top": 2,
+            "left": 0, 
+            "width": 5,
+            "height": 7
+        }
+    ],
+    "sprites": {}
+}
