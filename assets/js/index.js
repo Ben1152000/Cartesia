@@ -1,50 +1,42 @@
 const scale = 128; // size of cell in pixels
 let zTop = 10; // highest z-index
+
 let grid;
+let gridDimensions;
 
 function startup() {
   grid = document.getElementById("grid");
+  gridDimensions = {rows: 0, columns: 0};
 }
 
-function getGridPosition(event) {
-  var relativePosition = {
-    left: (grid.scrollLeft + event.pageX - grid.offsetLeft) / scale,
-    top: (grid.scrollTop + event.pageY - grid.offsetTop) / scale
+function getGridCoords(position) {
+  return {
+    left: (grid.scrollLeft + position.left - grid.offsetLeft) / scale,
+    top: (grid.scrollTop + position.top - grid.offsetTop) / scale
   };
-  console.log(relativePosition);
-  return relativePosition;
 }
 
-function resizeGrid(rows, columns) {
-  grid.style.gridTemplateColumns = (parseInt(scale) + "px ").repeat(columns);
-  grid.style.gridTemplateRows = (parseInt(scale) + "px ").repeat(rows);
-  var i;
-  for (row = 0; row < rows; row++) {
-    for (column = 0; column < columns; column++) {
-      var cell = document.createElement("DIV");
-      cell.id = "cell-" + parseInt(row) + "-" + parseInt(column);
-      cell.classList.add("grid-item")
-      /*cell.addEventListener("mouseover", function(event){ 
-        if (highlighting) {
-          if (event.target !== this) return;
-          this.classList.add("highlighted");
-        }
-      });
-      cell.addEventListener("mouseout", function(event){
-        if (highlighting) {
-          if (event.target !== this) return;
-          this.classList.remove("highlighted");
-        }
-      })*/
-      cell.innerHTML = parseInt(columns * row + column);
-      grid.appendChild(cell);
-    }
-  }
-
-  grid.addEventListener("mousemove", getGridPosition);
+function getGridCell(gridCoords) {
+  if (gridCoords.left < 0) 
+    gridCoords.left = 0;
+  if (gridCoords.left >= gridDimensions.columns) 
+    gridCoords.left = gridDimensions.columns - 1;
+  if (gridCoords.top < 0) 
+    gridCoords.top = 0;
+  if (gridCoords.top >= gridDimensions.rows) 
+    gridCoords.top = gridDimensions.rows - 1;
+  var gridCell = document.getElementById(
+    "cell-" + 
+    parseInt(Math.floor(gridCoords.top)) + "-" + 
+    parseInt(Math.floor(gridCoords.left))
+  )
+  return gridCell;
 }
 
-function makeDraggable(element) {
+/**
+ * This function encapsulates the behavior of draggable sprites.
+ */
+function makeDraggable(element) { // https://www.w3schools.com/howto/howto_js_draggable.asp
   var position = { left: 0, top: 0 }
   element.onmousedown = dragMouseDown;
 
@@ -72,11 +64,19 @@ function makeDraggable(element) {
   }
 
   function closeDragElement() {
+    var gridCoords = getGridCoords(element.getBoundingClientRect());
+    gridCoords.left += 0.5; gridCoords.top += 0.5;
+    getGridCell(gridCoords).appendChild(element); // move element to new cell
+    element.style.left = "-1px"; // reset sprite position
+    element.style.top = "-1px";
     document.onmouseup = null;
     document.onmousemove = null;
   }
 }
 
+/**
+ * This function encapsulates the behavior of non-draggable sprites.
+ */
 function makeNonDraggable(element) {
   element.onmousedown = dragMouseDown;
 
@@ -98,20 +98,37 @@ function makeNonDraggable(element) {
   }
 }
 
-function addBackgroundSprite(source, column, row, width, height, mobile) {
+function addSprite(source, column, row, width, height, foreground) {
   var cell = document.getElementById("cell-" + parseInt(row) + "-" + parseInt(column));
   if (cell) {
     var image = document.createElement("IMG");
     image.classList.add("sprite");
-    if (mobile) image.classList.add("sprite-mobile");
+    if (foreground) image.classList.add("sprite-mobile");
     image.classList.add("crispy");
     image.src = source;
     image.width = parseInt(width * scale);
     image.height = parseInt(height * scale);
     image.style.zIndex = zTop++;
-    if (mobile) makeDraggable(image);
+    if (foreground) makeDraggable(image);
     else makeNonDraggable(image);
     cell.appendChild(image);
+  }
+}
+
+function resizeGrid(rows, columns) {
+  gridDimensions.rows = rows;
+  gridDimensions.columns = columns;
+  grid.style.gridTemplateColumns = (parseInt(scale) + "px ").repeat(columns);
+  grid.style.gridTemplateRows = (parseInt(scale) + "px ").repeat(rows);
+  var i;
+  for (row = 0; row < rows; row++) {
+    for (column = 0; column < columns; column++) {
+      var cell = document.createElement("DIV");
+      cell.id = "cell-" + parseInt(row) + "-" + parseInt(column);
+      cell.classList.add("grid-item")
+      cell.innerHTML = parseInt(columns * row + column);
+      grid.appendChild(cell);
+    }
   }
 }
 
@@ -125,11 +142,11 @@ function loadMapFile(mapFile) {
       resizeGrid(mapData.width, mapData.height);
       mapData.background.sprites.forEach(function(sprite) { 
         console.log(sprite); 
-        addBackgroundSprite(sprite.source, sprite.left, sprite.top, sprite.width, sprite.height, false);
+        addSprite(sprite.source, sprite.left, sprite.top, sprite.width, sprite.height, false);
       })
       mapData.foreground.sprites.forEach(function(sprite) { 
         console.log(sprite); 
-        addBackgroundSprite(sprite.source, sprite.left, sprite.top, sprite.width, sprite.height, true);
+        addSprite(sprite.source, sprite.left, sprite.top, sprite.width, sprite.height, true);
       })
     }
   }
