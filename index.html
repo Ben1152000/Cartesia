@@ -13,8 +13,18 @@
 </head>
 <body>
   <div class="navbar navbar-dark bg-dark">
+
     <a class="navbar-brand" href="#">Cartesia</a>
-    <input id="file-upload" type="file" name="fileToUpload" id="fileToUpload">
+
+    <button class="btn btn-light" onclick="document.getElementById('file-upload').click()">
+      Upload map
+    </button>
+
+    <div class="custom-file" hidden>
+      <input id="file-upload" type="file" class="custom-file-input" name="fileToUpload" id="fileToUpload">
+      <label class="custom-file-label" for="file-upload">Choose file</label>
+    </div>
+
   </div>
   <div id="grid" class="body"></div>
   <script type="text/javascript">
