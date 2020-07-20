@@ -1,0 +1,30 @@
+
+body {
+  overflow: hidden;
+  margin: 0px;
+}
+
+.body {
+  height: calc(100vh - 56px);
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: 128px 128px 128px 128px 128px 128px 128px 128px 128px 128px;
+  grid-template-rows: 128px 128px 128px 128px 128px 128px 128px 128px 128px 128px;
+  background-color: orange;
+}
+
+.grid-item {
+  position: relative;
+  color: rgba(0, 0, 0, 0.25);
+  background-color: floralwhite;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  padding: 0px 10px 0px 10px;
+  font-size: 30px;
+}
+
+.background-sprite {
+  position: absolute;
+  z-index: 1;
+  left: -1px;
+  top: -1px;
+}
