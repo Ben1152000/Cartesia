@@ -15,7 +15,6 @@ function resizeGrid(rows, columns) {
       grid.appendChild(cell);
     }
   }
-  loadMapFile("assets/maps/sample.json");
 }
 
 function addBackgroundSprite(source, column, row, width, height) {
@@ -38,6 +37,7 @@ function loadMapFile(mapFile) {
   request.onreadystatechange = function() {
     if ( request.readyState === 4 && request.status === 200 ) {
       var mapData = JSON.parse(request.responseText);
+      resizeGrid(mapData.width, mapData.height);
       console.log(mapData.background.sprites.forEach(function(sprite) { 
         console.log(sprite); 
         addBackgroundSprite(sprite.name, sprite.left, sprite.top, sprite.width, sprite.height);
