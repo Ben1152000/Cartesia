@@ -15,8 +15,7 @@ function resizeGrid(rows, columns) {
       grid.appendChild(cell);
     }
   }
-  addBackgroundSprite("assets/sprites/background/BTL/BlueDragonLair.jpg", 3, 2, 34, 22);
-  //loadMapFile("assets/maps/sample.json");
+  loadMapFile("assets/maps/sample.json");
 }
 
 function addBackgroundSprite(source, column, row, width, height) {
@@ -24,6 +23,7 @@ function addBackgroundSprite(source, column, row, width, height) {
   if (cell) {
     var image = document.createElement("IMG");
     image.classList.add("background-sprite");
+    image.classList.add("crispy");
     image.src = source;
     image.width = parseInt(width * scale);
     image.height = parseInt(height * scale);
@@ -31,19 +31,17 @@ function addBackgroundSprite(source, column, row, width, height) {
   }
 }
 
-/*function loadMapFile(mapFile) {
+function loadMapFile(mapFile) {
   var request = new XMLHttpRequest();
-  request.open("GET", mapFile, false);
+  request.open("GET", mapFile);
   request.send(null);
   request.onreadystatechange = function() {
     if ( request.readyState === 4 && request.status === 200 ) {
       var mapData = JSON.parse(request.responseText);
-      loadMap(mapData);
+      console.log(mapData.background.sprites.forEach(function(sprite) { 
+        console.log(sprite); 
+        addBackgroundSprite(sprite.name, sprite.left, sprite.top, sprite.width, sprite.height);
+      }))
     }
   }
-}*/
-
-
-function loadMap(mapData) {
-  console.log(mapData)
 }
