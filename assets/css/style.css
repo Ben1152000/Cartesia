@@ -21,11 +21,14 @@ body {
   font-size: 30px;
 }
 
-.background-sprite {
+.sprite {
   position: absolute;
-  z-index: 1;
   left: -1px;
   top: -1px;
+}
+
+.sprite-mobile {
+  cursor: move;
 }
 
 img.crispy {
@@ -36,4 +39,9 @@ img.crispy {
   image-rendering: pixelated; /* Chrome */
   image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
   -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
+div.highlighted {
+  outline: 12px solid red;
+  /*background-color: red;*/
 }
