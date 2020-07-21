@@ -1,0 +1,9 @@
+{
+  "name": "cartesia",
+  "version": "0.0.1",
+  "description": "A D&D Interactive Online Mapping Tool",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}

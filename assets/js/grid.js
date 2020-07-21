@@ -4,6 +4,7 @@ let grid;
 let welcome;
 
 let map = {
+  name: null,
   width: 0,
   height: 0,
   tiles: [],
@@ -18,7 +19,7 @@ function startup() {
 }
 
 /**
- * Load map json file.
+ * Upload map json file.
  * https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
  */
 function onChange(event) {
@@ -28,12 +29,29 @@ function onChange(event) {
 }
 
 function onReaderLoad(event){
-  console.log(event.target.result);
   try {
     map = JSON.parse(event.target.result);
     render();
   } catch (exception) {
     alert("Invalid json file.");
+  }
+}
+
+/**
+ * Download map json file.
+ */
+function downloadMapFile() {
+  if (map.name) {
+    var mapData = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(map));
+    var virtualNode = document.createElement('A');
+    virtualNode.setAttribute("href", mapData);
+    virtualNode.setAttribute("download", map.name + ".json");
+    document.body.appendChild(virtualNode); // required for firefox
+    virtualNode.click();
+    virtualNode.remove();
+  } else {
+    //alert("No map file loaded.");
+    displayAlertWindow("Error", "No map file is loaded.");
   }
 }
 
@@ -195,24 +213,115 @@ function makeNonDraggable(element) {
   }
 }
 
-/*
-function loadMapFile(mapFile) {
-  var request = new XMLHttpRequest();
-  request.open("GET", mapFile);
-  request.send(null);
-  request.onreadystatechange = function() {
-    if ( request.readyState === 4 && request.status === 200 ) {
-      var mapData = JSON.parse(request.responseText);
-      resizeGrid(mapData.width, mapData.height);
-      mapData.background.sprites.forEach(function(sprite) { 
-        console.log(sprite); 
-        addSprite(sprite.source, sprite.left, sprite.top, sprite.width, sprite.height, false);
-      })
-      mapData.foreground.sprites.forEach(function(sprite) { 
-        console.log(sprite); 
-        addSprite(sprite.source, sprite.left, sprite.top, sprite.width, sprite.height, true);
-      })
-    }
-  }
+function displayAlertWindow(title, message) {
+  document.getElementById("modal-alert-title").innerText = title;
+  document.getElementById("modal-alert-message").innerText = message;
+  document.getElementById("launch-modal-alert").click();
 }
-*/
+
+let socket;
+let id;
+
+// Connect to socket.io:
+function connect() {
+  if (socket) {
+    console.log('already connected');
+    return;
+  }
+  socket = io();
+  console.log('connected');
+
+  socket.on('host-success', function(packet){
+    console.log('hosting server:', packet.id);
+    socket.on('join', function(packet){
+      console.log('join:', packet);
+    });
+    socket.on('send', function(packet){
+      console.log('send:', packet);
+    });
+  });
+
+  socket.on('host-failure', function(packet){
+    console.log('error:', packet.message);
+    disconnect();
+  });
+
+  socket.on('join', function(packet){
+    console.log('guest joined');
+    push();
+  });
+
+  socket.on('join-success', function(packet){
+    console.log('joined server:', packet.id);
+    socket.on('push', function(packet){
+      console.log('push:', packet);
+    });
+    socket.on('send', function(packet){
+      console.log('send:', packet);
+    });
+  });
+
+  socket.on('join-failure', function(packet){
+    console.log('error:', packet.message);
+    disconnect();
+  });
+
+  socket.on('close', function(packet){
+    console.log('server closed');
+    disconnect();
+  });
+
+  socket.on('push', function(packet){
+    console.log('receiving map');
+    map = packet;
+    render();
+  })
+}
+
+// Disconnect from current server:
+function disconnect() {
+  if (!socket) {
+    console.log('not connected');
+    return;
+  }
+  socket.disconnect();
+  socket = null;
+  console.log('disconnected');
+}
+
+// Host new server with id:
+function host(id) {
+  if (socket) {
+    console.log('already connected');
+    return;
+  }
+  connect();
+  socket.emit('host', {id: id});
+}
+
+// Join existing server with id:
+function join(id) {
+  if (socket) {
+    console.log('already connected');
+    return;
+  }
+  connect();
+  socket.emit('join', {id: id});
+}
+
+// Pushes the current map to all guests:
+function push() {
+  if (!socket) {
+    console.log('not connected');
+    return;
+  }
+  socket.emit('push', map);
+}
+
+function log() {
+  if (!socket) {
+    console.log('not connected');
+    return;
+  }
+  socket.emit('log');
+}

@@ -10,6 +10,21 @@ body {
 
 .body {
   height: calc(100vh - 56px);
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.jumbotron {
+  margin: auto;
+  /*max-width: 60ch;*/
+  max-height: 24rem;
+}
+
+.grid {
   overflow-y: scroll;
   display: grid;
   background-color: floralwhite;
@@ -91,8 +106,34 @@ img.rotateLeft {
   cursor: pointer;
 }
 
-#welcome {
-  margin: 10vh auto;
-  max-width: 60ch;
-  max-height: 24rem;
+.btn-separator:after {
+  content: ' ';
+  display: block;
+  height: 100%;
+  width: 3px;
+}
+
+.btn-xlg {
+  padding: 24px 28px;
+  font-size: 24px;
+  line-height: normal;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+}
+
+.form-control-xlg {
+  height: calc(1.5em + 1rem + 2px);
+  padding: .5rem 1rem;
+  font-size: 1.5rem;
+  line-height: 1.75;
+  border-radius: .3rem;
+}
+
+button.main {
+  width: 46%;
+}
+
+.alert-sm {
+  padding: .5rem 1rem;
 }
