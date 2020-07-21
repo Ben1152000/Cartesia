@@ -15,23 +15,24 @@ body {
   background-color: floralwhite;
 }
 
-.cell {
+div.cell {
   position: relative;
-  color: rgba(0, 0, 0, 0.25);
-  border: 1px dashed rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(0, 0, 0, 0.2);
   padding: 0px 10px 0px 10px;
   font-size: 30px;
 }
 
-.tile {
+img.tile {
   position: absolute;
   left: -1px;
   top: -1px;
 }
 
-.sprite {
+img.sprite {
   cursor: move;
   position: absolute;
+  z-index: 1;
   left: -1px;
   top: -1px;
 }
@@ -44,4 +45,54 @@ img.crispy {
   image-rendering: pixelated; /* Chrome */
   image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
   -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
+img.flip {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+img.rotate-1 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+img.rotate-2 {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+img.rotate-3 {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+img.rotateLeft {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+#brand {
+  cursor: pointer;
+}
+
+#welcome {
+  margin: 10vh auto;
+  max-width: 60ch;
+  max-height: 24rem;
 }

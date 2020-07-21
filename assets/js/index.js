@@ -1,8 +1,7 @@
 const scale = 128; // size of cell in pixels
-let zTop = 10; // highest z-index
 
 let grid;
-let gridDimensions;
+let welcome;
 
 let map = {
   width: 0,
@@ -13,8 +12,8 @@ let map = {
 
 function startup() {
   grid = document.getElementById("grid");
-  gridDimensions = {rows: 0, columns: 0};
-  loadMapFile("assets/maps/sample.json");
+  welcome = document.getElementById("welcome");
+  //loadMapFile("assets/maps/sample.json");
   document.getElementById('file-upload').addEventListener('change', onChange);
 }
 
@@ -23,19 +22,19 @@ function startup() {
  * https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
  */
 function onChange(event) {
-    var reader = new FileReader();
-    reader.onload = onReaderLoad;
-    reader.readAsText(event.target.files[0]);
+  var reader = new FileReader();
+  reader.onload = onReaderLoad;
+  reader.readAsText(event.target.files[0]);
 }
 
 function onReaderLoad(event){
-    console.log(event.target.result);
-    try {
-      map = JSON.parse(event.target.result);
-      render();
-    } catch (exception) {
-      alert("Invalid json file.");
-    }
+  console.log(event.target.result);
+  try {
+    map = JSON.parse(event.target.result);
+    render();
+  } catch (exception) {
+    alert("Invalid json file.");
+  }
 }
 
 /**
@@ -53,7 +52,20 @@ function loadMapFile(mapFile) {
   }
 }
 
+/*function renderFailure() {
+  var message = document.createElement("")
+  grid.
+}*/
+
+function refresh() {
+  grid.querySelectorAll('*').forEach(node => node.remove());
+  grid.setAttribute("hidden", "");
+  welcome.removeAttribute("hidden");
+}
+
 function render() {
+  welcome.setAttribute("hidden", "");
+  grid.removeAttribute("hidden");
   grid.querySelectorAll('*').forEach(node => node.remove());
   renderGrid(map.width, map.height);
   map.tiles.forEach(renderTile);
@@ -96,10 +108,11 @@ function renderTile(tile) {
     var image = document.createElement("IMG");
     image.classList.add("tile");
     image.classList.add("crispy");
-    image.src = tile.source;
+    image.src = "assets/images/tiles/" + tile.source;
     image.width = parseInt(tile.width * scale);
     image.height = parseInt(tile.height * scale);
-    image.style.zIndex = zTop++;
+    if (tile.rotate) image.classList.add("rotate-" + parseInt(tile.rotate));
+    if (tile.flip) image.classList.add("flip");
     makeNonDraggable(image);
     cell.appendChild(image);
   }
@@ -114,10 +127,11 @@ function renderSprite(sprite) {
     image.id = sprite.id;
     image.classList.add("sprite");
     image.classList.add("crispy");
-    image.src = sprite.source;
+    image.src = "assets/images/sprites/" + sprite.source;
     image.width = parseInt(sprite.width * scale);
     image.height = parseInt(sprite.height * scale);
-    image.style.zIndex = zTop++;
+    if (sprite.rotate) image.classList.add("rotate-" + parseInt(sprite.rotate));
+    if (sprite.flip) image.classList.add("flip");
     makeDraggable(image);
     cell.appendChild(image);
   }
@@ -137,7 +151,6 @@ function makeDraggable(element) { // https://www.w3schools.com/howto/howto_js_dr
     position.top = event.clientY;
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag; // call a function whenever the cursor moves
-    element.style.zIndex = zTop++; // move element to front
   }
 
   function elementDrag(event) {

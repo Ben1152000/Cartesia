@@ -14,7 +14,7 @@
 <body>
   <div class="navbar navbar-dark bg-dark">
 
-    <a class="navbar-brand" href="#">Cartesia</a>
+    <a id="brand" class="navbar-brand" onclick="refresh()">Cartesia</a>
 
     <button class="btn btn-light" onclick="document.getElementById('file-upload').click()">
       Upload map
@@ -26,7 +26,16 @@
     </div>
 
   </div>
-  <div id="grid" class="body"></div>
+  <div id="welcome" class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Welcome to Cartesia!</h1>
+      <p class="lead">A D&D Interactive Online Mapping Tool</p>
+      <hr class="my-4">
+      <p>To continue, please upload a map in the form of a json file.</p>
+      <p>Here is a <a href="assets/maps/demo.json" download>sample</a> map you can use to get started.</p>
+    </div>
+  </div>
+  <div id="grid" class="body" hidden></div>
   <script type="text/javascript">
     startup();
   </script>
