@@ -141,14 +141,13 @@ function renderSprite(sprite) {
  * This function encapsulates the behavior of draggable sprites.
  */
 function makeDraggable(element) { // https://www.w3schools.com/howto/howto_js_draggable.asp
-  var position = { left: 0, top: 0 }
+  var initial;
   element.onmousedown = dragMouseDown;
 
   function dragMouseDown(event) {
     event = event || window.event;
     event.preventDefault();
-    position.left = event.clientX; // get the mouse cursor position at startup
-    position.top = event.clientY;
+    initial = {left: event.clientX + 1, top: event.clientY + 1};
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag; // call a function whenever the cursor moves
   }
@@ -156,14 +155,8 @@ function makeDraggable(element) { // https://www.w3schools.com/howto/howto_js_dr
   function elementDrag(event) {
     event = event || window.event;
     event.preventDefault();
-    var displacement = { // calculate the new cursor position
-      left: position.left - event.clientX, 
-      top: position.top - event.clientY
-    }
-    position.left = event.clientX;
-    position.top = event.clientY;
-    element.style.left = (element.offsetLeft - displacement.left) + "px";
-    element.style.top = (element.offsetTop - displacement.top) + "px";
+    element.style.left = (event.clientX - initial.left) + "px";
+    element.style.top = (event.clientY - initial.top) + "px";
   }
 
   function closeDragElement() {
