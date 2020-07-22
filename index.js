@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
       });
       return;
     }
-    servers[packet.id] = {host: socket.id, guests: new Set()};
+    servers[packet.id] = {host: socket.id, guests: new Set(), editing: false};
     users[socket.id].type = userType.HOST;
     users[socket.id].server = packet.id;
     socket.emit('host-success', {'id': packet.id});
@@ -158,10 +158,27 @@ io.on('connection', (socket) => {
       console.log('ERROR:', 'Non-connected user tried to move.');
       return; 
     }
+    // If the server does not have editing enabled, return failure:
+    if (users[socket.id].type === userType.GUEST && !servers[users[socket.id].server].editing) {
+      console.log('ERROR:', 'Non-host user tried to move.');
+      return;
+    }
     io.sockets.connected[servers[users[socket.id].server].host].emit('move', packet)
     servers[users[socket.id].server].guests.forEach(
       guest => io.sockets.connected[guest].emit('move', packet)
     );
+  });
+
+  socket.on('settings', (packet) => {
+    // If the user is not a host, return failure:
+    console.log('settings:', packet);
+    if (users[socket.id].type !== userType.HOST) {
+      console.log('ERROR:', 'Non-host user tried to change settings.');
+      return;
+    }
+    if ('editing' in packet) {
+      servers[users[socket.id].server].editing = packet.editing;
+    }
   });
 
   socket.on('log', (packet) => {

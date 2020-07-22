@@ -19,9 +19,14 @@ function onChange(event) {
 }
 
 function onReaderLoad(event){
-  grid = new Grid();
-  var map = JSON.parse(event.target.result);
-  grid.setMap(map);
+  try {
+    grid = new Grid();
+    var map = JSON.parse(event.target.result);
+    grid.setMap(map);
+  } catch (exception) {
+    displayAlertWindow('Error', "Invalid json file.");
+  }
+
 }
 
 const scale = 128; // size of cell in pixels
@@ -29,6 +34,9 @@ const scale = 128; // size of cell in pixels
 class Grid {
 
   constructor() {
+    this.settings = {
+      editing: false
+    };
     this.setMap({
       name: null,
       width: 0,
@@ -155,6 +163,11 @@ class Grid {
     this.renderSprite(sprite);
   }
 
+  toggleEditing() {
+    this.settings.editing = !this.settings.editing;
+    Io.changeSettings(this.settings);
+  }
+
   /**
    * This function encapsulates the behavior of draggable sprites.
    */
@@ -228,7 +241,7 @@ class Grid {
       virtualNode.remove();
     } else {
       //alert("No map file loaded.");
-      displayAlertWindow("Error", "No map file is loaded.");
+      displayAlertWindow("Error", "Cannot download map, no map file is loaded.");
     }
   }
 
@@ -247,13 +260,6 @@ class Grid {
     }
   }
 
-}
-
-
-function displayAlertWindow(title, message) {
-  document.getElementById("modal-alert-title").innerText = title;
-  document.getElementById("modal-alert-message").innerText = message;
-  document.getElementById("launch-modal-alert").click();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -277,7 +283,7 @@ class Io {
 
     socket.on('host-success', function(packet){
       console.log('hosting server:', packet.id);
-      callbacks.success();
+      callbacks.success(packet.id);
     });
 
     socket.on('host-failure', function(packet){
@@ -293,7 +299,7 @@ class Io {
 
     socket.on('join-success', function(packet){
       console.log('joined server:', packet.id);
-      callbacks.success();
+      callbacks.success(packet.id);
     });
 
     socket.on('join-failure', function(packet){
@@ -305,6 +311,7 @@ class Io {
     socket.on('close', function(packet){
       console.log('server closed');
       disconnectFromServer();
+      displayAlertWindow('Server Closed', 'You were disconnected from the server.');
     });
 
     socket.on('push', function(packet){
@@ -372,6 +379,15 @@ class Io {
     socket.emit('move', sprite);
   }
 
+  static changeSettings(settings) {
+    console.log('changing settings:', settings);
+    if (!socket) {
+      console.log('not connected');
+      return;
+    }
+    socket.emit('settings', settings);
+  }
+
   static log() {
     if (!socket) {
       console.log('not connected');
@@ -389,17 +405,17 @@ class Io {
 
 function connectToServer(type) {
 
-  document.getElementById('button-modal-input').addEventListener('click', attemptConnection);
-  document.getElementById('launch-modal-input').click();
+  document.getElementById('modal-input-submit').addEventListener('click', attemptConnection);
+  document.getElementById('modal-input-launch').click();
 
   $('#modal-input').on('hidden.bs.modal', function (e) {
-    document.getElementById('button-modal-input').removeEventListener('click', attemptConnection);
+    document.getElementById('modal-input-submit').removeEventListener('click', attemptConnection);
     document.getElementById('modal-input-alert').setAttribute('hidden', '');
   })
 
   function attemptConnection(event) {
     event.preventDefault();
-    var value = parseInt(document.getElementById('input-modal-input').value);
+    var value = parseInt(document.getElementById('modal-input-form').value);
 
     if (type === "host") { 
       Io.host(value, {
@@ -424,21 +440,23 @@ function connectToServer(type) {
     alert.innerText = message;
   }
 
-  function hostSuccess() {
+  function hostSuccess(id) {
     $('#modal-input').modal('hide');
     gridElement.removeAttribute("hidden");
     document.getElementById("welcome").setAttribute("hidden", "");
     document.getElementById("host-toolbar").removeAttribute("hidden");
     document.getElementById("guest-toolbar").setAttribute("hidden", "");
+    document.getElementById("server-label-host").innerHTML = id;
     grid = new Grid();
   }
 
-  function joinSuccess() {
+  function joinSuccess(id) {
     $('#modal-input').modal('hide');
     gridElement.removeAttribute("hidden");
     document.getElementById("welcome").setAttribute("hidden", "");
     document.getElementById("host-toolbar").setAttribute("hidden", "");
     document.getElementById("guest-toolbar").removeAttribute("hidden");
+    document.getElementById("server-label-guest").innerHTML = id;
     grid = new Grid();
   }
 
@@ -452,11 +470,39 @@ function connectToServer(type) {
 }
 
 function disconnectFromServer() {
-
   Io.disconnect();
   gridElement.setAttribute("hidden", "");
   document.getElementById("host-toolbar").setAttribute("hidden", "");
   document.getElementById("guest-toolbar").setAttribute("hidden", "");
   document.getElementById("welcome").removeAttribute("hidden");
+}
 
+function toggleEditing() {
+  grid.toggleEditing();
+  if (grid.settings.editing) {
+    document.getElementById("button-editing").title = "Editing enabled";
+    document.getElementById("button-editing-enabled").removeAttribute("hidden");
+    document.getElementById("button-editing-disabled").setAttribute("hidden", "");
+  } else {
+    document.getElementById("button-editing").title = "Editing disabled";
+    document.getElementById("button-editing-enabled").setAttribute("hidden", "");
+    document.getElementById("button-editing-disabled").removeAttribute("hidden");
+  }
+}
+
+function displayAlertWindow(title, message) {
+  document.getElementById("modal-alert-title").innerText = title;
+  document.getElementById("modal-alert-message").innerText = message;
+  document.getElementById("launch-modal-alert").click();
+}
+
+function displayConfirmLeaveWindow() {
+  
+  document.getElementById('modal-confirm-submit').addEventListener('click', disconnectFromServer);
+
+  $('#modal-confirm').on('hidden.bs.modal', function (e) {
+    document.getElementById('modal-confirm-submit').removeEventListener('click', disconnectFromServer);
+  })
+
+  document.getElementById('launch-modal-confirm').click();
 }
