@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
     // If the id is not a positive integer, return failure:
     if (!Number.isSafeInteger(packet.id) || packet.id < 0) {
       socket.emit('host-failure', {
-        'message': 'Server id must be a positive integer'
+        'message': 'Server id must be a positive integer.'
       });
       return;
     }
@@ -109,6 +109,13 @@ io.on('connection', (socket) => {
     if (users[socket.id].type !== userType.NONE) {
       socket.emit('join-failure', {
         'message': 'User already has type: ' + users[socket.id].type
+      });
+      return;
+    }
+    // If the id is not a positive integer, return failure:
+    if (!Number.isSafeInteger(packet.id) || packet.id < 0) {
+      socket.emit('join-failure', {
+        'message': 'Server id must be a positive integer.'
       });
       return;
     }

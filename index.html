@@ -35,7 +35,7 @@
       </div>
     </div>
     <button id="launch-modal-input" type="button" data-toggle="modal" data-target="#modal-input" hidden></button>
-    <div class="modal fade" id="modal-input" tabindex="-1" role="dialog">
+    <div id="modal-input" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -45,13 +45,13 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="input-group mb-2">
-              <input class="form-control form-control-xlg" type="number" value="0">
+            <form class="input-group mb-2">
+              <input id="input-modal-input" class="form-control form-control-xlg" type="number" value="0">
               <div class="input-group-append">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Join</button>
+                <button id="button-modal-input" type="submit" class="btn btn-primary">Join</button>
               </div>
-            </div>
-            <div id="modal-input-alert" class="alert alert-danger alert-sm mt-3 mb-1" role="alert">
+            </form>
+            <div id="modal-input-alert" class="alert alert-danger alert-sm mt-3 mb-1" role="alert" hidden>
               The server number is not valid.
             </div>
           </div>
@@ -100,8 +100,8 @@
         <hr class="my-4">
         <!--<p>To continue, please upload a map in the form of a json file.</p>
         <p>Here is a <a href="assets/maps/demo.json" download>sample</a> map you can use to get started.</p>-->
-        <button type="button" class="btn btn-light btn-xlg main" onclick="document.getElementById('launch-modal-input').click()">Host</button>
-        <button type="button" class="btn btn-light btn-xlg main" style="float:right;" onclick="document.getElementById('launch-modal-input').click()">Join</button>
+        <button id="button-host" type="button" class="btn btn-info btn-xlg main" onclick="connectToServer('host')">Host</button>
+        <button id="button-join" type="button" class="btn btn-info btn-xlg main" style="float:right;" onclick="connectToServer('guest')">Join</button>
       </div>
     </div>
   </div>

@@ -219,109 +219,177 @@ function displayAlertWindow(title, message) {
   document.getElementById("launch-modal-alert").click();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//  Socket Funtions:                                                          //
+////////////////////////////////////////////////////////////////////////////////
+
 let socket;
 let id;
 
-// Connect to socket.io:
-function connect() {
-  if (socket) {
-    console.log('already connected');
-    return;
-  }
-  socket = io();
-  console.log('connected');
+class Io {
 
-  socket.on('host-success', function(packet){
-    console.log('hosting server:', packet.id);
+  // Connect to socket.io:
+  static connect(callbacks) {
+    if (socket) {
+      console.log('already connected');
+      callbacks.failure('Already connected to server.');
+      return;
+    }
+    socket = io();
+    console.log('connected');
+
+    socket.on('host-success', function(packet){
+      console.log('hosting server:', packet.id);
+      socket.on('join', function(packet){
+        console.log('join:', packet);
+      });
+      socket.on('send', function(packet){
+        console.log('send:', packet);
+      });
+      callbacks.success();
+    });
+
+    socket.on('host-failure', function(packet){
+      console.log('error:', packet.message);
+      Io.disconnect();
+      callbacks.failure(packet.message);
+    });
+
     socket.on('join', function(packet){
-      console.log('join:', packet);
+      console.log('guest joined');
+      Io.push();
     });
-    socket.on('send', function(packet){
-      console.log('send:', packet);
+
+    socket.on('join-success', function(packet){
+      console.log('joined server:', packet.id);
+      socket.on('push', function(packet){
+        console.log('push:', packet);
+      });
+      socket.on('send', function(packet){
+        console.log('send:', packet);
+      });
+      callbacks.success();
     });
-  });
 
-  socket.on('host-failure', function(packet){
-    console.log('error:', packet.message);
-    disconnect();
-  });
+    socket.on('join-failure', function(packet){
+      console.log('error:', packet.message);
+      Io.disconnect();
+      callbacks.failure(packet.message);
+    });
 
-  socket.on('join', function(packet){
-    console.log('guest joined');
-    push();
-  });
+    socket.on('close', function(packet){
+      console.log('server closed');
+      Io.disconnect();
+    });
 
-  socket.on('join-success', function(packet){
-    console.log('joined server:', packet.id);
     socket.on('push', function(packet){
-      console.log('push:', packet);
-    });
-    socket.on('send', function(packet){
-      console.log('send:', packet);
-    });
-  });
+      console.log('receiving map');
+      callbacks.push(packet);
+    })
+  }
 
-  socket.on('join-failure', function(packet){
-    console.log('error:', packet.message);
-    disconnect();
-  });
+  // Disconnect from current server:
+  static disconnect() {
+    if (!socket) {
+      console.log('not connected');
+      return;
+    }
+    socket.disconnect();
+    socket = null;
+    console.log('disconnected');
+  }
 
-  socket.on('close', function(packet){
-    console.log('server closed');
-    disconnect();
-  });
+  // Host new server with id:
+  static host(id, callbacks) {
+    console.log('hosting:', id);
+    if (socket) {
+      console.log('already connected');
+      callbacks.failure('Already connected to server.');
+      return;
+    }
+    Io.connect(callbacks);
+    socket.emit('host', {id: id});
+  }
 
-  socket.on('push', function(packet){
-    console.log('receiving map');
-    map = packet;
-    render();
+  // Join existing server with id:
+  static join(id, callbacks) {
+    console.log('joining:', id);
+    if (socket) {
+      console.log('already connected');
+      callbacks.failure('Already connected to server.');
+      return;
+    }
+    Io.connect(callbacks);
+    socket.emit('join', {id: id});
+  }
+
+  // Pushes the current map to all guests:
+  static push() {
+    console.log('pushing map');
+    if (!socket) {
+      console.log('not connected');
+      return;
+    }
+    socket.emit('push', map);
+  }
+
+  static log() {
+    if (!socket) {
+      console.log('not connected');
+      return;
+    }
+    socket.emit('log');
+  }
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//  Button Funtions:                                                          //
+////////////////////////////////////////////////////////////////////////////////
+
+function connectToServer(type) {
+
+  document.getElementById('button-modal-input').addEventListener('click', attemptConnection);
+  document.getElementById('launch-modal-input').click();
+
+  $('#modal-input').on('hidden.bs.modal', function (e) {
+    document.getElementById('button-modal-input').removeEventListener('click', attemptConnection);
+    document.getElementById('modal-input-alert').setAttribute('hidden', '');
   })
-}
 
-// Disconnect from current server:
-function disconnect() {
-  if (!socket) {
-    console.log('not connected');
-    return;
-  }
-  socket.disconnect();
-  socket = null;
-  console.log('disconnected');
-}
+  function attemptConnection(event) {
+    event.preventDefault();
+    var value = parseInt(document.getElementById('input-modal-input').value);
 
-// Host new server with id:
-function host(id) {
-  if (socket) {
-    console.log('already connected');
-    return;
+    if (type === "host") { 
+      Io.host(value, {
+        success: success,
+        failure: failure
+      }); 
+    }
+    else if (type === "guest") { 
+      Io.join(value, {
+        success: success,
+        failure: failure,
+        push: receive
+      }); 
+    }
   }
-  connect();
-  socket.emit('host', {id: id});
-}
 
-// Join existing server with id:
-function join(id) {
-  if (socket) {
-    console.log('already connected');
-    return;
+  function failure(message) {
+    var alert = document.getElementById('modal-input-alert');
+    alert.removeAttribute('hidden');
+    alert.innerText = message;
   }
-  connect();
-  socket.emit('join', {id: id});
-}
 
-// Pushes the current map to all guests:
-function push() {
-  if (!socket) {
-    console.log('not connected');
-    return;
+  function success() {
+    $('#modal-input').modal('hide');
+    render();
   }
-  socket.emit('push', map);
-}
 
-function log() {
-  if (!socket) {
-    console.log('not connected');
-    return;
+  function receive(packet) {
+    map = packet;
+    render()
   }
-  socket.emit('log');
 }
