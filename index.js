@@ -26,24 +26,24 @@ app.get('/', (req, res) => {
  * requests:
  * - host(id) // request to host a server
  * - push(map) // send map to guests
- * - send(sprites) // send sprites to guests
+ * - move(sprite) // send sprite to guests
  * 
  * responses:
  * - host-success // response to host request
  * - host-failure // response to host request
  * - join // when guest joins
- * - send(sprites) // when guest sends sprites
+ * - move(sprite) // when guest sends sprites
  * 
  * GUEST:
  * requests:
  * - join(id) // request to join a server
- * - send(sprites) // send sprites to guests
+ * - move(sprite) // send sprites to guests
  * 
  * responses:
  * - join-success // response to join request
  * - join-failure // response to join request
  * - push(map) // when host sends map
- * - send(sprites) // when host/guest sends sprites
+ * - move(sprite) // when host/guest sends sprites
  * - close // when server closes
  * 
  */
@@ -78,6 +78,7 @@ io.on('connection', (socket) => {
     console.log('host:', packet);
     // If the user is already a host/guest, return failure:
     if (users[socket.id].type !== userType.NONE) {
+      console.log('ERROR:', 'User already has type: ' + users[socket.id].type);
       socket.emit('host-failure', {
         'message': 'User already has type: ' + users[socket.id].type
       });
@@ -85,6 +86,7 @@ io.on('connection', (socket) => {
     }
     // If the id is not a positive integer, return failure:
     if (!Number.isSafeInteger(packet.id) || packet.id < 0) {
+      console.log('ERROR:', 'Server id must be a positive integer.');
       socket.emit('host-failure', {
         'message': 'Server id must be a positive integer.'
       });
@@ -92,6 +94,7 @@ io.on('connection', (socket) => {
     }
     // If the server id already exists, return failure:
     if (packet.id in servers) {
+      console.log('ERROR:', 'There is already a server with id: ' + packet.id);
       socket.emit('host-failure', {
         'message': 'There is already a server with id: ' + packet.id
       });
@@ -107,6 +110,7 @@ io.on('connection', (socket) => {
     console.log('join:', packet);
     // If the user is already a host/guest, return failure:
     if (users[socket.id].type !== userType.NONE) {
+      console.log('ERROR:', 'User already has type: ' + users[socket.id].type);
       socket.emit('join-failure', {
         'message': 'User already has type: ' + users[socket.id].type
       });
@@ -114,6 +118,7 @@ io.on('connection', (socket) => {
     }
     // If the id is not a positive integer, return failure:
     if (!Number.isSafeInteger(packet.id) || packet.id < 0) {
+      console.log('ERROR:', 'Server id must be a positive integer.');
       socket.emit('join-failure', {
         'message': 'Server id must be a positive integer.'
       });
@@ -121,6 +126,7 @@ io.on('connection', (socket) => {
     }
     // If the server id does not exist, return failure:
     if (!(packet.id in servers)) {
+      console.log('ERROR:', 'There is no server with id: ' + packet.id);
       socket.emit('join-failure', {
         'message': 'There is no server with id: ' + packet.id
       });
@@ -134,16 +140,28 @@ io.on('connection', (socket) => {
   });
 
   socket.on('push', (packet) => {
-    console.log('push:', packet);
+    console.log('push:', packet.name);
     // If the user is not a host, return failure:
-    if (users[socket.id].type !== userType.HOST) { return; }
+    if (users[socket.id].type !== userType.HOST) { 
+      console.log('ERROR:', 'Non-host user tried to push.');
+      return; 
+    }
     servers[users[socket.id].server].guests.forEach(
       guest => io.sockets.connected[guest].emit('push', packet)
     );
   });
 
-  socket.on('send', (packet) => {
-    console.log('send:', packet);
+  socket.on('move', (packet) => {
+    console.log('move:', packet.id);
+    // If the user is not a host or guest, return failure:
+    if (users[socket.id].type === userType.NONE) { 
+      console.log('ERROR:', 'Non-connected user tried to move.');
+      return; 
+    }
+    io.sockets.connected[servers[users[socket.id].server].host].emit('move', packet)
+    servers[users[socket.id].server].guests.forEach(
+      guest => io.sockets.connected[guest].emit('move', packet)
+    );
   });
 
   socket.on('log', (packet) => {
