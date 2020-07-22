@@ -188,8 +188,14 @@ io.on('connection', (socket) => {
 
 });
 
-var server = http.listen(3000, "0.0.0.0", () => {
+/*var server = http.listen(3000, "0.0.0.0", () => {
   var host = server.address().address;
   var port = server.address().port;
   console.log("Serving HTTP on " + host + " port " + port + " (http://" + host + ":" + port + "/) ...");
+});*/
+
+var server = http.listen(3000, () => {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log("Serving HTTP on port " + port + " ...");
 });
