@@ -1,6 +1,6 @@
 {
   "name": "cartesia",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A D&D Interactive Online Mapping Tool",
   "dependencies": {
     "express": "^4.17.1",

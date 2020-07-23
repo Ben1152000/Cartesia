@@ -447,6 +447,10 @@ function connectToServer(type) {
     document.getElementById("host-toolbar").removeAttribute("hidden");
     document.getElementById("guest-toolbar").setAttribute("hidden", "");
     document.getElementById("server-label-host").innerHTML = id;
+    // Ensure editing setting is false (move when more settings added)
+    document.getElementById("button-editing").title = "Editing disabled";
+    document.getElementById("button-editing-enabled").setAttribute("hidden", "");
+    document.getElementById("button-editing-disabled").removeAttribute("hidden");
     grid = new Grid();
   }
 
