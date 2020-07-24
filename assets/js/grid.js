@@ -1,9 +1,9 @@
-
+import { Io } from './socket.js';
 
 let gridElement;
 let grid;
 
-function startup() {
+export function startup() {
   gridElement = document.getElementById("grid");
   document.getElementById('file-upload').addEventListener('change', onChange);
 }
@@ -50,7 +50,7 @@ class Grid {
   setMap(map) {
     this.map = map;
     console.log(map);
-    Io.push(map); // push map to others (if not a host, it will be ignored)
+    io.push(map); // push map to others (if not a host, it will be ignored)
     this.render();
   }
 
@@ -149,7 +149,7 @@ class Grid {
 
   setSprite(sprite) {
     this.map.sprites[sprite.id] = sprite;
-    Io.move(sprite);
+    io.move(sprite);
     document.getElementById(sprite.id).remove();
     this.renderSprite(sprite);
   }
@@ -165,7 +165,7 @@ class Grid {
 
   toggleEditing() {
     this.settings.editing = !this.settings.editing;
-    Io.changeSettings(this.settings);
+    io.changeSettings(this.settings);
   }
 
   /**
@@ -262,148 +262,39 @@ class Grid {
 
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-//  Socket Funtions:                                                          //
+//  UI Interacting Funtions:                                                  //
 ////////////////////////////////////////////////////////////////////////////////
 
-let socket;
-let id;
+function setViewMode(type) {
 
-class Io {
+  if (type === 'none') {
 
-  // Connect to socket.io:
-  static connect(callbacks) {
-    if (socket) {
-      console.log('already connected');
-      callbacks.failure('Already connected to server.');
-      return;
-    }
-    socket = io();
-    console.log('connected');
-
-    socket.on('host-success', function(packet){
-      console.log('hosting server:', packet.id);
-      callbacks.success(packet.id);
-    });
-
-    socket.on('host-failure', function(packet){
-      console.log('error:', packet.message);
-      Io.disconnect();
-      callbacks.failure(packet.message);
-    });
-
-    socket.on('join', function(packet){
-      console.log('guest joined');
-      Io.push(grid.map);
-    });
-
-    socket.on('join-success', function(packet){
-      console.log('joined server:', packet.id);
-      callbacks.success(packet.id);
-    });
-
-    socket.on('join-failure', function(packet){
-      console.log('error:', packet.message);
-      Io.disconnect();
-      callbacks.failure(packet.message);
-    });
-
-    socket.on('close', function(packet){
-      console.log('server closed');
-      disconnectFromServer();
-      displayAlertWindow('Server Closed', 'You were disconnected from the server.');
-    });
-
-    socket.on('push', function(packet){
-      console.log('receiving map');
-      callbacks.push(packet);
-    });
-
-    socket.on('move', function(packet){
-      console.log('receiving sprite');
-      callbacks.move(packet);
-    });
   }
 
-  // Disconnect from current server:
-  static disconnect() {
-    if (!socket) {
-      console.log('not connected');
-      return;
-    }
-    socket.disconnect();
-    socket = null;
-    console.log('disconnected');
+  if (type === 'host') {
+
   }
 
-  // Host new server with id:
-  static host(id, callbacks) {
-    console.log('hosting:', id);
-    if (socket) {
-      console.log('already connected');
-      callbacks.failure('Already connected to server.');
-      return;
-    }
-    Io.connect(callbacks);
-    socket.emit('host', {id: id});
+  if (type === 'guest') {
+
   }
 
-  // Join existing server with id:
-  static join(id, callbacks) {
-    console.log('joining:', id);
-    if (socket) {
-      console.log('already connected');
-      callbacks.failure('Already connected to server.');
-      return;
-    }
-    Io.connect(callbacks);
-    socket.emit('join', {id: id});
+  if (type === 'edit') {
+
   }
 
-  // Pushes the current map to all guests:
-  static push(map) {
-    console.log('pushing map');
-    if (!socket) {
-      console.log('not connected');
-      return;
-    }
-    socket.emit('push', map);
-  }
-
-  static move(sprite) {
-    console.log('moving sprite:', sprite.id);
-    if (!socket) {
-      console.log('not connected');
-      return;
-    }
-    socket.emit('move', sprite);
-  }
-
-  static changeSettings(settings) {
-    console.log('changing settings:', settings);
-    if (!socket) {
-      console.log('not connected');
-      return;
-    }
-    socket.emit('settings', settings);
-  }
-
-  static log() {
-    if (!socket) {
-      console.log('not connected');
-      return;
-    }
-    socket.emit('log');
-  }
-
+  console.log("ERROR: Invalid top-menu type:", type)
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //  Button Funtions:                                                          //
 ////////////////////////////////////////////////////////////////////////////////
 
-function connectToServer(type) {
+let io = new Io();
+
+export function connectToServer(type) {
 
   document.getElementById('modal-input-submit').addEventListener('click', attemptConnection);
   document.getElementById('modal-input-launch').click();
@@ -418,18 +309,20 @@ function connectToServer(type) {
     var value = parseInt(document.getElementById('modal-input-form').value);
 
     if (type === "host") { 
-      Io.host(value, {
+      io.host(value, {
         success: hostSuccess,
         failure: failure,
-        move: receiveMove
+        move: receiveMove,
+        join: userJoined
       }); 
     }
     else if (type === "guest") { 
-      Io.join(value, {
+      io.join(value, {
         success: joinSuccess,
         failure: failure,
         push: receivePush,
-        move: receiveMove
+        move: receiveMove,
+        close: serverClosed
       }); 
     }
   }
@@ -471,17 +364,26 @@ function connectToServer(type) {
   function receiveMove(sprite) {
     grid.replaceSprite(sprite);
   }
+
+  function userJoined() {
+    io.push(grid.map);
+  }
+
+  function serverClosed() {
+    disconnectFromServer();
+    displayAlertWindow('Server Closed', 'You were disconnected from the server.');
+  }
 }
 
-function disconnectFromServer() {
-  Io.disconnect();
+export function disconnectFromServer() {
+  io.disconnect();
   gridElement.setAttribute("hidden", "");
   document.getElementById("host-toolbar").setAttribute("hidden", "");
   document.getElementById("guest-toolbar").setAttribute("hidden", "");
   document.getElementById("welcome").removeAttribute("hidden");
 }
 
-function toggleEditing() {
+export function toggleEditing() {
   grid.toggleEditing();
   if (grid.settings.editing) {
     document.getElementById("button-editing").title = "Editing enabled";
@@ -500,7 +402,7 @@ function displayAlertWindow(title, message) {
   document.getElementById("launch-modal-alert").click();
 }
 
-function displayConfirmLeaveWindow() {
+export function displayConfirmLeaveWindow() {
   
   document.getElementById('modal-confirm-submit').addEventListener('click', disconnectFromServer);
 
@@ -509,4 +411,10 @@ function displayConfirmLeaveWindow() {
   })
 
   document.getElementById('launch-modal-confirm').click();
+}
+
+export function downloadMapFile() {
+
+  grid.downloadMapFile();
+
 }
