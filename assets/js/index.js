@@ -7,75 +7,63 @@ let grid;
 
 export function connectToServer(type) {
 
-  document.getElementById('modal-input-submit').addEventListener('click', attemptConnection);
-  document.getElementById('modal-input-launch').click();
-
-  $('#modal-input').on('hidden.bs.modal', function (e) {
-    document.getElementById('modal-input-submit').removeEventListener('click', attemptConnection);
-    document.getElementById('modal-input-alert').setAttribute('hidden', '');
-  })
-
-  function attemptConnection(event) {
-    event.preventDefault();
-    var value = parseInt(document.getElementById('modal-input-form').value);
-
+  Dom.requestNumericInputWindow((id) => {
     if (type === "host") { 
-      io.host(value, {
-        success: hostSuccess,
-        failure: failure,
-        move: receiveMove,
-        join: userJoined
+      io.host(id, {
+
+        success: (id) => {
+          grid = new Grid((sprite) => {
+            io.move(sprite);
+          });
+          io.push(grid.map);
+          Dom.setViewMode('host', {id: id, editing: grid.editing})
+        },
+
+        failure: (message) => {
+          Dom.displayNumericInputAlert(message);
+        },
+
+        move: (sprite) => {
+          grid.replaceSprite(sprite);
+        },
+
+        join: () => {
+          io.push(grid.map);
+        }
+
       }); 
     }
     else if (type === "guest") { 
-      io.join(value, {
-        success: joinSuccess,
-        failure: failure,
-        push: receivePush,
-        move: receiveMove,
-        close: serverClosed
+      io.join(id, {
+
+        success: (id) => {
+          grid = new Grid((sprite) => {
+            io.move(sprite);
+          });
+          io.push(grid.map);
+          Dom.setViewMode('guest', {id: id});
+        },
+
+        failure: (message) => {
+          Dom.displayNumericInputAlert(message);
+        },
+
+        push: (map) => {
+          grid.map = map;
+        },
+
+        move: (sprite) => {
+          grid.replaceSprite(sprite);
+        },
+
+        close: () => {
+          disconnectFromServer();
+          Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
+        }
+
       }); 
     }
-  }
-
-  function failure(message) {
-    var alert = document.getElementById('modal-input-alert');
-    alert.removeAttribute('hidden');
-    alert.innerText = message;
-  }
-
-  function hostSuccess(id) {
-    grid = new Grid((sprite) => {
-      io.move(sprite);
-    });
-    io.push(grid.map);
-    Dom.setViewMode('host', {id: id, editing: grid.editing})
-  }
-
-  function joinSuccess(id) {
-    grid = new Grid((sprite) => {
-      io.move(sprite);
-    });
-    io.push(grid.map);
-    Dom.setViewMode('guest', {id: id});
-  }
-
-  function receivePush(map) {
-    grid.map = map;
-  }
-
-  function receiveMove(sprite) {
-    grid.replaceSprite(sprite);
-  }
-
-  function userJoined() {
-    io.push(grid.map);
-  }
-
-  function serverClosed() {
-    disconnectFromServer();
-    Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
-  }
+  });
 }
 
 export function disconnectFromServer() {

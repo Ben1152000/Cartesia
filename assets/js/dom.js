@@ -61,4 +61,24 @@ export class Dom {
     $('#launch-modal-confirm').click();
   }
 
+  static requestNumericInputWindow(callback) {
+    document.getElementById('modal-input-submit').addEventListener('click', onSubmit);
+    document.getElementById('modal-input-launch').click();
+    $('#modal-input').on('hidden.bs.modal', function (event) {
+      document.getElementById('modal-input-submit').removeEventListener('click', onSubmit);
+      document.getElementById('modal-input-alert').setAttribute('hidden', '');
+    })
+    function onSubmit(event) {
+      event.preventDefault();
+      callback(parseInt(document.getElementById('modal-input-form').value));
+    }
+  }
+
+  static displayNumericInputAlert(message) {
+    var alert = document.getElementById('modal-input-alert');
+    alert.removeAttribute('hidden');
+    alert.innerText = message;
+  }
 }
+
+
