@@ -1,39 +1,14 @@
 import { Io } from './socket.js';
+import { Dom } from './dom.js';
 
-let gridElement;
 let grid;
-
-export function startup() {
-  gridElement = document.getElementById("grid");
-  document.getElementById('file-upload').addEventListener('change', onChange);
-}
-
-/**
- * Upload map json file.
- * https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
- */
-function onChange(event) {
-  var reader = new FileReader();
-  reader.onload = onReaderLoad;
-  reader.readAsText(event.target.files[0]);
-}
-
-function onReaderLoad(event){
-  try {
-    grid = new Grid();
-    var map = JSON.parse(event.target.result);
-    grid.setMap(map);
-  } catch (exception) {
-    displayAlertWindow('Error', "Invalid json file.");
-  }
-
-}
 
 const scale = 128; // size of cell in pixels
 
 class Grid {
 
   constructor() {
+    this.gridElement = document.getElementById("grid");
     this.settings = {
       editing: false
     };
@@ -70,11 +45,11 @@ class Grid {
       tiles: [],
       sprites: {}
     };
-    gridElement.querySelectorAll('*').forEach(node => node.remove());
+    this.gridElement.querySelectorAll('*').forEach(node => node.remove());
   }
 
   render() {
-    gridElement.querySelectorAll('*').forEach(node => node.remove());
+    this.gridElement.querySelectorAll('*').forEach(node => node.remove());
     this.renderGrid(this.map.width, this.map.height);
     for (var id in this.map.tiles) {
       this.renderTile(this.map.tiles[id]);
@@ -87,15 +62,15 @@ class Grid {
   }
 
   renderGrid() {
-    gridElement.style.gridTemplateColumns = (parseInt(scale) + "px ").repeat(this.map.width);
-    gridElement.style.gridTemplateRows = (parseInt(scale) + "px ").repeat(this.map.height);
+    this.gridElement.style.gridTemplateColumns = (parseInt(scale) + "px ").repeat(this.map.width);
+    this.gridElement.style.gridTemplateRows = (parseInt(scale) + "px ").repeat(this.map.height);
     for (var row = 0; row < this.map.height; row++) {
       for (var column = 0; column < this.map.width; column++) {
         var cell = document.createElement("DIV");
         cell.id = "cell-" + parseInt(row) + "-" + parseInt(column);
         cell.classList.add("cell")
         cell.innerHTML = parseInt(this.map.width * row + column);
-        gridElement.appendChild(cell);
+        this.gridElement.appendChild(cell);
       }
     }
   }
@@ -105,8 +80,8 @@ class Grid {
    */
   getGridCoords(position) {
     return {
-      left: (gridElement.scrollLeft + position.left - gridElement.offsetLeft) / scale,
-      top: (gridElement.scrollTop + position.top - gridElement.offsetTop) / scale
+      left: (this.gridElement.scrollLeft + position.left - this.gridElement.offsetLeft) / scale,
+      top: (this.gridElement.scrollTop + position.top - this.gridElement.offsetTop) / scale
     };
   }
 
@@ -241,7 +216,7 @@ class Grid {
       virtualNode.remove();
     } else {
       //alert("No map file loaded.");
-      displayAlertWindow("Error", "Cannot download map, no map file is loaded.");
+      Dom.displayAlertWindow("Error", "Cannot download map, no map file is loaded.");
     }
   }
 
@@ -260,32 +235,25 @@ class Grid {
     }
   }
 
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-//  UI Interacting Funtions:                                                  //
-////////////////////////////////////////////////////////////////////////////////
-
-function setViewMode(type) {
-
-  if (type === 'none') {
-
+  /**
+   * Upload map json file.
+   * https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
+   */
+  uploadMapFile(failureCallback) {
+    var reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        //grid = new Grid();
+        console.log('building new map');
+        var map = JSON.parse(event.target.result);
+        grid.setMap(map);
+      } catch (exception) {
+        failureCallback();
+      }
+    };
+    reader.readAsText(event.target.files[0]);
   }
 
-  if (type === 'host') {
-
-  }
-
-  if (type === 'guest') {
-
-  }
-
-  if (type === 'edit') {
-
-  }
-
-  console.log("ERROR: Invalid top-menu type:", type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -334,27 +302,13 @@ export function connectToServer(type) {
   }
 
   function hostSuccess(id) {
-    $('#modal-input').modal('hide');
-    gridElement.removeAttribute("hidden");
-    document.getElementById("welcome").setAttribute("hidden", "");
-    document.getElementById("host-toolbar").removeAttribute("hidden");
-    document.getElementById("guest-toolbar").setAttribute("hidden", "");
-    document.getElementById("server-label-host").innerHTML = id;
-    // Ensure editing setting is false (move when more settings added)
-    document.getElementById("button-editing").title = "Editing disabled";
-    document.getElementById("button-editing-enabled").setAttribute("hidden", "");
-    document.getElementById("button-editing-disabled").removeAttribute("hidden");
     grid = new Grid();
+    Dom.setViewMode('host', {id: id, editing: grid.editing})
   }
 
   function joinSuccess(id) {
-    $('#modal-input').modal('hide');
-    gridElement.removeAttribute("hidden");
-    document.getElementById("welcome").setAttribute("hidden", "");
-    document.getElementById("host-toolbar").setAttribute("hidden", "");
-    document.getElementById("guest-toolbar").removeAttribute("hidden");
-    document.getElementById("server-label-guest").innerHTML = id;
     grid = new Grid();
+    Dom.setViewMode('guest', {id: id});
   }
 
   function receivePush(map) {
@@ -371,50 +325,30 @@ export function connectToServer(type) {
 
   function serverClosed() {
     disconnectFromServer();
-    displayAlertWindow('Server Closed', 'You were disconnected from the server.');
+    Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
   }
 }
 
 export function disconnectFromServer() {
   io.disconnect();
-  gridElement.setAttribute("hidden", "");
-  document.getElementById("host-toolbar").setAttribute("hidden", "");
-  document.getElementById("guest-toolbar").setAttribute("hidden", "");
-  document.getElementById("welcome").removeAttribute("hidden");
+  Dom.setViewMode('welcome', {});
 }
 
-export function toggleEditing() {
+export function editingButtonClicked() {
   grid.toggleEditing();
-  if (grid.settings.editing) {
-    document.getElementById("button-editing").title = "Editing enabled";
-    document.getElementById("button-editing-enabled").removeAttribute("hidden");
-    document.getElementById("button-editing-disabled").setAttribute("hidden", "");
-  } else {
-    document.getElementById("button-editing").title = "Editing disabled";
-    document.getElementById("button-editing-enabled").setAttribute("hidden", "");
-    document.getElementById("button-editing-disabled").removeAttribute("hidden");
-  }
+  Dom.setEditingButtonMode(grid.settings.editing);
 }
 
-function displayAlertWindow(title, message) {
-  document.getElementById("modal-alert-title").innerText = title;
-  document.getElementById("modal-alert-message").innerText = message;
-  document.getElementById("launch-modal-alert").click();
+export function leaveButtonClicked() {
+  Dom.displayConfirmLeaveWindow(disconnectFromServer);
 }
 
-export function displayConfirmLeaveWindow() {
-  
-  document.getElementById('modal-confirm-submit').addEventListener('click', disconnectFromServer);
-
-  $('#modal-confirm').on('hidden.bs.modal', function (e) {
-    document.getElementById('modal-confirm-submit').removeEventListener('click', disconnectFromServer);
-  })
-
-  document.getElementById('launch-modal-confirm').click();
-}
-
-export function downloadMapFile() {
-
+export function downloadButtonClicked() {
   grid.downloadMapFile();
+}
 
+export function uploadButtonClicked() {
+  grid.uploadMapFile(() => {
+    Dom.displayAlertWindow('Error', "Invalid json file.");
+  });
 }
