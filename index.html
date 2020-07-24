@@ -11,7 +11,7 @@
   <link rel="icon" href="assets/icons/favicon.ico">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="/socket.io/socket.io.js"></script>
-  <script type="module" src="assets/js/grid.js"></script>
+  <script type="module" src="assets/js/index.js"></script>
 </head>
 <body>
   <!-- Modal Alert Boxes: -->
@@ -140,7 +140,7 @@
             <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
           </svg>
           <script type="module">
-            import { editingButtonClicked } from '/assets/js/grid.js';
+            import { editingButtonClicked } from '/assets/js/index.js';
             $('#button-editing').on('click', editingButtonClicked);
           </script>
         </button>
@@ -157,7 +157,7 @@
               <input id="file-upload" type="file" class="custom-file-input" name="fileToUpload" id="fileToUpload">
               <label class="custom-file-label" for="file-upload">Choose file</label>
               <script type="module">
-                import { uploadButtonClicked } from '/assets/js/grid.js';
+                import { uploadButtonClicked } from '/assets/js/index.js';
                 $('#file-upload').on("change", uploadButtonClicked);
               </script>
             </div>
@@ -171,7 +171,7 @@
               <path fill-rule="evenodd" d="M8 6a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4A.5.5 0 0 1 8 6z"/>
             </svg>
             <script type="module">
-              import { downloadButtonClicked } from '/assets/js/grid.js';
+              import { downloadButtonClicked } from '/assets/js/index.js';
               $('#button-download').on('click', downloadButtonClicked);
             </script>
           </button>
@@ -185,7 +185,7 @@
             <path fill-rule="evenodd" d="M13.5 14.5A1.5 1.5 0 0 0 15 13V3a1.5 1.5 0 0 0-1.5-1.5h-8A1.5 1.5 0 0 0 4 3v1.5a.5.5 0 0 0 1 0V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5h-8A.5.5 0 0 1 5 13v-1.5a.5.5 0 0 0-1 0V13a1.5 1.5 0 0 0 1.5 1.5h8z"/>
           </svg>
           <script type="module">
-            import { leaveButtonClicked } from '/assets/js/grid.js';
+            import { leaveButtonClicked } from '/assets/js/index.js';
             $('#button-leave-host').on('click', leaveButtonClicked);
           </script>
         </button>
@@ -209,7 +209,7 @@
             <path fill-rule="evenodd" d="M13.5 14.5A1.5 1.5 0 0 0 15 13V3a1.5 1.5 0 0 0-1.5-1.5h-8A1.5 1.5 0 0 0 4 3v1.5a.5.5 0 0 0 1 0V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5h-8A.5.5 0 0 1 5 13v-1.5a.5.5 0 0 0-1 0V13a1.5 1.5 0 0 0 1.5 1.5h8z"/>
           </svg>
           <script type="module">
-            import { leaveButtonClicked } from '/assets/js/grid.js';
+            import { leaveButtonClicked } from '/assets/js/index.js';
             $('#button-leave-guest').on('click', leaveButtonClicked);
           </script>
         </button>
@@ -229,13 +229,13 @@
         <p>Here is a <a href="assets/maps/demo.json" download>sample</a> map you can use to get started.</p>-->
         <button id="button-host" type="button" class="btn btn-info btn-xlg main">Host
           <script type="module">
-            import { connectToServer } from '/assets/js/grid.js';
+            import { connectToServer } from '/assets/js/index.js';
             $('#button-host').on( "click", function() { connectToServer('host'); })
           </script>
         </button>
         <button id="button-join" type="button" class="btn btn-info btn-xlg main" style="float:right;">Join
           <script type="module">
-            import { connectToServer } from '/assets/js/grid.js';
+            import { connectToServer } from '/assets/js/index.js';
             $('#button-join').on( "click", function() { connectToServer('guest') });
           </script>
         </button>

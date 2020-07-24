@@ -1,3 +1,4 @@
+// This class acts as an interface with the server via socket.io
 export class Io {
 
   constructor() {

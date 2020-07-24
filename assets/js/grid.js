@@ -1,40 +1,32 @@
-import { Io } from './socket.js';
-import { Dom } from './dom.js';
-
-let grid;
-
 const scale = 128; // size of cell in pixels
 
-class Grid {
+// This class encapsulates the functionality of the interactive map grid
+export class Grid {
 
-  constructor() {
+  constructor(movementCallback) {
     this.gridElement = document.getElementById("grid");
     this.settings = {
       editing: false
     };
-    this.setMap({
+    // movementCallback runs when a sprite is moved, passing the moved object
+    this.movementCallback = movementCallback;
+    this.map = {
       name: null,
       width: 0,
       height: 0,
       tiles: [],
       sprites: {}
-    });
+    };
+  }
+
+  // map is actually a wrapper around mapData, where setting it calls render
+  set map(data) {
+    this.mapData = data;
     this.render();
   }
 
-  setMap(map) {
-    this.map = map;
-    console.log(map);
-    io.push(map); // push map to others (if not a host, it will be ignored)
-    this.render();
-  }
-
-  /**
-   * setMap, but without push
-   */
-  receiveMap(map) {
-    this.map = map;
-    this.render();
+  get map() {
+    return this.mapData
   }
 
   refresh() {
@@ -49,6 +41,7 @@ class Grid {
   }
 
   render() {
+    console.log('rendering map');
     this.gridElement.querySelectorAll('*').forEach(node => node.remove());
     this.renderGrid(this.map.width, this.map.height);
     for (var id in this.map.tiles) {
@@ -75,9 +68,7 @@ class Grid {
     }
   }
 
-  /**
-   * Get map grid coordinates from screen position.
-   */
+  // Gets grid coordinates on the map based on screen position.
   getGridCoords(position) {
     return {
       left: (this.gridElement.scrollLeft + position.left - this.gridElement.offsetLeft) / scale,
@@ -122,30 +113,18 @@ class Grid {
     }
   }
 
-  setSprite(sprite) {
-    this.map.sprites[sprite.id] = sprite;
-    io.move(sprite);
-    document.getElementById(sprite.id).remove();
-    this.renderSprite(sprite);
-  }
-
-  /**
-   * setSprite, but without move
-   */
   replaceSprite(sprite) {
     this.map.sprites[sprite.id] = sprite;
     document.getElementById(sprite.id).remove();
     this.renderSprite(sprite);
   }
 
-  toggleEditing() {
+  toggleEditing(callback) {
     this.settings.editing = !this.settings.editing;
-    io.changeSettings(this.settings);
+    callback();
   }
 
-  /**
-   * This function encapsulates the behavior of draggable sprites.
-   */
+  // This function encapsulates the behavior of draggable sprites.
   makeDraggable(element) { // https://www.w3schools.com/howto/howto_js_draggable.asp
     var initial;
     var grid = this;
@@ -174,13 +153,12 @@ class Grid {
       grid.map.sprites[element.id].top = row;
       document.onmouseup = null;
       document.onmousemove = null;
-      grid.setSprite(grid.map.sprites[element.id]);
+      grid.replaceSprite(grid.map.sprites[element.id]);
+      grid.movementCallback(grid.map.sprites[element.id]);
     }
   }
 
-  /**
-   * This function encapsulates the behavior of non-draggable sprites.
-   */
+  // This function encapsulates the behavior of non-draggable sprites.
   makeNonDraggable(element) {
     element.onmousedown = dragMouseDown;
 
@@ -202,10 +180,8 @@ class Grid {
     }
   }
 
-  /**
-   * Download map json file.
-   */
-  downloadMapFile() {
+  // Downloads current map as a json file.
+  downloadMapFile(failureCallback) {
     if (this.map.name) {
       var mapData = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.map));
       var virtualNode = document.createElement('A');
@@ -215,14 +191,27 @@ class Grid {
       virtualNode.click();
       virtualNode.remove();
     } else {
-      //alert("No map file loaded.");
-      Dom.displayAlertWindow("Error", "Cannot download map, no map file is loaded.");
+      failureCallback();
     }
   }
 
-  /**
-   * Load map json file from filepath.
-   */
+  // Uploads json file to the current map.
+  uploadMapFile(successCallback, failureCallback) {
+    // https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
+    var reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        console.log('building new map');
+        this.map = JSON.parse(event.target.result);
+        successCallback();
+      } catch (exception) {
+        failureCallback();
+      }
+    };
+    reader.readAsText(event.target.files[0]);
+  }
+
+  // Loads map json file from filepath. (deprecated)
   loadMapFile(mapFile) {
     var request = new XMLHttpRequest();
     request.open("GET", mapFile);
@@ -235,120 +224,4 @@ class Grid {
     }
   }
 
-  /**
-   * Upload map json file.
-   * https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
-   */
-  uploadMapFile(failureCallback) {
-    var reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        //grid = new Grid();
-        console.log('building new map');
-        var map = JSON.parse(event.target.result);
-        grid.setMap(map);
-      } catch (exception) {
-        failureCallback();
-      }
-    };
-    reader.readAsText(event.target.files[0]);
-  }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//  Button Funtions:                                                          //
-////////////////////////////////////////////////////////////////////////////////
-
-let io = new Io();
-
-export function connectToServer(type) {
-
-  document.getElementById('modal-input-submit').addEventListener('click', attemptConnection);
-  document.getElementById('modal-input-launch').click();
-
-  $('#modal-input').on('hidden.bs.modal', function (e) {
-    document.getElementById('modal-input-submit').removeEventListener('click', attemptConnection);
-    document.getElementById('modal-input-alert').setAttribute('hidden', '');
-  })
-
-  function attemptConnection(event) {
-    event.preventDefault();
-    var value = parseInt(document.getElementById('modal-input-form').value);
-
-    if (type === "host") { 
-      io.host(value, {
-        success: hostSuccess,
-        failure: failure,
-        move: receiveMove,
-        join: userJoined
-      }); 
-    }
-    else if (type === "guest") { 
-      io.join(value, {
-        success: joinSuccess,
-        failure: failure,
-        push: receivePush,
-        move: receiveMove,
-        close: serverClosed
-      }); 
-    }
-  }
-
-  function failure(message) {
-    var alert = document.getElementById('modal-input-alert');
-    alert.removeAttribute('hidden');
-    alert.innerText = message;
-  }
-
-  function hostSuccess(id) {
-    grid = new Grid();
-    Dom.setViewMode('host', {id: id, editing: grid.editing})
-  }
-
-  function joinSuccess(id) {
-    grid = new Grid();
-    Dom.setViewMode('guest', {id: id});
-  }
-
-  function receivePush(map) {
-    grid.receiveMap(map);
-  }
-
-  function receiveMove(sprite) {
-    grid.replaceSprite(sprite);
-  }
-
-  function userJoined() {
-    io.push(grid.map);
-  }
-
-  function serverClosed() {
-    disconnectFromServer();
-    Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
-  }
-}
-
-export function disconnectFromServer() {
-  io.disconnect();
-  Dom.setViewMode('welcome', {});
-}
-
-export function editingButtonClicked() {
-  grid.toggleEditing();
-  Dom.setEditingButtonMode(grid.settings.editing);
-}
-
-export function leaveButtonClicked() {
-  Dom.displayConfirmLeaveWindow(disconnectFromServer);
-}
-
-export function downloadButtonClicked() {
-  grid.downloadMapFile();
-}
-
-export function uploadButtonClicked() {
-  grid.uploadMapFile(() => {
-    Dom.displayAlertWindow('Error', "Invalid json file.");
-  });
 }

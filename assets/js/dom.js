@@ -1,3 +1,4 @@
+// This class acts as an interface with the webpage Document Object Model
 export class Dom {
 
   static setViewMode(type, params) {
