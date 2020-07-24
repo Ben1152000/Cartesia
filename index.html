@@ -11,7 +11,7 @@
   <link rel="icon" href="assets/icons/favicon.ico">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="/socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="assets/js/grid.js"></script>
+  <script type="module" src="assets/js/index.js"></script>
 </head>
 <body>
   <!-- Modal Alert Boxes: -->
@@ -129,7 +129,7 @@
           </span>
         </h5>
 
-        <button id="button-editing" class="btn btn-warning" onclick="toggleEditing()">
+        <button id="button-editing" class="btn btn-warning">
           <svg id="button-editing-enabled" width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-arrow-down-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg" hidden>
             <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
             <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
@@ -139,6 +139,10 @@
             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
             <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
           </svg>
+          <script type="module">
+            import { editingButtonClicked } from '/assets/js/index.js';
+            $('#button-editing').on('click', editingButtonClicked);
+          </script>
         </button>
 
         <div class="btn-group mx-1" role="group">
@@ -152,26 +156,38 @@
             <div class="custom-file" hidden>
               <input id="file-upload" type="file" class="custom-file-input" name="fileToUpload" id="fileToUpload">
               <label class="custom-file-label" for="file-upload">Choose file</label>
+              <script type="module">
+                import { uploadButtonClicked } from '/assets/js/index.js';
+                $('#file-upload').on("change", uploadButtonClicked);
+              </script>
             </div>
           </button>
           <span class="btn-separator bg-dark"></span>
-          <button class="btn btn-secondary" title="Download map" onclick="grid.downloadMapFile()">
+          <button id="button-download" class="btn btn-secondary" title="Download map">
             <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
               <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
               <path fill-rule="evenodd" d="M5.646 9.146a.5.5 0 0 1 .708 0L8 10.793l1.646-1.647a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 0-.708z"/>
               <path fill-rule="evenodd" d="M8 6a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4A.5.5 0 0 1 8 6z"/>
             </svg>
+            <script type="module">
+              import { downloadButtonClicked } from '/assets/js/index.js';
+              $('#button-download').on('click', downloadButtonClicked);
+            </script>
           </button>
         </div>
 
-        <button class="btn btn-danger" title="Leave" onclick="displayConfirmLeaveWindow()">
+        <button id="button-leave-host" class="btn btn-danger" title="Leave">
           Leave
           <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M8.146 11.354a.5.5 0 0 1 0-.708L10.793 8 8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 1 8z"/>
             <path fill-rule="evenodd" d="M13.5 14.5A1.5 1.5 0 0 0 15 13V3a1.5 1.5 0 0 0-1.5-1.5h-8A1.5 1.5 0 0 0 4 3v1.5a.5.5 0 0 0 1 0V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5h-8A.5.5 0 0 1 5 13v-1.5a.5.5 0 0 0-1 0V13a1.5 1.5 0 0 0 1.5 1.5h8z"/>
           </svg>
+          <script type="module">
+            import { leaveButtonClicked } from '/assets/js/index.js';
+            $('#button-leave-host').on('click', leaveButtonClicked);
+          </script>
         </button>
 
       </div>
@@ -185,15 +201,18 @@
           </span>
         </h5>
 
-        <button class="btn btn-danger" onclick="displayConfirmLeaveWindow()">
+        <button id="button-leave-guest" class="btn btn-danger">
           Leave
           <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M8.146 11.354a.5.5 0 0 1 0-.708L10.793 8 8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 1 8z"/>
             <path fill-rule="evenodd" d="M13.5 14.5A1.5 1.5 0 0 0 15 13V3a1.5 1.5 0 0 0-1.5-1.5h-8A1.5 1.5 0 0 0 4 3v1.5a.5.5 0 0 0 1 0V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5h-8A.5.5 0 0 1 5 13v-1.5a.5.5 0 0 0-1 0V13a1.5 1.5 0 0 0 1.5 1.5h8z"/>
           </svg>
+          <script type="module">
+            import { leaveButtonClicked } from '/assets/js/index.js';
+            $('#button-leave-guest').on('click', leaveButtonClicked);
+          </script>
         </button>
-
       </div>
     </div>
     
@@ -208,16 +227,23 @@
         <hr class="my-4">
         <!--<p>To continue, please upload a map in the form of a json file.</p>
         <p>Here is a <a href="assets/maps/demo.json" download>sample</a> map you can use to get started.</p>-->
-        <button id="button-host" type="button" class="btn btn-info btn-xlg main" onclick="connectToServer('host')">Host</button>
-        <button id="button-join" type="button" class="btn btn-info btn-xlg main" style="float:right;" onclick="connectToServer('guest')">Join</button>
+        <button id="button-host" type="button" class="btn btn-info btn-xlg main">Host
+          <script type="module">
+            import { connectToServer } from '/assets/js/index.js';
+            $('#button-host').on( "click", function() { connectToServer('host'); })
+          </script>
+        </button>
+        <button id="button-join" type="button" class="btn btn-info btn-xlg main" style="float:right;">Join
+          <script type="module">
+            import { connectToServer } from '/assets/js/index.js';
+            $('#button-join').on( "click", function() { connectToServer('guest') });
+          </script>
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Grid: -->
   <div id="grid" class="body grid" hidden></div>
-  <script type="text/javascript">
-    startup();
-  </script>
 
 </body>
