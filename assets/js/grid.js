@@ -84,7 +84,12 @@ export class Grid {
       var image = document.createElement("IMG");
       image.classList.add("tile");
       image.classList.add("crispy");
-      image.src = "assets/images/tiles/" + tile.source;
+      // Check if sprite has prefix 'external:'
+      if (tile.source.startsWith("external:")) {
+        image.src = tile.source.substr(9);
+      } else {
+        image.src = "assets/images/tiles/" + tile.source;
+      }
       image.width = parseInt(tile.width * scale);
       image.height = parseInt(tile.height * scale);
       if (tile.rotate) image.classList.add("rotate-" + parseInt(tile.rotate));
@@ -103,7 +108,12 @@ export class Grid {
       image.id = sprite.id;
       image.classList.add("sprite");
       image.classList.add("crispy");
-      image.src = "assets/images/sprites/" + sprite.source;
+      // Check if source has prefix 'external:'
+      if (sprite.source.startsWith("external:")) {
+        image.src = sprite.source.substr(9);
+      } else {
+        image.src = "assets/images/sprites/" + sprite.source;
+      }
       image.width = parseInt(sprite.width * scale);
       image.height = parseInt(sprite.height * scale);
       if (sprite.rotate) image.classList.add("rotate-" + parseInt(sprite.rotate));
