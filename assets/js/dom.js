@@ -79,6 +79,16 @@ export class Dom {
     alert.removeAttribute('hidden');
     alert.innerText = message;
   }
+
+  static makeToast(message, delay) {
+    var toast = $('<div class="quizno"></div>').appendTo('body');
+    toast.text(message);
+    toast.delay(1000 * delay).fadeOut(500, () => { 
+      toast.remove(); 
+    });
+  }
+
 }
+
 
 
