@@ -1,6 +1,6 @@
 {
   "name": "cartesia",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An Interactive D&D Online Mapping Tool",
   "dependencies": {
     "bootstrap": "^4.5.0",
@@ -10,7 +10,7 @@
     "socket.io": "^2.3.0"
   },
   "start": "node server.js",
-  "author": "ben1152000",
+  "author": "Ben1152000",
   "engines": {
     "node": "8.x"
   },
