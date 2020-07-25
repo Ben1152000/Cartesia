@@ -56,6 +56,11 @@ export class Io {
       console.log('receiving sprite');
       callbacks.move(packet);
     });
+
+    this.socket.on('settings', (packet) => {
+      console.log('settings changed');
+      callbacks.settings(packet);
+    });
   }
 
   // Disconnect from current server:

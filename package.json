@@ -1,9 +1,12 @@
 {
   "name": "cartesia",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A D&D Interactive Online Mapping Tool",
   "dependencies": {
+    "bootstrap": "^4.5.0",
     "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
     "socket.io": "^2.3.0"
   },
   "start": "node server.js",

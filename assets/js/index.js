@@ -1,6 +1,6 @@
-import { Io } from './socket.js';
-import { Dom } from './dom.js';
-import { Grid } from './grid.js';
+import { Io } from '/assets/js/socket.js';
+import { Dom } from '/assets/js/dom.js';
+import { Grid } from '/assets/js/grid.js';
 
 let io = new Io();
 let grid;
@@ -29,6 +29,17 @@ export function connectToServer(type) {
 
         join: () => {
           io.push(grid.map);
+          Dom.makeToast("Player joined", 1.5);
+        },
+
+        settings: (changed) => {
+          if ('editing' in changed) {
+            if (changed.editing) {
+              Dom.makeToast('Editing enabled', 1.5);
+            } else {
+              Dom.makeToast('Editing disabled', 1.5);
+            }
+          }
         }
 
       }); 
@@ -59,6 +70,16 @@ export function connectToServer(type) {
         close: () => {
           disconnectFromServer();
           Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
+        },
+
+        settings: (changed) => {
+          if ('editing' in changed) {
+            if (changed.editing) {
+              Dom.makeToast('Editing enabled', 1.5);
+            } else {
+              Dom.makeToast('Editing disabled', 1.5);
+            }
+          }
         }
 
       }); 
@@ -91,6 +112,7 @@ export function downloadButtonClicked() {
 export function uploadButtonClicked() {
   grid.uploadMapFile(() => {
     io.push(grid.map);
+    Dom.makeToast('Upload successful', 1.5);
   }, () => {
     Dom.displayAlertWindow('Error', "Invalid json file.");
   });
