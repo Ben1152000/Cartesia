@@ -8,6 +8,7 @@ export class Dom {
       $('#welcome').removeAttr('hidden');
       $('#host-toolbar').attr('hidden', '');
       $('#guest-toolbar').attr('hidden', '');
+      $('#editor-toolbar').attr('hidden', '');
 
     } else if (type === 'host') {
       $('#modal-input').modal('hide');
@@ -15,7 +16,10 @@ export class Dom {
       $('#welcome').attr('hidden', '');
       $('#host-toolbar').removeAttr('hidden');
       $('#guest-toolbar').attr('hidden', '');
-      $('#server-label-host').text(params.id);
+      $('#editor-toolbar').attr('hidden', '');
+      if (typeof params.id !== 'undefined') {
+        $('#server-label-host').text(params.id);
+      }
       Dom.setEditingButtonMode(params.editing);
 
     } else if (type === 'guest') {
@@ -24,11 +28,15 @@ export class Dom {
       $('#welcome').attr('hidden', '');
       $('#host-toolbar').attr('hidden', '');
       $('#guest-toolbar').removeAttr('hidden');
+      $('#editor-toolbar').attr('hidden', '');
       $('#server-label-guest').text(params.id);
 
     } else if (type === 'edit') {
-
-      /* TODO: create edit mode */
+      $('#grid').removeAttr('hidden');
+      $('#welcome').attr('hidden', '');
+      $('#host-toolbar').attr('hidden', '');
+      $('#guest-toolbar').attr('hidden', '');
+      $('#editor-toolbar').removeAttr('hidden');
       
     } else {
       console.log("ERROR: Invalid view mode:", type);
@@ -53,7 +61,10 @@ export class Dom {
     $('#launch-modal-alert').click();
   }
 
-  static displayConfirmLeaveWindow(callback) {
+  static displayConfirmWindow(title, message, action, callback) {
+    $('#modal-confirm-title').text(title);
+    $('#modal-confirm-message').text(message);
+    $('#modal-confirm-submit').text(action);
     $('#modal-confirm-submit').on('click', callback);
     $('#modal-confirm').on('hidden.bs.modal', function (event) {
       $('#modal-confirm-submit').off('click', callback);
@@ -81,11 +92,10 @@ export class Dom {
   }
 
   static makeToast(message, delay) {
-    var toast = $('<div class="quizno"></div>').appendTo('body');
+    var toast = $('<div class="quizno"></div>');
     toast.text(message);
-    toast.delay(1000 * delay).fadeOut(500, () => { 
-      toast.remove(); 
-    });
+    toast.delay(1000 * delay).fadeOut(500, () => { toast.remove(); });
+    $(document.body).append(toast);
   }
 
 }

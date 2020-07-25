@@ -1,9 +1,11 @@
 import { Io } from '/assets/js/socket.js';
 import { Dom } from '/assets/js/dom.js';
 import { Grid } from '/assets/js/grid.js';
+import { Editor } from '/assets/js/editor.js';
 
 let io = new Io();
 let grid;
+let editor;
 
 export function connectToServer(type) {
 
@@ -100,7 +102,11 @@ export function editingButtonClicked() {
 }
 
 export function leaveButtonClicked() {
-  Dom.displayConfirmLeaveWindow(disconnectFromServer);
+  Dom.displayConfirmWindow(
+    'Confirm Leave', 
+    'Are you sure you want to leave? If you are hosting, the server will be closed.', 
+    'Leave', disconnectFromServer
+  );
 }
 
 export function downloadButtonClicked() {
@@ -116,4 +122,42 @@ export function uploadButtonClicked() {
   }, () => {
     Dom.displayAlertWindow('Error', "Invalid json file.");
   });
+}
+
+export function editButtonClicked() {
+  grid.clear();
+  editor = new Editor();
+  editor.map = grid.map;
+  Dom.setViewMode('edit');
+}
+
+export function editorNewButtonClicked() {
+  Dom.displayConfirmWindow('Are you sure?',
+    'Creating a new map will delete the current map.',
+    'Confirm', editor.clear
+  );
+}
+
+export function editorDownloadButtonClicked() {
+  editor.download(() => {
+    Dom.displayAlertWindow("Error", "Cannot download map because no map file is loaded.");
+  });
+}
+
+export function editorUploadButtonClicked() {
+  editor.upload(() => {
+    Dom.makeToast('Upload successful', 1.5);
+  }, () => {
+    Dom.displayAlertWindow('Error', "Invalid json file.");
+  });
+}
+
+export function saveExitButtonClicked() {
+  editor.clear();
+  grid = new Grid((sprite) => {
+    io.move(sprite);
+  });
+  grid.map = editor.map;
+  Dom.setViewMode('host', {editing: grid.editing});
+  io.push(grid.map);
 }

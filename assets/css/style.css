@@ -44,10 +44,18 @@ img.tile {
   top: -1px;
 }
 
-img.sprite {
+img.tile-edit {
   cursor: move;
   position: absolute;
   z-index: 1;
+  left: -1px;
+  top: -1px;
+}
+
+img.sprite {
+  cursor: move;
+  position: absolute;
+  z-index: 2;
   left: -1px;
   top: -1px;
 }
@@ -87,14 +95,6 @@ img.rotate-2 {
 }
 
 img.rotate-3 {
-  -webkit-transform: rotate(270deg);
-  -moz-transform: rotate(270deg);
-  -o-transform: rotate(270deg);
-  -ms-transform: rotate(270deg);
-  transform: rotate(270deg);
-}
-
-img.rotateLeft {
   -webkit-transform: rotate(270deg);
   -moz-transform: rotate(270deg);
   -o-transform: rotate(270deg);

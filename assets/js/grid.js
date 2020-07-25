@@ -29,20 +29,13 @@ export class Grid {
     return this.mapData
   }
 
-  refresh() {
-    this.map = {
-      name: null,
-      width: 0,
-      height: 0,
-      tiles: [],
-      sprites: {}
-    };
+  clear() {
     this.gridElement.querySelectorAll('*').forEach(node => node.remove());
   }
 
   render() {
     console.log('rendering map');
-    this.gridElement.querySelectorAll('*').forEach(node => node.remove());
+    this.clear();
     this.renderGrid(this.map.width, this.map.height);
     for (var id in this.map.tiles) {
       this.renderTile(this.map.tiles[id]);
@@ -158,7 +151,7 @@ export class Grid {
     function closeDragElement() {
       var gridCoords = grid.getGridCoords(element.getBoundingClientRect());
       var column = Math.max(0, Math.min(Math.round(gridCoords.left), grid.map.width - Math.round(element.width / scale)));
-      var row = Math.max(0, Math.min(Math.round(gridCoords.top), grid.map.height - 1));
+      var row = Math.max(0, Math.min(Math.round(gridCoords.top), grid.map.height - Math.round(element.height / scale)));
       grid.map.sprites[element.id].left = column;
       grid.map.sprites[element.id].top = row;
       document.onmouseup = null;
@@ -211,7 +204,7 @@ export class Grid {
     var reader = new FileReader();
     reader.onload = (event) => {
       try {
-        console.log('building new map');
+        console.log('uploading new map');
         this.map = JSON.parse(event.target.result);
         successCallback();
       } catch (exception) {
