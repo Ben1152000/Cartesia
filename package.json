@@ -1,6 +1,6 @@
 {
   "name": "cartesia",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A D&D Interactive Online Mapping Tool",
   "dependencies": {
     "bootstrap": "^4.5.0",
