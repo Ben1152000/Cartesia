@@ -8,6 +8,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <link rel="icon" href="assets/icons/favicon.ico">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/image.css">
   <script type="module" src="assets/js/index.js"></script>
 </head>
 <body>
@@ -171,7 +172,9 @@
               </script>
             </div>
           </button>
+
           <span class="btn-separator bg-dark"></span>
+          
           <button id="button-download-host" class="btn btn-secondary" title="Download map">
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
@@ -239,29 +242,46 @@
 
       <div id="editor-toolbar" hidden>
 
-        <button id="button-new-editor" class="btn btn-info nav-item mr-1">
-          New
-          <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z"/>
-            <path fill-rule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/>
-            <path fill-rule="evenodd" d="M13 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z"/>
-          </svg>
-          <script type="module">
-            import { editorNewButtonClicked } from '/assets/js/index.js';
-            $('#button-new-editor').on('click', editorNewButtonClicked);
-          </script>
-        </button>
+        <div class="btn-group nav-item mr-1" role="group">
+          <button id="button-new-editor" class="btn btn-info nav-item" title="New map">
+            New
+            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z"/>
+              <path fill-rule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/>
+              <path fill-rule="evenodd" d="M13 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z"/>
+            </svg>
+            <script type="module">
+              import { editorNewButtonClicked } from '/assets/js/index.js';
+              $('#button-new-editor').on('click', editorNewButtonClicked);
+            </script>
+          </button>
 
-        <button id="button-add-editor" class="btn btn-secondary nav-item mr-1">
-          Add
-          <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
-            <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
-          </svg>
-          <script type="module">
-            $('#button-add-editor').on('click', () => { console.log("editor add sprite"); });
-          </script>
-        </button>
+          <span class="btn-separator bg-dark"></span>
+  
+          <button id="button-add-tile-editor" class="btn btn-secondary nav-item" title="Add tile">
+            Add Tile
+            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+              <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+            </svg>
+            <script type="module">
+              $('#button-add-tile-editor').on('click', () => { console.log("editor add tile"); });
+            </script>
+          </button>
+
+          <span class="btn-separator bg-dark"></span>
+  
+          <button id="button-add-sprite-editor" class="btn btn-secondary nav-item" title="Add sprite">
+            Add Sprite
+            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+              <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+            </svg>
+            <script type="module">
+              $('#button-add-sprite-editor').on('click', () => { console.log("editor add sprite"); });
+            </script>
+          </button>
+        </div>
 
         <div class="btn-group nav-item mr-1" role="group">
           <button class="btn btn-secondary" title="Upload map" onclick="document.getElementById('file-upload-editor').click()">
@@ -280,7 +300,9 @@
               </script>
             </div>
           </button>
+
           <span class="btn-separator bg-dark"></span>
+
           <button id="button-download-editor" class="btn btn-secondary" title="Download map">
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>

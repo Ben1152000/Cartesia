@@ -85,8 +85,12 @@ export class Grid {
       }
       image.width = parseInt(tile.width * scale);
       image.height = parseInt(tile.height * scale);
-      if (tile.rotate) image.classList.add("rotate-" + parseInt(tile.rotate));
-      if (tile.flip) image.classList.add("flip");
+      if (tile.flip) {
+        if (tile.rotate === 0) image.classList.add('flip');
+        if (tile.rotate) image.classList.add('rotate-' + parseInt(tile.rotate) + '-flip');
+      } else {
+        if (tile.rotate) image.classList.add('rotate-' + parseInt(tile.rotate));
+      }
       this.makeNonDraggable(image);
       cell.appendChild(image);
     }
@@ -109,8 +113,12 @@ export class Grid {
       }
       image.width = parseInt(sprite.width * scale);
       image.height = parseInt(sprite.height * scale);
-      if (sprite.rotate) image.classList.add("rotate-" + parseInt(sprite.rotate));
-      if (sprite.flip) image.classList.add("flip");
+      if (sprite.flip) {
+        if (sprite.rotate === 0) image.classList.add('flip');
+        if (sprite.rotate) image.classList.add('rotate-' + parseInt(sprite.rotate) + '-flip');
+      } else {
+        if (sprite.rotate) image.classList.add('rotate-' + parseInt(sprite.rotate));
+      }
       this.makeDraggable(image);
       cell.appendChild(image);
     }
