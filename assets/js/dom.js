@@ -91,6 +91,18 @@ export class Dom {
     alert.innerText = message;
   }
 
+  static displayAddSpriteWindow(callback) {
+    $('#modal-add-sprite-submit').on('click', onSubmit);
+    $('#modal-add-sprite').on('hidden.bs.modal', () => {
+      $('modal-add-sprite-submit').off('click');
+    })
+    function onSubmit(event) {
+      event.preventDefault();
+      callback();
+    }
+    $('#modal-add-sprite-launch').click();
+  }
+
   static makeToast(message, delay) {
     var toast = $('<div class="quizno"></div>');
     toast.text(message);

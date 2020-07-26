@@ -134,8 +134,20 @@ export function editButtonClicked() {
 export function editorNewButtonClicked() {
   Dom.displayConfirmWindow('Are you sure?',
     'Creating a new map will delete the current map.',
-    'Confirm', editor.clear
+    'Confirm', () => { editor.clear(); }
   );
+}
+
+export function editorAddSpriteButtonClicked() {
+  Dom.displayAddSpriteWindow(() => {
+    alert('ADD');
+  });
+}
+
+export function editorAddTileButtonClicked() {
+  Dom.displayAddSpriteWindow(() => {
+    alert('ADD');
+  });
 }
 
 export function editorDownloadButtonClicked() {

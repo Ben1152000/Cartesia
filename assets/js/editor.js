@@ -70,7 +70,7 @@ export class Editor {
     };
   }
 
-  renderTile(tile) {
+  renderTile(tile, showMenu) {
     let cell = $('#cell-' + parseInt(tile.top) + "-" + parseInt(tile.left));
     if (cell) {
       let element = $('<div id="' + tile.id + '" class="tile-edit"></div>');
@@ -90,12 +90,12 @@ export class Editor {
       element.append(image);
 
       this.makeDraggable(element);
-      this.attachTileMenu(element);
+      this.attachTileMenu(element, showMenu);
       cell.append(element);
     }
   }
 
-  renderSprite(sprite) {
+  renderSprite(sprite, showMenu) {
     let cell = $('#cell-' + parseInt(sprite.top) + "-" + parseInt(sprite.left));
     if (cell) {
       let element = $('<div id="' + sprite.id + '" class="sprite"></div>');
@@ -115,13 +115,15 @@ export class Editor {
       element.append(image);
 
       this.makeDraggable(element);
-      this.attachSpriteMenu(element);
+      this.attachSpriteMenu(element, showMenu);
       cell.append(element);
     }
   }
 
-  attachTileMenu(element) {
-    let menu = $('<div class="sprite-menu"></div>');
+  attachTileMenu(element, showMenu) {
+    let menu = $('<div class="sprite-menu" hidden></div>');
+
+    if (showMenu) menu.removeAttr('hidden');
 
     let flipButton = $('<button class="btn btn-info sprite-menu-button ml-1">'
         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrows-collapse" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
@@ -151,11 +153,16 @@ export class Editor {
     this.makeClickable(deleteButton, () => { this.deleteTile(element.attr('id')); });
     menu.append(deleteButton);
 
+    element.on('mouseover', () => { menu.removeAttr('hidden'); });
+    element.on('mouseout', () => { menu.attr('hidden', ''); });
+
     element.append(menu);
   }
 
-  attachSpriteMenu(element) {
-    let menu = $('<div class="sprite-menu"></div>');
+  attachSpriteMenu(element, showMenu) {
+    let menu = $('<div class="sprite-menu" hidden></div>');
+
+    if (showMenu) menu.removeAttr('hidden');
 
     let flipButton = $('<button class="btn btn-info sprite-menu-button ml-1">'
         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrows-collapse" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
@@ -185,27 +192,30 @@ export class Editor {
     this.makeClickable(deleteButton, () => { this.deleteSprite(element.attr('id')); });
     menu.append(deleteButton);
 
+    element.on('mouseover', () => { menu.removeAttr('hidden'); });
+    element.on('mouseout', () => { menu.attr('hidden', ''); });
+
     element.append(menu);
   }
 
   flipTile(id) {
     this.map.tiles[id].flip = !this.map.tiles[id].flip;
-    this.replaceTile(this.map.tiles[id]);
+    this.replaceTile(this.map.tiles[id], true);
   }
 
   flipSprite(id) {
     this.map.sprites[id].flip = !this.map.sprites[id].flip;
-    this.replaceSprite(this.map.sprites[id]);
+    this.replaceSprite(this.map.sprites[id], true);
   }
 
   rotateTile(id) {
     this.map.tiles[id].rotate = (this.map.tiles[id].rotate + 1) % 4;
-    this.replaceTile(this.map.tiles[id]);
+    this.replaceTile(this.map.tiles[id], true);
   }
 
   rotateSprite(id) {
     this.map.sprites[id].rotate = (this.map.sprites[id].rotate + 1) % 4;
-    this.replaceSprite(this.map.sprites[id]);
+    this.replaceSprite(this.map.sprites[id], true);
   }
 
   deleteTile(id) {
@@ -218,16 +228,16 @@ export class Editor {
     $('#' + id).remove();
   }
 
-  replaceTile(tile) {
+  replaceTile(tile, showMenu) {
     this.map.tiles[tile.id] = tile;
     $('#' + tile.id).remove();
-    this.renderTile(tile);
+    this.renderTile(tile, showMenu);
   }
 
-  replaceSprite(sprite) {
+  replaceSprite(sprite, showMenu) {
     this.map.sprites[sprite.id] = sprite;
     $('#' + sprite.id).remove();
-    this.renderSprite(sprite);
+    this.renderSprite(sprite, showMenu);
   }
 
   // This function encapsulates the behavior of draggable sprites.
