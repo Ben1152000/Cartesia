@@ -1,9 +1,11 @@
 import { Io } from '/assets/js/socket.js';
 import { Dom } from '/assets/js/dom.js';
 import { Grid } from '/assets/js/grid.js';
+import { Editor } from '/assets/js/editor.js';
 
 let io = new Io();
 let grid;
+let editor;
 
 export function connectToServer(type) {
 
@@ -12,10 +14,11 @@ export function connectToServer(type) {
       io.host(id, {
 
         success: (id) => {
-          grid = new Grid((sprite) => {
-            io.move(sprite);
+          grid = new Grid((packet) => {
+            io.move(packet);
           });
           io.push(grid.map);
+          Dom.closeNumericInputWindow();
           Dom.setViewMode('host', {id: id, editing: grid.editing})
         },
 
@@ -23,8 +26,8 @@ export function connectToServer(type) {
           Dom.displayNumericInputAlert(message);
         },
 
-        move: (sprite) => {
-          grid.replaceSprite(sprite);
+        move: (packet) => {
+          grid.replaceSprite(packet.sprite, packet.id);
         },
 
         join: () => {
@@ -48,10 +51,11 @@ export function connectToServer(type) {
       io.join(id, {
 
         success: (id) => {
-          grid = new Grid((sprite) => {
-            io.move(sprite);
+          grid = new Grid((packet) => {
+            io.move(packet);
           });
           io.push(grid.map);
+          Dom.closeNumericInputWindow();
           Dom.setViewMode('guest', {id: id});
         },
 
@@ -63,8 +67,8 @@ export function connectToServer(type) {
           grid.map = map;
         },
 
-        move: (sprite) => {
-          grid.replaceSprite(sprite);
+        move: (packet) => {
+          grid.replaceSprite(packet.sprite, packet.id);
         },
 
         close: () => {
@@ -100,7 +104,11 @@ export function editingButtonClicked() {
 }
 
 export function leaveButtonClicked() {
-  Dom.displayConfirmLeaveWindow(disconnectFromServer);
+  Dom.displayConfirmWindow(
+    'Confirm Leave', 
+    'Are you sure you want to leave? If you are hosting, the server will be closed.', 
+    'Leave', disconnectFromServer
+  );
 }
 
 export function downloadButtonClicked() {
@@ -116,4 +124,128 @@ export function uploadButtonClicked() {
   }, () => {
     Dom.displayAlertWindow('Error', "Invalid json file.");
   });
+}
+
+export function editButtonClicked() {
+  grid.clear();
+  if (grid.settings.editing) {
+    editingButtonClicked();
+  }
+  editor = new Editor();
+  editor.map = grid.map;
+  Dom.setViewMode('edit');
+}
+
+export function editorNewButtonClicked() {
+  Dom.displayNewMapWindow((width, height) => { 
+    if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
+      Dom.displayNewMapAlert('Width must be a positive integer.')
+    } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
+      Dom.displayNewMapAlert('Height must be a positive integer.')
+    } else {
+      Dom.closeNewMapWindow();
+      if (editor.map.name === null) {
+        editor.reset((width * height)? "map-" + Date.now(): null, width, height);
+      } else {
+        Dom.displayConfirmWindow('Are you sure?',
+          'Creating a new map will delete the current map.',
+          'Confirm', () => { 
+            editor.reset((width * height)? "map-" + Date.now(): null, width, height);
+          }
+        );
+      }
+    }
+  });
+}
+
+export function editorAddTileButtonClicked() {
+  if (editor.map.name === null) {
+    Dom.displayAlertWindow('Error', 'You must create or import a map before adding a tile.');
+  } else {
+    Dom.displayAddSpriteWindow('tile', (source, width, height) => {
+      if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
+        Dom.displayAddSpriteAlert('Width must be a positive integer.');
+      } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
+        Dom.displayAddSpriteAlert('Height must be a positive integer.');
+      } else {
+        $.ajax({
+          url: source.startsWith("external:")? source.substr(9): ("assets/images/tiles/" + source),
+          type: 'HEAD',
+          error: () => { 
+            Dom.displayAddSpriteAlert('Image does not exist'); 
+          },
+          success: () => { 
+            editor.replaceTile({
+              source: source,
+              top: 0,
+              left: 0, 
+              width: width,
+              height: height,
+              flip: false,
+              rotate: 0
+            }, 'tile-' + Date.now());
+            Dom.closeAddSpriteWindow();
+          }
+        });
+      }
+    });
+  }
+}
+
+export function editorAddSpriteButtonClicked() {
+  if (editor.map.name === null) {
+    Dom.displayAlertWindow('Error', 'You must create or import a map before adding a sprite.');
+  } else {
+    Dom.displayAddSpriteWindow('sprite', (source, width, height) => {
+      if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
+        Dom.displayAddSpriteAlert('Width must be a positive integer.');
+      } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
+        Dom.displayAddSpriteAlert('Height must be a positive integer.');
+      } else {
+        $.ajax({
+          url: source.startsWith("external:")? source.substr(9): ("assets/images/sprites/" + source),
+          type: 'HEAD',
+          error: () => { 
+            Dom.displayAddSpriteAlert('Image does not exist'); 
+          },
+          success: () => { 
+            editor.replaceSprite({
+              source: source,
+              top: 0,
+              left: 0, 
+              width: width,
+              height: height,
+              flip: false,
+              rotate: 0
+            }, 'sprite-' + Date.now());
+            Dom.closeAddSpriteWindow();
+          }
+        });
+      }
+    });
+  }
+}
+
+export function editorDownloadButtonClicked() {
+  editor.download(() => {
+    Dom.displayAlertWindow("Error", "Cannot download map because no map file is loaded.");
+  });
+}
+
+export function editorUploadButtonClicked() {
+  editor.upload(() => {
+    Dom.makeToast('Upload successful', 1.5);
+  }, () => {
+    Dom.displayAlertWindow('Error', "Invalid json file.");
+  });
+}
+
+export function saveExitButtonClicked() {
+  editor.clear();
+  grid = new Grid((packet) => {
+    io.move(packet);
+  });
+  grid.map = editor.map;
+  Dom.setViewMode('host', {editing: grid.editing});
+  io.push(grid.map);
 }

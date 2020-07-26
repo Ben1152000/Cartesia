@@ -3,7 +3,7 @@
     "width": 10,
     "height": 10,
     "sprites": {
-        "goblin-1": {
+        "sprite-goblin-1": {
             "source": "DE/Goblin%20Warrior.jpg",
             "top": 3,
             "left": 2,
@@ -12,7 +12,7 @@
             "flip": false,
             "rotate": 0
         },
-        "goblin-2": {
+        "sprite-goblin-2": {
             "source": "DE/Goblin%20Warrior.jpg",
             "top": 5,
             "left": 4,
@@ -21,7 +21,7 @@
             "flip": true,
             "rotate": 0
         },
-        "goblin-3": {
+        "sprite-goblin-3": {
             "source": "DE/Goblin%20Warrior.jpg",
             "top": 4,
             "left": 7,
@@ -30,7 +30,7 @@
             "flip": false,
             "rotate": 0
         },
-        "dwarf": {
+        "sprite-dwarf": {
             "source": "DE/Dwarven%20Defender.jpg",
             "top": 2,
             "left": 5,
@@ -40,8 +40,8 @@
             "rotate": 0
         }
     },
-    "tiles": [
-        {
+    "tiles": {
+        "tile-chess": {
             "source": "DDM/6x6-EndGame.jpg",
             "top": 1,
             "left": 1, 
@@ -50,5 +50,5 @@
             "flip": false,
             "rotate": 0
         }
-    ]
+    }
 }

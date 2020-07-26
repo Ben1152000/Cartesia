@@ -1,0 +1,96 @@
+img.crispy {
+  image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+  image-rendering: -moz-crisp-edges;          /* Firefox                        */
+  image-rendering: -o-crisp-edges;            /* Opera                          */
+  image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+  image-rendering: pixelated; /* Chrome */
+  image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+  -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
+img.flip {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+img.rotate-1 {
+  -webkit-transform: translateY(-100%) rotate(90deg);
+  -moz-transform: translateY(-100%) rotate(90deg);
+  -o-transform: translateY(-100%) rotate(90deg);
+  -ms-transform: translateY(-100%) rotate(90deg);
+  transform: translateY(-100%) rotate(90deg);
+  -webkit-transform-origin: left bottom;
+  -moz-transform-origin: left bottom;
+  -ms-transform-origin: left bottom;
+  -o-transform-origin: left bottom;
+  transform-origin: left bottom;
+}
+
+img.rotate-1-flip {
+  -webkit-transform: translateY(-100%) rotate(90deg) translateX(100%) scaleX(-1);
+  -moz-transform: translateY(-100%) rotate(90deg) translateX(100%) scaleX(-1);
+  -o-transform: translateY(-100%) rotate(90deg) translateX(100%) scaleX(-1);
+  -ms-transform: translateY(-100%) rotate(90deg) translateX(100%) scaleX(-1);
+  transform: translateY(-100%) rotate(90deg) translateX(100%) scaleX(-1);
+  -webkit-transform-origin: left bottom;
+  -moz-transform-origin: left bottom;
+  -ms-transform-origin: left bottom;
+  -o-transform-origin: left bottom;
+  transform-origin: left bottom;
+}
+
+img.rotate-2 {
+  -webkit-transform: translateY(-100%) translateX(-100%) rotate(180deg);
+  -moz-transform: translateY(-100%) translateX(-100%) rotate(180deg);
+  -o-transform: translateY(-100%) translateX(-100%) rotate(180deg);
+  -ms-transform: translateY(-100%) translateX(-100%) rotate(180deg);
+  transform: translateY(-100%) translateX(-100%) rotate(180deg);
+  -webkit-transform-origin: right bottom;
+  -moz-transform-origin: right bottom;
+  -ms-transform-origin: right bottom;
+  -o-transform-origin: right bottom;
+  transform-origin: right bottom;
+}
+
+img.rotate-2-flip {
+  -webkit-transform: translateY(-100%) rotate(180deg) scaleX(-1);
+  -moz-transform: translateY(-100%) rotate(180deg) scaleX(-1);
+  -o-transform: translateY(-100%) rotate(180deg) scaleX(-1);
+  -ms-transform: translateY(-100%) rotate(180deg) scaleX(-1);
+  transform: translateY(-100%) rotate(180deg) scaleX(-1);
+  -webkit-transform-origin: right bottom;
+  -moz-transform-origin: right bottom;
+  -ms-transform-origin: right bottom;
+  -o-transform-origin: right bottom;
+  transform-origin: right bottom;
+}
+
+img.rotate-3 {
+  -webkit-transform: translateX(-100%) rotate(270deg);
+  -moz-transform: translateX(-100%) rotate(270deg);
+  -o-transform: translateX(-100%) rotate(270deg);
+  -ms-transform: translateX(-100%) rotate(270deg);
+  transform: translateX(-100%) rotate(270deg);
+  -webkit-transform-origin: right top;
+  -moz-transform-origin: right top;
+  -ms-transform-origin: right top;
+  -o-transform-origin: right top;
+  transform-origin: right top;
+}
+
+img.rotate-3-flip {
+  -webkit-transform: translateX(-100%) rotate(270deg) translateX(-100%) scaleX(-1);
+  -moz-transform: translateX(-100%) rotate(270deg) translateX(-100%) scaleX(-1);
+  -o-transform: translateX(-100%) rotate(270deg) translateX(-100%) scaleX(-1);
+  -ms-transform: translateX(-100%) rotate(270deg) translateX(-100%) scaleX(-1);
+  transform: translateX(-100%) rotate(270deg) translateX(-100%) scaleX(-1);
+  -webkit-transform-origin: right top;
+  -moz-transform-origin: right top;
+  -ms-transform-origin: right top;
+  -o-transform-origin: right top;
+  transform-origin: right top;
+}
+

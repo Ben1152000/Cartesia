@@ -8,30 +8,39 @@ export class Dom {
       $('#welcome').removeAttr('hidden');
       $('#host-toolbar').attr('hidden', '');
       $('#guest-toolbar').attr('hidden', '');
+      $('#editor-toolbar').attr('hidden', '');
 
     } else if (type === 'host') {
-      $('#modal-input').modal('hide');
       $('#grid').removeAttr('hidden');
+      $('#grid').removeClass('editor');
       $('#welcome').attr('hidden', '');
       $('#host-toolbar').removeAttr('hidden');
       $('#guest-toolbar').attr('hidden', '');
-      $('#server-label-host').text(params.id);
+      $('#editor-toolbar').attr('hidden', '');
+      if (typeof params.id !== 'undefined') {
+        $('#server-label-host').text(params.id);
+      }
       Dom.setEditingButtonMode(params.editing);
 
     } else if (type === 'guest') {
-      $('#modal-input').modal('hide');
       $('#grid').removeAttr('hidden');
+      $('#grid').removeClass('editor');
       $('#welcome').attr('hidden', '');
       $('#host-toolbar').attr('hidden', '');
       $('#guest-toolbar').removeAttr('hidden');
+      $('#editor-toolbar').attr('hidden', '');
       $('#server-label-guest').text(params.id);
 
     } else if (type === 'edit') {
-
-      /* TODO: create edit mode */
+      $('#grid').removeAttr('hidden');
+      $('#grid').addClass('editor');
+      $('#welcome').attr('hidden', '');
+      $('#host-toolbar').attr('hidden', '');
+      $('#guest-toolbar').attr('hidden', '');
+      $('#editor-toolbar').removeAttr('hidden');
       
     } else {
-      console.log("ERROR: Invalid view mode:", type);
+      throw 'Invalid view mode:' + type;
     }
   }
 
@@ -53,39 +62,107 @@ export class Dom {
     $('#launch-modal-alert').click();
   }
 
-  static displayConfirmLeaveWindow(callback) {
+  static displayConfirmWindow(title, message, action, callback) {
+    $('#modal-confirm-submit').off('click');
+    $('#modal-confirm-title').text(title);
+    $('#modal-confirm-message').text(message);
+    $('#modal-confirm-submit').text(action);
     $('#modal-confirm-submit').on('click', callback);
-    $('#modal-confirm').on('hidden.bs.modal', function (event) {
-      $('#modal-confirm-submit').off('click', callback);
-    })
     $('#launch-modal-confirm').click();
   }
 
   static requestNumericInputWindow(callback) {
-    document.getElementById('modal-input-submit').addEventListener('click', onSubmit);
-    document.getElementById('modal-input-launch').click();
-    $('#modal-input').on('hidden.bs.modal', function (event) {
-      document.getElementById('modal-input-submit').removeEventListener('click', onSubmit);
-      document.getElementById('modal-input-alert').setAttribute('hidden', '');
-    })
-    function onSubmit(event) {
+    $('#modal-input-submit').off('click');
+    $('#modal-input-alert').attr('hidden', '');
+    $('#modal-input-submit').on('click', (event) => {
+      console.log('form submitted');
       event.preventDefault();
-      callback(parseInt(document.getElementById('modal-input-form').value));
-    }
+      callback(parseInt($('#modal-input-form').val()));
+    });
+    $('#modal-input-launch').click();
+  }
+
+  static closeNumericInputWindow() {
+    $('#modal-input').modal('hide');
   }
 
   static displayNumericInputAlert(message) {
-    var alert = document.getElementById('modal-input-alert');
-    alert.removeAttribute('hidden');
-    alert.innerText = message;
+    $('#modal-input-alert').removeAttr('hidden').text(message);
+  }
+
+  static displayNewMapWindow(callback) {
+    $('#modal-new-submit').off('click');
+    $('#modal-new-alert').attr('hidden', '');
+    $('#modal-new-submit').on('click', (event) => {
+      console.log('form submitted');
+      event.preventDefault();
+      callback(
+        parseInt($('#modal-new-width').val()), 
+        parseInt($('#modal-new-height').val())
+      );
+    });
+    $('#modal-new-launch').click();
+  }
+
+  static displayNewMapAlert(message) {
+    $('#modal-new-alert').removeAttr('hidden').text(message);
+  }
+
+  static closeNewMapWindow() {
+    $('#modal-new').modal('hide');
+  }
+
+  static displayAddSpriteWindow(type, callback) {
+    $('#modal-add-sprite-submit').off('click');
+    $('#modal-add-sprite-alert').attr('hidden', '');
+    $('#modal-add-sprite-source').val('');
+    if (type === 'tile') {
+      $('#modal-add-sprite-title').text('Add a tile:');
+      $('#source-list').empty();
+      $.getJSON("assets/images/shortcuts/tiles.json", (data) => {
+        for (name in data) {
+          $('#source-list').append($('<option value="' + data[name] + '">' + name + '</option>'));
+        }
+      }).fail(() => {
+        throw 'Couldn\'t open assets/images/shortcuts/tiles.json';
+      });
+    }
+    if (type === 'sprite') {
+      $('#modal-add-sprite-title').text('Add a sprite:');
+      $('#source-list').empty();
+      $.getJSON("assets/images/shortcuts/sprites.json", (data) => {
+        for (name in data) {
+          $('#source-list').append($('<option value="' + data[name] + '">' + name + '</option>'));
+        }
+      }).fail(() => {
+        throw 'Couldn\'t open assets/images/shortcuts/sprites.json';
+      });
+    }
+    $('#modal-add-sprite-submit').on('click', (event) => {
+      console.log('form submitted');
+      event.preventDefault();
+      callback(
+        $('#modal-add-sprite-source').val().replace(' ', '%20'), 
+        parseInt($('#modal-add-sprite-width').val()), 
+        parseInt($('#modal-add-sprite-height').val())
+      );
+    });
+    $('#modal-add-sprite-launch').click();
+  }
+
+  static displayAddSpriteAlert(message) {
+    $('#modal-add-sprite-alert').removeAttr('hidden').text(message);
+  }
+
+  static closeAddSpriteWindow() {
+    $('#modal-add-sprite').modal('hide');
   }
 
   static makeToast(message, delay) {
-    var toast = $('<div class="quizno"></div>').appendTo('body');
+    var toast = $('<div class="quizno"></div>');
     toast.text(message);
-    toast.delay(1000 * delay).fadeOut(500, () => { 
-      toast.remove(); 
-    });
+    toast.delay(1000 * delay).fadeOut(500, () => { toast.remove(); });
+    $(document.body).append(toast);
   }
 
 }
