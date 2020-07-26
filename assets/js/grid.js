@@ -14,7 +14,7 @@ export class Grid {
       name: null,
       width: 0,
       height: 0,
-      tiles: [],
+      tiles: {},
       sprites: {}
     };
   }
@@ -38,12 +38,10 @@ export class Grid {
     this.clear();
     this.renderGrid(this.map.width, this.map.height);
     for (var id in this.map.tiles) {
-      this.renderTile(this.map.tiles[id]);
+      this.renderTile(this.map.tiles[id], id);
     }
-    for (var id in this.map.sprites) { 
-      var sprite = this.map.sprites[id];
-      sprite.id = id;
-      this.renderSprite(sprite);
+    for (var id in this.map.sprites) {
+      this.renderSprite(this.map.sprites[id], id);
     }
   }
 
@@ -69,12 +67,13 @@ export class Grid {
     };
   }
 
-  renderTile(tile) {
+  renderTile(tile, id) {
     var cell = document.getElementById(
       "cell-" + parseInt(tile.top) + "-" + parseInt(tile.left)
     );
     if (cell) {
       var image = document.createElement("IMG");
+      image.id = id;
       image.classList.add("tile");
       image.classList.add("crispy");
       // Check if sprite has prefix 'external:'
@@ -96,13 +95,13 @@ export class Grid {
     }
   }
 
-  renderSprite(sprite) {
+  renderSprite(sprite, id) {
     var cell = document.getElementById(
       "cell-" + parseInt(sprite.top) + "-" + parseInt(sprite.left)
     );
     if (cell) {
       var image = document.createElement("IMG");
-      image.id = sprite.id;
+      image.id = id;
       image.classList.add("sprite");
       image.classList.add("crispy");
       // Check if source has prefix 'external:'
@@ -124,10 +123,10 @@ export class Grid {
     }
   }
 
-  replaceSprite(sprite) {
-    this.map.sprites[sprite.id] = sprite;
-    document.getElementById(sprite.id).remove();
-    this.renderSprite(sprite);
+  replaceSprite(sprite, id) {
+    this.map.sprites[id] = sprite;
+    document.getElementById(id).remove();
+    this.renderSprite(sprite, id);
   }
 
   toggleEditing(callback) {
@@ -164,8 +163,11 @@ export class Grid {
       grid.map.sprites[element.id].top = row;
       document.onmouseup = null;
       document.onmousemove = null;
-      grid.replaceSprite(grid.map.sprites[element.id]);
-      grid.movementCallback(grid.map.sprites[element.id]);
+      grid.replaceSprite(grid.map.sprites[element.id], element.id);
+      grid.movementCallback({
+        id: element.id,
+        sprite: grid.map.sprites[element.id]
+      });
     }
   }
 

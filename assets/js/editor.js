@@ -19,12 +19,15 @@ export class Editor {
     return this.mapData
   }
 
-  reset() {
+  reset(name, width, height) {
+    if (typeof name === 'undefined') name = null;
+    if (typeof width === 'undefined') width = 0;
+    if (typeof height === 'undefined') height = 0;
     this.map = {
-      name: null,
-      width: 0,
-      height: 0,
-      tiles: [],
+      name: name,
+      width: width,
+      height: height,
+      tiles: {},
       sprites: {}
     };
   }
@@ -38,26 +41,22 @@ export class Editor {
     this.clear();
     this.renderGrid();
     for (var id in this.map.tiles) {
-      let tile = this.map.tiles[id];
-      tile.id = id;
-      this.renderTile(this.map.tiles[id]);
+      this.renderTile(this.map.tiles[id], id);
     }
-    for (var id in this.map.sprites) { 
-      let sprite = this.map.sprites[id];
-      sprite.id = id;
-      this.renderSprite(sprite);
+    for (var id in this.map.sprites) {
+      this.renderSprite(this.map.sprites[id], id);
     }
   }
 
   renderGrid() {
     this.grid.css({
-      gridTemplateColumns: (parseInt(scale) + "px ").repeat(this.map.width),
-      gridTemplateRows: (parseInt(scale) + "px ").repeat(this.map.height)
+      gridTemplateColumns: (parseInt(scale) + 'px ').repeat(this.map.width),
+      gridTemplateRows: (parseInt(scale) + 'px ').repeat(this.map.height)
     });
     for (var row = 0; row < this.map.height; row++) {
       for (var column = 0; column < this.map.width; column++) {
-        this.grid.append($("<div id=\"cell-" + parseInt(row) + "-" + parseInt(column) + "\" class=\"cell\">"
-              + parseInt(this.map.width * row + column) + "</div>"));
+        this.grid.append($('<div id="cell-' + parseInt(row) + '-' + parseInt(column) + '" class="cell cell-editor">'
+              + parseInt(this.map.width * row + column) + '</div>'));
       }
     }
   }
@@ -70,10 +69,10 @@ export class Editor {
     };
   }
 
-  renderTile(tile, showMenu) {
+  renderTile(tile, id, showMenu) {
     let cell = $('#cell-' + parseInt(tile.top) + "-" + parseInt(tile.left));
     if (cell) {
-      let element = $('<div id="' + tile.id + '" class="tile-edit"></div>');
+      let element = $('<div id="' + id + '" class="tile-edit"></div>');
       element.data('type', 'tile');
 
       let image = $('<img class="crispy transform"></img>');
@@ -95,10 +94,10 @@ export class Editor {
     }
   }
 
-  renderSprite(sprite, showMenu) {
+  renderSprite(sprite, id, showMenu) {
     let cell = $('#cell-' + parseInt(sprite.top) + "-" + parseInt(sprite.left));
     if (cell) {
-      let element = $('<div id="' + sprite.id + '" class="sprite"></div>');
+      let element = $('<div id="' + id + '" class="sprite"></div>');
       element.data('type', 'sprite');
 
       let image = $('<img class="crispy transform"></img>');
@@ -200,44 +199,60 @@ export class Editor {
 
   flipTile(id) {
     this.map.tiles[id].flip = !this.map.tiles[id].flip;
-    this.replaceTile(this.map.tiles[id], true);
+    this.replaceTile(this.map.tiles[id], id, true);
   }
 
   flipSprite(id) {
     this.map.sprites[id].flip = !this.map.sprites[id].flip;
-    this.replaceSprite(this.map.sprites[id], true);
+    this.replaceSprite(this.map.sprites[id], id, true);
   }
 
   rotateTile(id) {
     this.map.tiles[id].rotate = (this.map.tiles[id].rotate + 1) % 4;
-    this.replaceTile(this.map.tiles[id], true);
+    this.replaceTile(this.map.tiles[id], id, true);
   }
 
   rotateSprite(id) {
     this.map.sprites[id].rotate = (this.map.sprites[id].rotate + 1) % 4;
-    this.replaceSprite(this.map.sprites[id], true);
+    this.replaceSprite(this.map.sprites[id], id, true);
   }
 
   deleteTile(id) {
-    delete this.map.tiles[id];
-    $('#' + id).remove();
+    if (id in this.map.tiles) {
+      delete this.map.tiles[id];
+      $('#' + id).remove();
+    }
   }
 
   deleteSprite(id) {
-    delete this.map.sprites[id];
-    $('#' + id).remove();
+    if (id in this.map.sprites) {
+      delete this.map.sprites[id];
+      $('#' + id).remove();
+    }
   }
 
-  replaceTile(tile, showMenu) {
-    this.map.tiles[tile.id] = tile;
-    $('#' + tile.id).remove();
-    this.renderTile(tile, showMenu);
+  replaceTile(tile, id, showMenu) {
+    if (typeof id === 'undefined') {
+      throw 'No tile id was provided';
+    } else if (id in this.map.tiles) {
+      this.map.tiles[id] = tile;
+      $('#' + id).remove();
+    } else {
+      this.map.tiles[id] = tile;
+    }
+    this.renderTile(tile, id, showMenu);
   }
 
-  replaceSprite(sprite, showMenu) {
-    this.map.sprites[sprite.id] = sprite;
-    $('#' + sprite.id).remove();
-    this.renderSprite(sprite, showMenu);
+  replaceSprite(sprite, id, showMenu) {
+    if (typeof id === 'undefined') {
+      throw 'No sprite id was provided';
+    } else if (id in this.map.sprites) {
+      this.map.sprites[id] = sprite;
+      $('#' + id).remove();
+    } else {
+      this.map.sprites[id] = sprite;
+    }
+    this.renderSprite(sprite, id, showMenu);
   }
 
   // This function encapsulates the behavior of draggable sprites.
@@ -266,7 +281,7 @@ export class Editor {
         } else if (element.data('type') === 'sprite') {
           sprite = this.map.sprites[element.attr('id')];
         } else {
-          console.log('Invalid element type');
+          throw 'Invalid element type';
         }
         let width = (sprite.rotate % 2)? sprite.height: sprite.width;
         let height = (sprite.rotate % 2)? sprite.width: sprite.height;
@@ -277,13 +292,13 @@ export class Editor {
         if (element.data('type') === 'tile') {
           this.map.tiles[element.attr('id')].left = column;
           this.map.tiles[element.attr('id')].top = row;
-          this.replaceTile(this.map.tiles[element.attr('id')]);
+          this.replaceTile(this.map.tiles[element.attr('id')], element.attr('id'));
         } else if (element.data('type') === 'sprite') {
           this.map.sprites[element.attr('id')].left = column;
           this.map.sprites[element.attr('id')].top = row;
-          this.replaceSprite(this.map.sprites[element.attr('id')]);
+          this.replaceSprite(this.map.sprites[element.attr('id')], element.attr('id'));
         } else {
-          console.log('Invalid element type');
+          throw 'Invalid element type';
         }
       });
 

@@ -29,6 +29,10 @@ body {
   background-color: floralwhite;
 }
 
+.editor {
+  background-color: cornflowerblue;
+}
+
 div.cell {
   position: relative;
   color: rgba(0, 0, 0, 0.2);
@@ -37,8 +41,14 @@ div.cell {
   font-size: 30px;
 }
 
+div.cell-editor {
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+}
+
 .tile {
   position: absolute;
+  z-index: 1;
   left: -1px;
   top: -1px;
 }
