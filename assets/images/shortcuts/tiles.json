@@ -1,7 +1,9 @@
 {
-    "Chess": {
-        "source": "DDM/6x6-EndGame.jpg",
-        "width": 8,
-        "height": 8
+    "": {
+        "Chess": {
+            "source": "DDM/6x6-EndGame.jpg",
+            "width": 8,
+            "height": 8
+        }
     }
 }

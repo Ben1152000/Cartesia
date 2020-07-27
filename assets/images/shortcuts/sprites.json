@@ -1,32 +1,41 @@
 {
-    "Dwarf": {
-        "source": "DE/Dwarven Defender.jpg",
-        "width": 1,
-        "height": 1
+    "": {
+        "Dwarf": {
+            "source": "DE/Dwarven Defender.jpg",
+            "width": 1,
+            "height": 1
+        },
+        "Elf": {
+            "source": "DE/Elf Spearguard.jpg",
+            "width": 1,
+            "height": 1
+        },
+        "Human": {
+            "source": "DE/Human Crossbowman.jpg",
+            "width": 1,
+            "height": 1
+        }
     },
-    "Elf": {
-        "source": "DE/Elf Spearguard.jpg",
-        "width": 1,
-        "height": 1
-    },
-    "Goblin": {
-        "source": "DE/Goblin Warrior.jpg",
-        "width": 1,
-        "height": 1
-    },
-    "Human": {
-        "source": "DE/Human Crossbowman.jpg",
-        "width": 1,
-        "height": 1
-    },
-    "Kobold": {
-        "source": "DE/Kobold Skirmisher.jpg",
-        "width": 1,
-        "height": 1
-    },
-    "Orc": {
-        "source": "DE/Orc Druid.jpg",
-        "width": 1,
-        "height": 1
+    "Non-Player Characters": {
+        "Goblin": {
+            "source": "DE/Goblin Warrior.jpg",
+            "width": 1,
+            "height": 1
+        },
+        "Kobold": {
+            "source": "DE/Kobold Skirmisher.jpg",
+            "width": 1,
+            "height": 1
+        },
+        "Orc": {
+            "source": "DE/Orc Druid.jpg",
+            "width": 1,
+            "height": 1
+        },
+        "Black Dragon": {
+            "source": "DE/Black Dragon.jpg",
+            "width": 2,
+            "height": 2
+        }
     }
 }

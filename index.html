@@ -3,7 +3,8 @@
   <meta charset="utf-8">
   <title>Cartesia</title>
   <link href="/css/bootstrap.min.css" rel="stylesheet">
-  <script src="/js/jquery.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="icon" href="assets/icons/favicon.ico">
@@ -157,12 +158,11 @@
           <div class="modal-body">
             <div class="mb-3">
               <h6>Image:</h6>
-              <input id="modal-add-sprite-source" class="form-control form-control-xlg" type="text" list="source-list" placeholder="source">
-              <datalist id="source-list"></datalist>
-              <script type="module">
-                import { Dom } from '/assets/js/dom.js';
-                $('#modal-add-sprite-source').on('input', () => { Dom.populateOptionSettings(); });
-              </script>
+              <div class="btn-group input-group">
+                <input id="modal-add-sprite-source" class="form-control form-control-xlg" type="text" placeholder="source">
+                <button type="button" class="btn btn-primary dropdown-toggle flex-grow-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div id="source-list" class="dropdown-menu dropdown-menu-right pb-0"></div>
+              </div>
             </div>
             <div style="display: flex;">
               <div style="flex: 1;">

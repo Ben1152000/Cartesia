@@ -132,3 +132,9 @@ button.main {
   text-align:center;
   border-radius: 2px;
 }
+
+.dropdown-menu {
+  max-height: 200px;
+  width: 100%;
+  overflow-y: auto;
+}
