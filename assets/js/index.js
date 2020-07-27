@@ -160,7 +160,7 @@ export function editorNewButtonClicked() {
 
 export function editorAddTileButtonClicked() {
   if (editor.map.name === null) {
-    Dom.displayAlertWindow('Error', 'You must create or import a map before adding a tile.');
+    Dom.displayAlertWindow('Error', 'You must create or upload a map before adding a tile.');
   } else {
     Dom.displayAddSpriteWindow('tile', (source, width, height) => {
       if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
@@ -248,4 +248,12 @@ export function saveExitButtonClicked() {
   grid.map = editor.map;
   Dom.setViewMode('host', {editing: grid.editing});
   io.push(grid.map);
+}
+
+export function feelingLucky() {
+  grid.replaceSprite({
+    source: 'external:https://bdarnell.com/assets/images/profile-core.webp',
+    top: 0, left: 0, width: 1, height: 1, flip: false, rotate: 0}, 
+    'sprite-lucky-' + Date.now()
+  );
 }

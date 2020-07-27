@@ -124,8 +124,8 @@ export class Grid {
   }
 
   replaceSprite(sprite, id) {
+    if (id in this.map.sprites) document.getElementById(id).remove();
     this.map.sprites[id] = sprite;
-    document.getElementById(id).remove();
     this.renderSprite(sprite, id);
   }
 

@@ -120,9 +120,7 @@ export class Dom {
       $('#modal-add-sprite-title').text('Add a tile:');
       $('#source-list').empty();
       $.getJSON("assets/images/shortcuts/tiles.json", (data) => {
-        for (name in data) {
-          $('#source-list').append($('<option value="' + data[name] + '">' + name + '</option>'));
-        }
+        this.populateOptionsList(data);
       }).fail(() => {
         throw 'Couldn\'t open assets/images/shortcuts/tiles.json';
       });
@@ -130,10 +128,8 @@ export class Dom {
     if (type === 'sprite') {
       $('#modal-add-sprite-title').text('Add a sprite:');
       $('#source-list').empty();
-      $.getJSON("assets/images/shortcuts/sprites.json", (data) => {
-        for (name in data) {
-          $('#source-list').append($('<option value="' + data[name] + '">' + name + '</option>'));
-        }
+      $.getJSON("assets/images/shortcuts/sprites.json", (data) => { 
+        this.populateOptionsList(data);
       }).fail(() => {
         throw 'Couldn\'t open assets/images/shortcuts/sprites.json';
       });
@@ -148,6 +144,41 @@ export class Dom {
       );
     });
     $('#modal-add-sprite-launch').click();
+  }
+
+  static populateOptionsList(data) {
+    let modalSource = $('#modal-add-sprite-source');
+    let modalWidth = $('#modal-add-sprite-width');
+    let modalHeight = $('#modal-add-sprite-height');
+    let sourceList = $('#source-list');
+
+    function addOption(name, values) {
+      let option = $('<option class="dropdown-item" value="'
+          + values.source + '">' + name + '</option>');
+      option.data('width', values.width);
+      option.data('height', values.height);
+      option.on('click', () => {
+        modalSource.val(option.val());
+        modalWidth.val(option.data('width'));
+        modalHeight.val(option.data('height'));
+      })
+      sourceList.append(option);
+    }
+
+    if ('' in data) {
+      for (let key in data['']) {
+        addOption(key, data[''][key]);
+      }
+      delete data[''];
+    }
+    for (let group in data) {
+      sourceList.append($('<div class="dropdown-divider"></div>'));
+      sourceList.append($('<h6 class="dropdown-header">' + group + '</h6>'))
+      for (let key in data[group]) {
+        addOption(key, data[group][key]);
+      }
+    }
+    sourceList.children().last().addClass('mb-2');
   }
 
   static displayAddSpriteAlert(message) {
