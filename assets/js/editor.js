@@ -19,6 +19,7 @@ export class Editor {
     return this.mapData
   }
 
+  // public: reconstruct map with params
   reset(name, width, height) {
     if (typeof name === 'undefined') name = null;
     if (typeof width === 'undefined') width = 0;
@@ -231,6 +232,7 @@ export class Editor {
     }
   }
 
+  // public: replace tile with id
   replaceTile(tile, id, showMenu) {
     if (typeof id === 'undefined') {
       throw 'No tile id was provided';
@@ -243,6 +245,7 @@ export class Editor {
     this.renderTile(tile, id, showMenu);
   }
 
+  // public: replace sprite with id
   replaceSprite(sprite, id, showMenu) {
     if (typeof id === 'undefined') {
       throw 'No sprite id was provided';
@@ -318,7 +321,7 @@ export class Editor {
     });
   }
 
-  // Downloads current map as a json file.
+  // public: Downloads current map as a json file.
   download(failureCallback) {
     if (this.map.name) {
       let mapData = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.map));
@@ -331,7 +334,7 @@ export class Editor {
     }
   }
 
-  // Uploads json file to the current map.
+  // public: Uploads json file to the current map.
   upload(successCallback, failureCallback) {
     // https://stackoverflow.com/questions/23344776/access-data-of-uploaded-json-file-using-javascript
     var reader = new FileReader();

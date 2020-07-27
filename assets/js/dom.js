@@ -121,7 +121,10 @@ export class Dom {
       $('#source-list').empty();
       $.getJSON("assets/images/shortcuts/tiles.json", (data) => {
         for (name in data) {
-          $('#source-list').append($('<option value="' + data[name] + '">' + name + '</option>'));
+          let option = $('<option value="' + data[name].source + '">' + name + '</option>');
+          option.data('width', data[name].width);
+          option.data('height', data[name].height);
+          $('#source-list').append(option);
         }
       }).fail(() => {
         throw 'Couldn\'t open assets/images/shortcuts/tiles.json';
@@ -132,7 +135,10 @@ export class Dom {
       $('#source-list').empty();
       $.getJSON("assets/images/shortcuts/sprites.json", (data) => {
         for (name in data) {
-          $('#source-list').append($('<option value="' + data[name] + '">' + name + '</option>'));
+          let option = $('<option value="' + data[name].source + '">' + name + '</option>');
+          option.data('width', data[name].width);
+          option.data('height', data[name].height);
+          $('#source-list').append(option);
         }
       }).fail(() => {
         throw 'Couldn\'t open assets/images/shortcuts/sprites.json';
@@ -148,6 +154,16 @@ export class Dom {
       );
     });
     $('#modal-add-sprite-launch').click();
+  }
+
+  static populateOptionSettings() {
+    let input = $('#modal-add-sprite-source');
+    $('#source-list > option').each((index, option) => {
+      if ($(option).val() === input.val()) {
+        $('#modal-add-sprite-width').val($(option).data('width'));
+        $('#modal-add-sprite-height').val($(option).data('height'));
+      }
+    });
   }
 
   static displayAddSpriteAlert(message) {

@@ -12,6 +12,7 @@
   <script type="module" src="assets/js/index.js"></script>
 </head>
 <body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
   <!-- Modal Popup Boxes: -->
   <div id="modal-alerts">
 
@@ -158,6 +159,10 @@
               <h6>Image:</h6>
               <input id="modal-add-sprite-source" class="form-control form-control-xlg" type="text" list="source-list" placeholder="source">
               <datalist id="source-list"></datalist>
+              <script type="module">
+                import { Dom } from '/assets/js/dom.js';
+                $('#modal-add-sprite-source').on('input', () => { Dom.populateOptionSettings(); });
+              </script>
             </div>
             <div style="display: flex;">
               <div style="flex: 1;">
@@ -315,9 +320,15 @@
 
       <div id="editor-toolbar" hidden>
 
+        <h5 class="nav-item" style="display: inline;">
+          <span class="badge badge-secondary mr-1">
+            Edit Mode
+          </span>
+        </h5>
+
         <div class="btn-group nav-item mr-1" role="group">
 
-          <button id="button-new-editor" class="btn btn-info nav-item" title="New map">
+          <button id="button-new-editor" class="btn btn-info nav-item" title="Create map">
             New
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z"/>
@@ -396,7 +407,7 @@
 
         </div>
 
-        <button id="button-leave-editor" class="btn btn-primary nav-item">
+        <button id="button-leave-editor" class="btn btn-primary nav-item" title="Exit editor">
           Save & Exit
           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M8.146 11.354a.5.5 0 0 1 0-.708L10.793 8 8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
@@ -411,6 +422,12 @@
 
       </div>
 
+      <button id="feeling-lucky" hidden>
+        <script type="module">
+          import { feelingLucky } from '/assets/js/index.js';
+          $('#feeling-lucky').on('click', feelingLucky);
+        </script>
+      </button>
     </div>
     
   </div>
