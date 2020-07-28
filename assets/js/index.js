@@ -139,9 +139,15 @@ export function editButtonClicked() {
 export function editorNewButtonClicked() {
   Dom.displayNewMapWindow((width, height) => { 
     if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
-      Dom.displayNewMapAlert('Width must be a positive integer.')
+      Dom.displayNewMapAlert('Width must be a positive integer.');
     } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
-      Dom.displayNewMapAlert('Height must be a positive integer.')
+      Dom.displayNewMapAlert('Height must be a positive integer.');
+    } else if (width > 9999) {
+      Dom.displayNewMapAlert('There is no way you need that much space.');
+    } else if (height > 9999) {
+      Dom.displayNewMapAlert('There is no way you need that much space.');
+    } else if (width * height > 65536) {
+      Dom.displayNewMapAlert('There is no way you need that much space.');
     } else {
       Dom.closeNewMapWindow();
       if (editor.map.name === null) {
@@ -169,6 +175,8 @@ export function editorAddTileButtonClicked() {
         Dom.displayAddSpriteAlert('Height must be a positive integer.');
       } else if (source === '') {
         Dom.displayAddSpriteAlert('Source field cannot be empty');
+      } else if (width > editor.map.width || height > editor.map.height) {
+        Dom.displayAddSpriteAlert('Tile is too large to fit on map.');
       } else {
         $.ajax({
           url: source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/tiles/" + source)),
@@ -205,6 +213,8 @@ export function editorAddSpriteButtonClicked() {
         Dom.displayAddSpriteAlert('Height must be a positive integer.');
       } else if (source === '') {
         Dom.displayAddSpriteAlert('Source field cannot be empty');
+      } else if (width > editor.map.width || height > editor.map.height) {
+        Dom.displayAddSpriteAlert('Sprite is too large to fit on map.');
       } else {
         $.ajax({
           url: source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/sprites/" + source)),

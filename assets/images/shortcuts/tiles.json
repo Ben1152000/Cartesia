@@ -10,5 +10,13 @@
             "width": 8,
             "height": 8
         }
+    },
+    "Maps": {
+        "Blue Dragon Lair": {
+            "source": "BTL/BlueDragonLair.jpg", "width": 34, "height": 22
+        },
+        "Market Square": {
+            "source": "BTL/MarketSquare.jpg", "width": 30, "height": 21
+        }
     }
 }
