@@ -26,8 +26,9 @@ body {
 .grid {
   overflow-y: scroll;
   display: grid;
-  background-color: floralwhite;
+  background-color: papayawhip;
 }
+
 
 .editor {
   background-color: cornflowerblue;
@@ -133,8 +134,19 @@ button.main {
   border-radius: 2px;
 }
 
-.dropdown-menu {
+.dropdown-menu-source {
   max-height: 200px;
   width: 100%;
   overflow-y: auto;
+}
+
+.menu-color {
+  display: flex;
+  justify-content: space-between;
+}
+
+.color-item {
+  height: 2.25rem;
+  width: 2.25rem;
+  padding: 0rem;
 }

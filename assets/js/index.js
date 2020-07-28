@@ -167,9 +167,11 @@ export function editorAddTileButtonClicked() {
         Dom.displayAddSpriteAlert('Width must be a positive integer.');
       } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
         Dom.displayAddSpriteAlert('Height must be a positive integer.');
+      } else if (source === '') {
+        Dom.displayAddSpriteAlert('Source field cannot be empty');
       } else {
         $.ajax({
-          url: source.startsWith("external:")? source.substr(9): ("assets/images/tiles/" + source),
+          url: source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/tiles/" + source)),
           type: 'HEAD',
           error: () => { 
             Dom.displayAddSpriteAlert('Image does not exist'); 
@@ -196,20 +198,22 @@ export function editorAddSpriteButtonClicked() {
   if (editor.map.name === null) {
     Dom.displayAlertWindow('Error', 'You must create or import a map before adding a sprite.');
   } else {
-    Dom.displayAddSpriteWindow('sprite', (source, width, height) => {
+    Dom.displayAddSpriteWindow('sprite', (source, width, height, color) => {
       if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
         Dom.displayAddSpriteAlert('Width must be a positive integer.');
       } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
         Dom.displayAddSpriteAlert('Height must be a positive integer.');
+      } else if (source === '') {
+        Dom.displayAddSpriteAlert('Source field cannot be empty');
       } else {
         $.ajax({
-          url: source.startsWith("external:")? source.substr(9): ("assets/images/sprites/" + source),
+          url: source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/sprites/" + source)),
           type: 'HEAD',
           error: () => { 
             Dom.displayAddSpriteAlert('Image does not exist'); 
           },
           success: () => { 
-            editor.replaceSprite({
+            let sprite = {
               source: source,
               top: 0,
               left: 0, 
@@ -217,7 +221,9 @@ export function editorAddSpriteButtonClicked() {
               height: height,
               flip: false,
               rotate: 0
-            }, 'sprite-' + Date.now());
+            }
+            if (color !== null) sprite.color = color;
+            editor.replaceSprite(sprite, 'sprite-' + Date.now());
             Dom.closeAddSpriteWindow();
           }
         });
@@ -251,9 +257,10 @@ export function saveExitButtonClicked() {
 }
 
 export function feelingLucky() {
-  grid.replaceSprite({
-    source: 'external:https://bdarnell.com/assets/images/profile-core.webp',
-    top: 0, left: 0, width: 1, height: 1, flip: false, rotate: 0}, 
-    'sprite-lucky-' + Date.now()
-  );
+  if ($('#grid').is(':visible') && $('#editor-toolbar').is(':hidden'))
+    grid.replaceSprite({
+      source: 'https://bdarnell.com/assets/images/profile-core.webp',
+      top: 0, left: 0, width: 1, height: 1, flip: false, rotate: 0}, 
+      'sprite-lucky-' + Date.now()
+    );
 }

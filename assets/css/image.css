@@ -94,3 +94,54 @@ img.rotate-3-flip {
   transform-origin: right top;
 }
 
+img.sprite-frame {
+  border-radius: 50%;
+}
+
+img.frame-maroon {
+  border: 8px solid maroon;
+}
+
+.color-maroon {
+  background-color: maroon;
+}
+
+img.frame-chocolate {
+  border: 8px solid chocolate;
+}
+
+.color-chocolate {
+  background-color: chocolate;
+}
+
+img.frame-goldenrod {
+  border: 8px solid goldenrod;
+}
+
+.color-goldenrod {
+  background-color: goldenrod;
+}
+
+img.frame-forestgreen {
+  border: 8px solid forestgreen;
+}
+
+.color-forestgreen {
+  background-color: forestgreen;
+}
+
+img.frame-dodgerblue {
+  border: 8px solid dodgerblue;
+}
+
+.color-dodgerblue {
+  background-color: dodgerblue;
+}
+
+img.frame-darkslateblue {
+  border: 8px solid darkslateblue;
+}
+
+.color-darkslateblue {
+  background-color: darkslateblue;
+}

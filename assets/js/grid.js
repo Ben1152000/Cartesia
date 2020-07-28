@@ -76,12 +76,10 @@ export class Grid {
       image.id = id;
       image.classList.add("tile");
       image.classList.add("crispy");
-      // Check if sprite has prefix 'external:'
-      if (tile.source.startsWith("external:")) {
-        image.src = tile.source.substr(9);
-      } else {
-        image.src = "assets/images/tiles/" + tile.source;
-      }
+      // Check if source is external image:
+      if (tile.source.startsWith('http:')) image.src = tile.source;
+      else if (tile.source.startsWith('https:')) image.src = tile.source;
+      else image.src = 'assets/images/tiles/' + tile.source;
       image.width = parseInt(tile.width * scale);
       image.height = parseInt(tile.height * scale);
       if (tile.flip) {
@@ -104,12 +102,14 @@ export class Grid {
       image.id = id;
       image.classList.add("sprite");
       image.classList.add("crispy");
-      // Check if source has prefix 'external:'
-      if (sprite.source.startsWith("external:")) {
-        image.src = sprite.source.substr(9);
-      } else {
-        image.src = "assets/images/sprites/" + sprite.source;
+      if ('color' in sprite) {
+        image.classList.add('sprite-frame');
+        image.classList.add('frame-' + sprite.color);
       }
+      // Check if source is external image:
+      if (sprite.source.startsWith('http:')) image.src = sprite.source;
+      else if (sprite.source.startsWith('https:')) image.src = sprite.source;
+      else image.src = 'assets/images/sprites/' + sprite.source;
       image.width = parseInt(sprite.width * scale);
       image.height = parseInt(sprite.height * scale);
       if (sprite.flip) {

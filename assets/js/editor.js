@@ -77,8 +77,10 @@ export class Editor {
       element.data('type', 'tile');
 
       let image = $('<img class="crispy transform"></img>');
-      image.attr('src', tile.source.startsWith("external:")? 
-          tile.source.substr(9): ("assets/images/tiles/" + tile.source));
+      // Check if source is external image:
+      if (tile.source.startsWith('http:')) image.attr('src', tile.source);
+      else if (tile.source.startsWith('https:')) image.attr('src', tile.source);
+      else image.attr('src', 'assets/images/tiles/' + tile.source);
       image.attr('width', parseInt(tile.width * scale));
       image.attr('height', parseInt(tile.height * scale));
       if (tile.flip) {
@@ -102,8 +104,11 @@ export class Editor {
       element.data('type', 'sprite');
 
       let image = $('<img class="crispy transform"></img>');
-      image.attr('src', sprite.source.startsWith("external:")? 
-          sprite.source.substr(9): ("assets/images/sprites/" + sprite.source));
+      if ('color' in sprite) image.addClass('sprite-frame frame-' + sprite.color);
+      // Check if source is external image:
+      if (sprite.source.startsWith('http:')) image.attr('src', sprite.source);
+      else if (sprite.source.startsWith('https:')) image.attr('src', sprite.source);
+      else image.attr('src', 'assets/images/sprites/' + sprite.source);
       image.attr('width', parseInt(sprite.width * scale));
       image.attr('height', parseInt(sprite.height * scale));
       if (sprite.flip) {

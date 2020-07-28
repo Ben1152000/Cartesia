@@ -76,12 +76,23 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>
-              Cartesia is a service developed during the COVID-19 pandemic to assist GM's in holding remote games.
-            </p>
-            <h6>How to Use:</h6>
-            <p>In order to host a server, please upload a map in the form of a json file.</p>
-            <p>Here is a <a href="assets/maps/demo.json" download>sample</a> map you can use to get started.</p>
+            <p>Cartesia is a service developed during the COVID-19 pandemic to assist GM's in holding remote games.</p>
+            <h5>How to Use:</h5>
+            <p>In order to create a map, you must first host a server. Click the <code>host</code> button and enter your desired server number. 
+              <i>Note: All servers are public, so choose a high number if you don't want your server to be easily accessible to strangers.</i></p>
+            <p>Click the <code>edit</code> button to enter edit mode. Click <code>new</code> and enter the desired grid size to create a new map. 
+              Use the <code>add tile</code> and <code>add sprite</code> buttons to add assets to your map. 
+              Tiles are background elements, surfaces or other static props, and sprites are player characters or NPCs that can be moved during gameplay.</p>
+              <p>Here is a <a href="assets/maps/demo.json" download>sample map</a> you can use to get started.</p>
+            <h6>External Images</h6>
+            <p>In order to use an external image, type the url of the image into the <code>source</code> field.</p>
+            <h5>Contribute:</h5>
+            <p>Want to contribute to this project? Check out the github repo: <a href="https://github.com/Ben1152000/Cartesia" target="_blank">https://github.com/Ben1152000/Cartesia</a></p>
+            <h5>License:</h5>
+            <p>This application is licensed under the <a rel="license" href="#" target="_blank">[Insert License Here]</a>.</p>
+            <p>Additionally, this application uses images that are taken from the D&D Player's Handbook, and other related Wizards of the Coast publishings. 
+              Cartesia is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. 
+              Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -149,22 +160,24 @@
     <div id="modal-add-sprite" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
+
           <div class="modal-header">
             <h5 class="modal-title" id="modal-add-sprite-title">Title</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+
           <div class="modal-body">
             <div class="mb-3">
               <h6>Image:</h6>
               <div class="btn-group input-group">
                 <input id="modal-add-sprite-source" class="form-control form-control-xlg" type="text" placeholder="source">
                 <button type="button" class="btn btn-primary dropdown-toggle flex-grow-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div id="source-list" class="dropdown-menu dropdown-menu-right pb-0"></div>
+                <div id="source-list" class="dropdown-menu dropdown-menu-source dropdown-menu-right pb-0"></div>
               </div>
             </div>
-            <div style="display: flex;">
+            <div class="mb-3" style="display: flex;">
               <div style="flex: 1;">
                 <h6>Width:</h6>
                 <input id="modal-add-sprite-width" class="form-control form-control-xlg" type="number" min="1" value="1">
@@ -174,12 +187,58 @@
                 <input id="modal-add-sprite-height" class="form-control form-control-xlg" type="number" min="1" value="1">
               </div>
             </div>
+            <!--div style="display: flex;">
+              <div class="custom-control custom-switch dropright">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                <label class="custom-control-label" for="customSwitch1">Toggle</label>
+                <button type="button" class="btn btn-primary dropdown-color dropdown-toggle flex-grow-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu dropdown-menu-color">
+                  <button type="button" class="btn dropdown-color color-maroon"></button>
+                  <button type="button" class="btn dropdown-color color-chocolate"></button>
+                  <button type="button" class="btn dropdown-color color-goldenrod"></button>
+                  <button type="button" class="btn dropdown-color color-forestgreen"></button>
+                  <button type="button" class="btn dropdown-color color-dodgerblue"></button>
+                  <button type="button" class="btn dropdown-color color-darkslateblue"></button>
+                </div>
+              </div>
+            </div>-->
+            <div id="toggle-frame-menu" style="display: flex;" hidden>
+              <div class="custom-control custom-switch">
+                <input id="toggle-character-frame" type="checkbox" class="custom-control-input">
+                <label class="custom-control-label" for="toggle-character-frame">Add Colored Frame</label>
+                <script type="module">
+                  import { Dom } from '/assets/js/dom.js';
+                  Dom.toggleAddSpriteCharacterFrame();
+                  $('#toggle-character-frame').on('click', Dom.toggleAddSpriteCharacterFrame);
+                </script>
+              </div>
+            </div>
+            <div id="color-select-menu" class="menu-color mt-2" data-color="maroon" hidden>
+              <button id="select-maroon" type="button" class="btn color-item color-maroon" value="maroon">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+              </button>
+              <button id="select-chocolate" type="button" class="btn color-item color-chocolate" value="chocolate"></button>
+              <button id="select-color-goldenrod" type="button" class="btn color-item color-goldenrod" value="goldenrod"></button>
+              <button id="select-color-forestgreen" type="button" class="btn color-item color-forestgreen" value="forestgreen"></button>
+              <button id="select-color-dodgerblue" type="button" class="btn color-item color-dodgerblue" value="dodgerblue"></button>
+              <button id="select-color-darkslateblue" type="button" class="btn color-item color-darkslateblue" value="darkslateblue"></button>
+              <script type="module">
+                import { Dom } from '/assets/js/dom.js';
+                $('#color-select-menu').children().each((index, element) => {
+                  $(element).on('click', () => { Dom.selectSpriteColor($(element).val()); })
+                });
+              </script>
+            </div>
             <div id="modal-add-sprite-alert" class="alert alert-danger alert-sm mt-3 mb-1" role="alert" hidden>Alert message.</div>
           </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button id="modal-add-sprite-submit" type="submit" class="btn btn-primary">Create</button>
           </div>
+
         </div>
       </div>
     </div>

@@ -1,5 +1,10 @@
 {
     "": {
+        "Hidden": {
+            "source": "hidden.png",
+            "width": 1,
+            "height": 1
+        },
         "Chess": {
             "source": "DDM/6x6-EndGame.jpg",
             "width": 8,
