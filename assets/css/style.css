@@ -135,7 +135,7 @@ button.main {
 }
 
 .dropdown-menu-source {
-  max-height: 200px;
+  max-height: 300px;
   width: 100%;
   overflow-y: auto;
 }
