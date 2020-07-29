@@ -178,24 +178,23 @@ export function editorAddTileButtonClicked() {
       } else if (width > editor.map.width || height > editor.map.height) {
         Dom.displayAddSpriteAlert('Tile is too large to fit on map.');
       } else {
-        $.ajax({
-          url: source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/tiles/" + source)),
-          type: 'HEAD',
-          error: () => { 
-            Dom.displayAddSpriteAlert('Image does not exist'); 
-          },
-          success: () => { 
-            editor.replaceTile({
-              source: source,
-              top: 0,
-              left: 0, 
-              width: width,
-              height: height,
-              flip: false,
-              rotate: 0
-            }, 'tile-' + Date.now());
-            Dom.closeAddSpriteWindow();
-          }
+        let virtualImage = $("<img></img>").attr("src", source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/tiles/" + source)));
+        virtualImage.on('error', () => {
+          Dom.displayAddSpriteAlert('Image does not exist'); 
+          virtualImage.remove();
+        });
+        virtualImage.on('load', () => {
+          editor.replaceTile({
+            source: source,
+            top: 0,
+            left: 0, 
+            width: width,
+            height: height,
+            flip: false,
+            rotate: 0
+          }, 'tile-' + Date.now());
+          Dom.closeAddSpriteWindow();
+          virtualImage.remove();
         });
       }
     });
@@ -216,26 +215,25 @@ export function editorAddSpriteButtonClicked() {
       } else if (width > editor.map.width || height > editor.map.height) {
         Dom.displayAddSpriteAlert('Sprite is too large to fit on map.');
       } else {
-        $.ajax({
-          url: source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/sprites/" + source)),
-          type: 'HEAD',
-          error: () => { 
-            Dom.displayAddSpriteAlert('Image does not exist'); 
-          },
-          success: () => { 
-            let sprite = {
-              source: source,
-              top: 0,
-              left: 0, 
-              width: width,
-              height: height,
-              flip: false,
-              rotate: 0
-            }
-            if (color !== null) sprite.color = color;
-            editor.replaceSprite(sprite, 'sprite-' + Date.now());
-            Dom.closeAddSpriteWindow();
+        let virtualImage = $("<img></img>").attr("src", source.startsWith("http:")? source: (source.startsWith("https:")? source: ("assets/images/sprites/" + source)));
+        virtualImage.on('error', () => {
+          Dom.displayAddSpriteAlert('Image does not exist'); 
+          virtualImage.remove();
+        });
+        virtualImage.on('load', () => { 
+          let sprite = {
+            source: source,
+            top: 0,
+            left: 0, 
+            width: width,
+            height: height,
+            flip: false,
+            rotate: 0
           }
+          if (color !== null) sprite.color = color;
+          editor.replaceSprite(sprite, 'sprite-' + Date.now());
+          Dom.closeAddSpriteWindow();
+          virtualImage.remove();
         });
       }
     });
