@@ -171,6 +171,15 @@ export class Editor {
     this.makeClickable(rotateButton, () => { this.rotateTile(element.data('id')); });
     menu.append(rotateButton);
 
+    let duplicateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+        + '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy">'
+        + '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>'
+        + '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>'
+        + '</svg>'
+        + '</button>');
+    this.makeClickable(duplicateButton, () => { this.cloneElement(element.data('id')); });
+    menu.append(duplicateButton);
+
     let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1">'
         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>'
@@ -209,6 +218,15 @@ export class Editor {
         + '</button>');
     this.makeClickable(rotateButton, () => { this.rotateSprite(element.data('id')); });
     menu.append(rotateButton);
+
+    let duplicateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+        + '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy">'
+        + '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>'
+        + '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>'
+        + '</svg>'
+        + '</button>');
+    this.makeClickable(duplicateButton, () => { this.cloneElement(element.data('id')); });
+    menu.append(duplicateButton);
 
     let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1">'
         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
@@ -268,8 +286,8 @@ export class Editor {
       $('#' + id).remove();
     } else {
       this.map.tiles[id] = tile;
-      this.lastNewElement = id;
     }
+    this.lastNewElement = id;
     this.renderTile(tile, id, showMenu);
   }
 
@@ -282,14 +300,16 @@ export class Editor {
       $('#' + id).remove();
     } else {
       this.map.sprites[id] = sprite;
-      this.lastNewElement = id;
     }
+    this.lastNewElement = id;
     this.renderSprite(sprite, id, showMenu);
   }
 
   cloneElement(id, left, top) {
     if (id in this.map.tiles) {
       let original = this.map.tiles[id];
+      if (typeof left === 'undefined') left = original.left;
+      if (typeof top === 'undefined') top = original.top;
       let clone = {
         source: original.source,
         top: top,
@@ -302,6 +322,8 @@ export class Editor {
       this.replaceTile(clone, 'tile-' + Date.now());
     } else if (id in this.map.sprites) {
       let original = this.map.sprites[id];
+      if (typeof left === 'undefined') left = original.left;
+      if (typeof top === 'undefined') top = original.top;
       let clone = {
         source: original.source,
         top: top,
