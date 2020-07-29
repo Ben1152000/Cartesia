@@ -263,5 +263,13 @@
         "Orc Mage": {
             "source": "TC/orc/sorcerer-male.webp", "width": 1, "height": 1
         }
+    },
+    "Kaster": {
+        "Edith": {"source": "Kaster/Gramgby.png", "width": 1, "height": 1},
+        "Fumbledore": {"source": "Kaster/Fugnblemore.png", "width": 1, "height": 1},
+        "Grimrall": {"source": "Kaster/Gimball.png", "width": 1, "height": 1},
+        "Hobart": {"source": "Kaster/Hornbart.png", "width": 1, "height": 1},
+        "Khadim": {"source": "default.jpg", "width": 1, "height": 1},
+        "Tiff": {"source": "Kaster/Differtarius-cropped.png", "width": 1, "height": 1}
     }
 }

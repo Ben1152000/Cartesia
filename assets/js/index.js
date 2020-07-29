@@ -274,3 +274,13 @@ export function feelingLucky() {
       'sprite-lucky-' + Date.now()
     );
 }
+
+// Display confirmation window on reload:
+window.onload = () => {
+  window.addEventListener("beforeunload", (event) => {
+    if (!$('#grid').is(':visible')) return undefined;
+    var message = 'Are you sure you want to leave?\n Your changes will be lost.';
+    (event || window.event).returnValue = message; //Gecko + IE
+    return message; //Gecko + Webkit, Safari, Chrome etc.
+  });
+};

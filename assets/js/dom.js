@@ -219,6 +219,10 @@ export class Dom {
     $(document.body).append(toast);
   }
 
+  static isFullscreenEnabled() {
+    return (!window.screenTop && !window.screenY);
+  }
+
 }
 
 

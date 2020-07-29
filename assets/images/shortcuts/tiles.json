@@ -1,22 +1,47 @@
 {
     "": {
-        "Hidden": {
-            "source": "hidden.png",
-            "width": 1,
-            "height": 1
-        },
-        "Chess": {
-            "source": "DDM/6x6-EndGame.jpg",
-            "width": 8,
-            "height": 8
-        }
+        "Hidden": {"source": "hidden.png", "width": 1, "height": 1},
+        "Chess": {"source": "DDM/6x6-EndGame.jpg", "width": 8, "height": 8}
+    },
+    "Dungeon Tiles": {
+        "Bars (2x1)": {"source": "DT1/2x1_Bars.jpg", "width": 2, "height": 1}, 
+        "Cave (4x8)": {"source": "DT1/4x8_Cave.jpg", "width": 4, "height": 8}, 
+        "Crevasse (4x2)": {"source": "DT1/4x2_Crevasse.jpg", "width": 4, "height": 2}, 
+        "Crevasse (8x2)": {"source": "DT1/8x2_Crevasse.jpg", "width": 8, "height": 2}, 
+        "Trap Door (1x1)": {"source": "DT1/1x1_TrapDoor.jpg", "width": 1, "height": 1}, 
+        "Single Door (2x1)": {"source": "DT1/2x1_SingleDoor.jpg", "width": 2, "height": 1}, 
+        "Double Doors (2x1)": {"source": "DT1/2x1_DoubleDoors.jpg", "width": 2, "height": 1}, 
+        "Fountain (4x4)": {"source": "DT1/4x4_WaterFountain.jpg", "width": 4, "height": 4}, 
+        "Ground (2x2)": {"source": "DT1/2x2_Ground.jpg", "width": 2, "height": 2}, 
+        "Obelisk (2x2)": {"source": "DT1/2x2_Obelisk.jpg", "width": 2, "height": 2}, 
+        "Pit (2x2)": {"source": "DT1/2x2_Pit.jpg", "width": 2, "height": 2}, 
+        "Pit (4x4)": {"source": "DT1/4x4_Pit.jpg", "width": 4, "height": 4}, 
+        "Platform (4x4)": {"source": "DT1/4x4_TileRaised.jpg", "width": 4, "height": 4}, 
+        "Pool (4x4)": {"source": "DT1/4x4_Pool.jpg", "width": 4, "height": 4}, 
+        "Rocks (2x1)": {"source": "DT1/2x1_Rocks.jpg", "width": 2, "height": 1}, 
+        "Ruins (4x8)": {"source": "DT1/4x8_Ruins.jpg", "width": 4, "height": 8}, 
+        "Runes (2x2)": {"source": "DT1/2x2_Rune.jpg", "width": 2, "height": 2}, 
+        "Runes (4x4)": {"source": "DT1/4x4_TileRunic.jpg", "width": 4, "height": 4}, 
+        "Spiral Stairs (2x2)": {"source": "DT1/2x2_SpiralStairs.jpg", "width": 2, "height": 2}, 
+        "Stairs (4x2)": {"source": "DT1/4x2_Stairs.jpg", "width": 4, "height": 2}, 
+        "Stairs Landing (4x2)": {"source": "DT1/4x2_StairsLanding.jpg", "width": 4, "height": 2}, 
+        "Statue (1x1)": {"source": "DT1/1x1_Statue.jpg", "width": 1, "height": 1}, 
+        "Dragon Statues (8x2)": {"source": "DT1/8x2_DragonStatues.jpg", "width": 8, "height": 2}, 
+        "Shop (8x10)": {"source": "DT1/8x10_Shop.jpg", "width": 8, "height": 10}, 
+        "Tavern (8x10)": {"source": "DT1/8x10_Tavern.jpg", "width": 8, "height": 10},
+        "Tile (1x1)": {"source": "DT1/1x1_Tile.jpg", "width": 1, "height": 1},
+        "Tile (2x1)": {"source": "DT1/2x1_Tile.jpg", "width": 2, "height": 1},
+        "Tile (2x2)": {"source": "DT1/2x2_Tile.jpg", "width": 2, "height": 2},
+        "Tile (4x2)": {"source": "DT1/4x2_Tile.jpg", "width": 4, "height": 2},
+        "Tile (4x4)": {"source": "DT1/4x4_Tile.jpg", "width": 4, "height": 4},
+        "Tile (4x8)": {"source": "DT1/4x8_Tile.jpg", "width": 4, "height": 8},
+        "Tile (8x2)": {"source": "DT1/8x2_Tile.jpg", "width": 8, "height": 2},
+        "Tile (8x10)": {"source": "DT1/8x10_Tile.jpg", "width": 8, "height": 10},
+        "Treasure (4x4)": {"source": "DT1/4x4_Treasure.jpg", "width": 4, "height": 4}, 
+        "Wall (4x2)": {"source": "DT1/4x2_Wall.jpg", "width": 4, "height": 2}
     },
     "Maps": {
-        "Blue Dragon Lair": {
-            "source": "BTL/BlueDragonLair.jpg", "width": 34, "height": 22
-        },
-        "Market Square": {
-            "source": "BTL/MarketSquare.jpg", "width": 30, "height": 21
-        }
+        "Blue Dragon Lair": {"source": "BTL/BlueDragonLair.jpg", "width": 34, "height": 22},
+        "Market Square": {"source": "BTL/MarketSquare.jpg", "width": 30, "height": 21}
     }
 }
