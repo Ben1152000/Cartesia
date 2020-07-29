@@ -6,6 +6,7 @@ export class Editor {
   constructor() {
     this.gridElement = document.getElementById("grid");
     this.grid = $('#grid');
+    this.lastNewElement = null;
     this.reset();
   }
 
@@ -56,8 +57,11 @@ export class Editor {
     });
     for (var row = 0; row < this.map.height; row++) {
       for (var column = 0; column < this.map.width; column++) {
-        this.grid.append($('<div id="cell-' + parseInt(row) + '-' + parseInt(column) + '" class="cell cell-editor">'
-              + parseInt(this.map.width * row + column) + '</div>'));
+        let cell = $('<div id="cell-' + parseInt(row) + '-' + parseInt(column) + '" class="cell cell-editor">'
+            + parseInt(this.map.width * row + column) + '</div>');
+        cell.data('left', parseInt(column)); cell.data('top', parseInt(row));
+        cell.on('dblclick', () => { this.cloneElement(this.lastNewElement, cell.data('left'), cell.data('top')); });
+        this.grid.append(cell);
       }
     }
   }
@@ -246,6 +250,7 @@ export class Editor {
       $('#' + id).remove();
     } else {
       this.map.tiles[id] = tile;
+      this.lastNewElement = id;
     }
     this.renderTile(tile, id, showMenu);
   }
@@ -259,8 +264,38 @@ export class Editor {
       $('#' + id).remove();
     } else {
       this.map.sprites[id] = sprite;
+      this.lastNewElement = id;
     }
     this.renderSprite(sprite, id, showMenu);
+  }
+
+  cloneElement(id, left, top) {
+    if (id in this.map.tiles) {
+      let original = this.map.tiles[id];
+      let clone = {
+        source: original.source,
+        top: top,
+        left: left, 
+        width: original.width,
+        height: original.height,
+        flip: original.flip,
+        rotate: original.rotate
+      };
+      this.replaceTile(clone, 'tile-' + Date.now());
+    } else if (id in this.map.sprites) {
+      let original = this.map.sprites[id];
+      let clone = {
+        source: original.source,
+        top: top,
+        left: left, 
+        width: original.width,
+        height: original.height,
+        flip: original.flip,
+        rotate: original.rotate
+      };
+      if ('color' in original) clone.color = original.color;
+      this.replaceSprite(clone, 'sprite-' + Date.now());
+    }
   }
 
   // This function encapsulates the behavior of draggable sprites.
