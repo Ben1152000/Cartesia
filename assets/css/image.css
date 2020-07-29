@@ -100,6 +100,7 @@ img.sprite-frame {
 
 img.frame-maroon {
   border: 8px solid maroon;
+  background-color: mistyrose;
 }
 
 .color-maroon {
@@ -108,6 +109,7 @@ img.frame-maroon {
 
 img.frame-chocolate {
   border: 8px solid chocolate;
+  background-color: blanchedalmond;
 }
 
 .color-chocolate {
@@ -116,6 +118,7 @@ img.frame-chocolate {
 
 img.frame-goldenrod {
   border: 8px solid goldenrod;
+  background-color: #fff5cd;
 }
 
 .color-goldenrod {
@@ -124,6 +127,7 @@ img.frame-goldenrod {
 
 img.frame-forestgreen {
   border: 8px solid forestgreen;
+  background-color: honeydew;
 }
 
 .color-forestgreen {
@@ -131,17 +135,28 @@ img.frame-forestgreen {
 }
 
 img.frame-dodgerblue {
-  border: 8px solid dodgerblue;
+  border: 8px solid royalblue;
+  background-color: #d8eaff;
 }
 
 .color-dodgerblue {
-  background-color: dodgerblue;
+  background-color: royalblue;
 }
 
 img.frame-darkslateblue {
   border: 8px solid darkslateblue;
+  background-color: lavender;
 }
 
 .color-darkslateblue {
   background-color: darkslateblue;
+}
+
+img.frame-black {
+  border: 8px solid #2e2e2e;
+  background-color: gainsboro;
+}
+
+.color-black {
+  background-color: #2e2e2e;
 }
