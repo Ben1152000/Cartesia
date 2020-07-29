@@ -1,6 +1,7 @@
 {
     "": {
-        "Default": {"source": "default.jpg", "width": 1, "height": 1}
+        "Default": {"source": "default.jpg", "width": 1, "height": 1},
+        "Hidden": {"source": "hidden.png", "width": 1, "height": 1}
     },
     "Human": {
         "Human Barbarian": {
@@ -220,6 +221,9 @@
     "Non-Player Characters": {
         "Black Dragon": {
             "source": "DE/Black Dragon.jpg", "width": 2, "height": 2
+        },
+        "Red Dragon": {
+            "source": "Kaster/RedDragon.jpg", "width": 2, "height": 2
         },
         "Bugbear": {
             "source": "TC/bugbear/mage.webp", "width": 1, "height": 1

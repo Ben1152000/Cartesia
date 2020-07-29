@@ -137,7 +137,7 @@ export function editButtonClicked() {
 }
 
 export function editorNewButtonClicked() {
-  Dom.displayNewMapWindow((width, height) => { 
+  Dom.displayNewMapWindow('Create a new map:', 'Create', (width, height) => { 
     if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
       Dom.displayNewMapAlert('Width must be a positive integer.');
     } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
@@ -162,6 +162,29 @@ export function editorNewButtonClicked() {
       }
     }
   });
+}
+
+export function editorResizeButtonClicked() {
+  if (editor.map.name === null) {
+    Dom.displayAlertWindow('Error', 'You must create or upload a map before resizing.');
+  } else {
+    Dom.displayNewMapWindow('Resize map:', 'Resize', (width, height) => { 
+      if (typeof width !== 'number' || !Number.isInteger(width) || width < 1) {
+        Dom.displayNewMapAlert('Width must be a positive integer.');
+      } else if (typeof height !== 'number' || !Number.isInteger(height) || height < 1) {
+        Dom.displayNewMapAlert('Height must be a positive integer.');
+      } else if (width > 9999) {
+        Dom.displayNewMapAlert('There is no way you need that much space.');
+      } else if (height > 9999) {
+        Dom.displayNewMapAlert('There is no way you need that much space.');
+      } else if (width * height > 65536) {
+        Dom.displayNewMapAlert('There is no way you need that much space.');
+      } else {
+        Dom.closeNewMapWindow();
+        editor.resize(width, height);
+      }
+    });
+  }
 }
 
 export function editorAddTileButtonClicked() {

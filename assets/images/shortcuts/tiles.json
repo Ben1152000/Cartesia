@@ -38,6 +38,7 @@
         "Tile (8x2)": {"source": "DT1/8x2_Tile.jpg", "width": 8, "height": 2},
         "Tile (8x10)": {"source": "DT1/8x10_Tile.jpg", "width": 8, "height": 10},
         "Treasure (4x4)": {"source": "DT1/4x4_Treasure.jpg", "width": 4, "height": 4}, 
+        "Wall (2x1)": {"source": "DT1/4x2_Wall.jpg", "width": 2, "height": 1},
         "Wall (4x2)": {"source": "DT1/4x2_Wall.jpg", "width": 4, "height": 2}
     },
     "Maps": {

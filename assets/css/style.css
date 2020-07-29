@@ -56,10 +56,6 @@ div.cell-editor {
 
 .tile-edit {
   cursor: move;
-  position: absolute;
-  z-index: 1;
-  left: -1px;
-  top: -1px;
 }
 
 .sprite {

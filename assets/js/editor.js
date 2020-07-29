@@ -34,6 +34,12 @@ export class Editor {
     };
   }
 
+  resize(width, height) {
+    this.map.width = width;
+    this.map.height = height;
+    this.render();
+  }
+
   clear() {
     this.gridElement.querySelectorAll('*').forEach(node => node.remove());
   }
@@ -77,8 +83,14 @@ export class Editor {
   renderTile(tile, id, showMenu) {
     let cell = $('#cell-' + parseInt(tile.top) + "-" + parseInt(tile.left));
     if (cell) {
-      let element = $('<div id="' + id + '" class="tile-edit"></div>');
+      let element = $('<div class="tile tile-edit"></div>');
+      element.attr('id', id);
       element.data('type', 'tile');
+      element.data('id', id);
+      element.css({
+        width: (tile.rotate % 2)? tile.height * scale + "px": tile.width * scale + "px", 
+        height: (tile.rotate % 2)? tile.width * scale + "px": tile.height * scale + "px"
+      });
 
       let image = $('<img class="crispy transform"></img>');
       // Check if source is external image:
@@ -104,8 +116,14 @@ export class Editor {
   renderSprite(sprite, id, showMenu) {
     let cell = $('#cell-' + parseInt(sprite.top) + "-" + parseInt(sprite.left));
     if (cell) {
-      let element = $('<div id="' + id + '" class="sprite"></div>');
+      let element = $('<div class="sprite"></div>');
+      element.attr('id', id);
       element.data('type', 'sprite');
+      element.data('id', id);
+      element.css({
+        width: (sprite.rotate % 2)? sprite.height * scale + "px": sprite.width * scale + "px", 
+        height: (sprite.rotate % 2)? sprite.width * scale + "px": sprite.height * scale + "px"
+      });
 
       let image = $('<img class="crispy transform"></img>');
       if ('color' in sprite) image.addClass('sprite-frame frame-' + sprite.color);
@@ -141,7 +159,7 @@ export class Editor {
         + '<path fill-rule="evenodd" d="M10.354 12.354a.5.5 0 0 0 0-.708l-2-2a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 .708.708L8 10.707l1.646 1.647a.5.5 0 0 0 .708 0z"/>'
         + '</svg>'
         + '</button>');
-    this.makeClickable(flipButton, () => { this.flipTile(element.attr('id')); });
+    this.makeClickable(flipButton, () => { this.flipTile(element.data('id')); });
     menu.append(flipButton);
 
     let rotateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
@@ -150,7 +168,7 @@ export class Editor {
         + '<path fill-rule="evenodd" d="M8.147.146a.5.5 0 0 1 .707 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 1 1-.707-.708L10.293 3 8.147.854a.5.5 0 0 1 0-.708z"/>'
         + '</svg>'
         + '</button>');
-    this.makeClickable(rotateButton, () => { this.rotateTile(element.attr('id')); });
+    this.makeClickable(rotateButton, () => { this.rotateTile(element.data('id')); });
     menu.append(rotateButton);
 
     let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1">'
@@ -159,7 +177,7 @@ export class Editor {
         + '<path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>'
         + '</svg>'
         + '</button>');
-    this.makeClickable(deleteButton, () => { this.deleteTile(element.attr('id')); });
+    this.makeClickable(deleteButton, () => { this.deleteTile(element.data('id')); });
     menu.append(deleteButton);
 
     element.on('mouseover', () => { menu.removeAttr('hidden'); });
@@ -180,7 +198,7 @@ export class Editor {
         + '<path fill-rule="evenodd" d="M10.354 12.354a.5.5 0 0 0 0-.708l-2-2a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 .708.708L8 10.707l1.646 1.647a.5.5 0 0 0 .708 0z"/>'
         + '</svg>'
         + '</button>');
-    this.makeClickable(flipButton, () => { this.flipSprite(element.attr('id')); });
+    this.makeClickable(flipButton, () => { this.flipSprite(element.data('id')); });
     menu.append(flipButton);
 
     let rotateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
@@ -189,7 +207,7 @@ export class Editor {
         + '<path fill-rule="evenodd" d="M8.147.146a.5.5 0 0 1 .707 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 1 1-.707-.708L10.293 3 8.147.854a.5.5 0 0 1 0-.708z"/>'
         + '</svg>'
         + '</button>');
-    this.makeClickable(rotateButton, () => { this.rotateSprite(element.attr('id')); });
+    this.makeClickable(rotateButton, () => { this.rotateSprite(element.data('id')); });
     menu.append(rotateButton);
 
     let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1">'
@@ -198,7 +216,7 @@ export class Editor {
         + '<path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>'
         + '</svg>'
         + '</button>');
-    this.makeClickable(deleteButton, () => { this.deleteSprite(element.attr('id')); });
+    this.makeClickable(deleteButton, () => { this.deleteSprite(element.data('id')); });
     menu.append(deleteButton);
 
     element.on('mouseover', () => { menu.removeAttr('hidden'); });
@@ -320,9 +338,9 @@ export class Editor {
         let coords = this.getGridCoords(element.offset());
         let sprite;
         if (element.data('type') === 'tile') {
-          sprite = this.map.tiles[element.attr('id')];
+          sprite = this.map.tiles[element.data('id')];
         } else if (element.data('type') === 'sprite') {
-          sprite = this.map.sprites[element.attr('id')];
+          sprite = this.map.sprites[element.data('id')];
         } else {
           throw 'Invalid element type';
         }
@@ -333,13 +351,13 @@ export class Editor {
         $(document).off('mouseup');
         $(document).off('mousemove');
         if (element.data('type') === 'tile') {
-          this.map.tiles[element.attr('id')].left = column;
-          this.map.tiles[element.attr('id')].top = row;
-          this.replaceTile(this.map.tiles[element.attr('id')], element.attr('id'));
+          this.map.tiles[element.data('id')].left = column;
+          this.map.tiles[element.data('id')].top = row;
+          this.replaceTile(this.map.tiles[element.data('id')], element.data('id'));
         } else if (element.data('type') === 'sprite') {
-          this.map.sprites[element.attr('id')].left = column;
-          this.map.sprites[element.attr('id')].top = row;
-          this.replaceSprite(this.map.sprites[element.attr('id')], element.attr('id'));
+          this.map.sprites[element.data('id')].left = column;
+          this.map.sprites[element.data('id')].top = row;
+          this.replaceSprite(this.map.sprites[element.data('id')], element.data('id'));
         } else {
           throw 'Invalid element type';
         }

@@ -90,9 +90,11 @@ export class Dom {
     $('#modal-input-alert').removeAttr('hidden').text(message);
   }
 
-  static displayNewMapWindow(callback) {
+  static displayNewMapWindow(title, action, callback) {
     $('#modal-new-submit').off('click');
     $('#modal-new-alert').attr('hidden', '');
+    $('#modal-new-title').text(title);
+    $('#modal-new-submit').text(action);
     $('#modal-new-submit').on('click', (event) => {
       console.log('form submitted');
       event.preventDefault();
