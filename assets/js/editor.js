@@ -4,7 +4,6 @@ const scale = 128; // size of cell in pixels
 export class Editor {
 
   constructor() {
-    this.gridElement = document.getElementById("grid");
     this.grid = $('#grid');
     this.lastNewElement = null;
     this.reset();
@@ -41,7 +40,7 @@ export class Editor {
   }
 
   clear() {
-    this.gridElement.querySelectorAll('*').forEach(node => node.remove());
+    this.grid.empty();
   }
 
   render() {
@@ -70,14 +69,6 @@ export class Editor {
         this.grid.append(cell);
       }
     }
-  }
-
-  // Gets grid coordinates on the map based on screen position.
-  getGridCoords(position) {
-    return {
-      left: (this.gridElement.scrollLeft + position.left - this.gridElement.offsetLeft) / scale,
-      top: (this.gridElement.scrollTop + position.top - this.gridElement.offsetTop) / scale
-    };
   }
 
   renderTile(tile, id, showMenu) {
@@ -345,19 +336,28 @@ export class Editor {
     element.on('mousedown', (event) => {
       event = event || window.event;
       event.preventDefault();
-      initial = {left: event.clientX + 1, top: event.clientY + 1};
+      initial = {left: event.clientX, top: event.clientY};
 
       $(document).on('mousemove', (event) => {
         event = event || window.event;
         event.preventDefault();
         element.css({
-          left: (event.clientX - initial.left) + "px", 
-          top: (event.clientY - initial.top) + "px"
+          left: (event.clientX - initial.left) * this.grid.css('--grid-scale') - 1 + "px", 
+          top: (event.clientY - initial.top) * this.grid.css('--grid-scale') - 1 + "px"
         });
+        console.log(element.css('left'), element.css('top'));
       });
 
       $(document).on('mouseup', (event) => {
-        let coords = this.getGridCoords(element.offset());
+        let gridElement = document.getElementById("grid");
+        let coords = {
+          left: (gridElement.scrollLeft + (element.offset().left - gridElement.offsetLeft) * this.grid.css('--grid-scale')) / scale,
+          top: (gridElement.scrollTop + (element.offset().top - gridElement.offsetTop) * this.grid.css('--grid-scale')) / scale
+        };
+        console.log('scroll:', gridElement.scrollLeft, gridElement.scrollTop);
+        console.log('offset:', gridElement.offsetLeft, gridElement.offsetTop);
+        console.log('element:', element.offset().left, element.offset().top);
+        console.log(coords.left, coords.top);
         let sprite;
         if (element.data('type') === 'tile') {
           sprite = this.map.tiles[element.data('id')];

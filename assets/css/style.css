@@ -23,12 +23,19 @@ body {
   max-height: 24rem;
 }
 
-.grid {
+#grid {
+  position: relative;
   overflow-y: scroll;
   display: grid;
-  background-color: papayawhip;
+  --grid-scale: 2;
+  transform: scale(calc(1 / var(--grid-scale))) translate(calc(50% * (1 - var(--grid-scale))), calc(50% * (1 - var(--grid-scale))));
+  width: calc(100vw * var(--grid-scale));
+  height: calc((100vh - 56px) * var(--grid-scale));
 }
 
+.grid {
+  background-color: papayawhip;
+}
 
 .editor {
   background-color: cornflowerblue;
@@ -78,7 +85,7 @@ div.cell-editor {
 }
 
 #brand {
-  cursor: pointer;
+  cursor: help;
 }
 
 .btn-separator:after {

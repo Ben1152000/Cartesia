@@ -5,6 +5,7 @@ export class Grid {
 
   constructor(movementCallback) {
     this.gridElement = document.getElementById("grid");
+    this.grid = $('#grid');
     this.settings = {
       editing: false
     };
@@ -57,14 +58,6 @@ export class Grid {
         this.gridElement.appendChild(cell);
       }
     }
-  }
-
-  // Gets grid coordinates on the map based on screen position.
-  getGridCoords(position) {
-    return {
-      left: (this.gridElement.scrollLeft + position.left - this.gridElement.offsetLeft) / scale,
-      top: (this.gridElement.scrollTop + position.top - this.gridElement.offsetTop) / scale
-    };
   }
 
   renderTile(tile, id) {
@@ -143,7 +136,7 @@ export class Grid {
     function dragMouseDown(event) {
       event = event || window.event;
       event.preventDefault();
-      initial = {left: event.clientX + 1, top: event.clientY + 1};
+      initial = {left: event.clientX, top: event.clientY};
       document.onmouseup = closeDragElement;
       document.onmousemove = elementDrag; // call a function whenever the cursor moves
     }
@@ -151,12 +144,15 @@ export class Grid {
     function elementDrag(event) {
       event = event || window.event;
       event.preventDefault();
-      element.style.left = (event.clientX - initial.left) + "px";
-      element.style.top = (event.clientY - initial.top) + "px";
+      element.style.left = (event.clientX - initial.left) * grid.grid.css('--grid-scale') - 1 + "px";
+      element.style.top = (event.clientY - initial.top) * grid.grid.css('--grid-scale') - 1 + "px";
     }
 
     function closeDragElement() {
-      var gridCoords = grid.getGridCoords(element.getBoundingClientRect());
+      var gridCoords = {
+        left: (grid.gridElement.scrollLeft + (element.getBoundingClientRect().left - grid.gridElement.offsetLeft) * grid.grid.css('--grid-scale')) / scale,
+        top: (grid.gridElement.scrollTop + (element.getBoundingClientRect().top - grid.gridElement.offsetTop) * grid.grid.css('--grid-scale')) / scale
+      };
       var column = Math.max(0, Math.min(Math.round(gridCoords.left), grid.map.width - Math.round(element.width / scale)));
       var row = Math.max(0, Math.min(Math.round(gridCoords.top), grid.map.height - Math.round(element.height / scale)));
       grid.map.sprites[element.id].left = column;
