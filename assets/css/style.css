@@ -27,7 +27,7 @@ body {
   position: relative;
   overflow-y: scroll;
   display: grid;
-  --grid-scale: 2;
+  --grid-scale: 1;
   transform: scale(calc(1 / var(--grid-scale))) translate(calc(50% * (1 - var(--grid-scale))), calc(50% * (1 - var(--grid-scale))));
   width: calc(100vw * var(--grid-scale));
   height: calc((100vh - 56px) * var(--grid-scale));
@@ -68,7 +68,7 @@ div.cell-editor {
 .sprite {
   cursor: move;
   position: absolute;
-  z-index: 2;
+  z-index: 500;
   left: -1px;
   top: -1px;
 }
@@ -81,7 +81,10 @@ div.cell-editor {
 }
 
 .sprite-menu-button {
-  padding: 0px 4px;
+  padding: 0rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-top: 0.1rem;
 }
 
 #brand {
@@ -153,4 +156,14 @@ button.main {
   width: 2.1rem;
   padding: 0rem;
   color: white;
+}
+
+.info-box {
+  padding: 0.15rem 0.6rem;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-bottom: 0rem;
 }

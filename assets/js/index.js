@@ -13,13 +13,14 @@ export function connectToServer(type) {
     if (type === "host") { 
       io.host(id, {
 
-        success: (id) => {
+        success: (id, players) => {
           grid = new Grid((packet) => {
             io.move(packet);
           });
           io.push(grid.map);
           Dom.closeNumericInputWindow();
-          Dom.setViewMode('host', {id: id, editing: grid.editing})
+          Dom.setViewMode('host', {id: id, editing: grid.editing});
+          Dom.setPlayerCount(players);
         },
 
         failure: (message) => {
@@ -30,9 +31,15 @@ export function connectToServer(type) {
           grid.replaceSprite(packet.sprite, packet.id);
         },
 
-        join: () => {
+        join: (players) => {
           io.push(grid.map);
           Dom.makeToast("Player joined", 1.5);
+          Dom.setPlayerCount(players);
+        },
+
+        leave: (players) => {
+          Dom.makeToast("Player left", 1.5);
+          Dom.setPlayerCount(players);
         },
 
         settings: (changed) => {
@@ -50,13 +57,13 @@ export function connectToServer(type) {
     else if (type === "guest") { 
       io.join(id, {
 
-        success: (id) => {
+        success: (id, players) => {
           grid = new Grid((packet) => {
             io.move(packet);
           });
-          io.push(grid.map);
           Dom.closeNumericInputWindow();
           Dom.setViewMode('guest', {id: id});
+          Dom.setPlayerCount(players);
         },
 
         failure: (message) => {
@@ -74,6 +81,14 @@ export function connectToServer(type) {
         close: () => {
           disconnectFromServer();
           Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
+        },
+
+        join: (players) => {
+          Dom.setPlayerCount(players);
+        },
+
+        leave: (players) => {
+          Dom.setPlayerCount(players);
         },
 
         settings: (changed) => {

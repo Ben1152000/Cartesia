@@ -214,6 +214,11 @@ export class Dom {
     });
   }
 
+  static setPlayerCount(players) {
+    $('#player-label-host').text(players);
+    $('#player-label-guest').text(players);
+  }
+
   static makeToast(message, delay) {
     var toast = $('<div class="quizno"></div>');
     toast.text(message);

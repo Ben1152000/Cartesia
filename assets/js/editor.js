@@ -82,6 +82,11 @@ export class Editor {
         width: (tile.rotate % 2)? tile.height * scale + "px": tile.width * scale + "px", 
         height: (tile.rotate % 2)? tile.width * scale + "px": tile.height * scale + "px"
       });
+      if ('tile-ordering' in this.map) {
+        if (this.map['tile-ordering'].includes(id)) {
+          element.css({'z-index': Math.min(499, 2 + this.map['tile-ordering'].indexOf(id))});
+        }
+      }
 
       let image = $('<img class="crispy transform"></img>');
       // Check if source is external image:
@@ -171,6 +176,15 @@ export class Editor {
     this.makeClickable(duplicateButton, () => { this.cloneElement(element.data('id')); });
     menu.append(duplicateButton);
 
+    let moveToFrontButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+        + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-bar-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
+        + '<path fill-rule="evenodd" d="M11.354 5.854a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L8 3.207l2.646 2.647a.5.5 0 0 0 .708 0z"/>'
+        + '<path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-1 0v6.5a.5.5 0 0 0 .5.5zm-4.8 1.6c0-.22.18-.4.4-.4h8.8a.4.4 0 0 1 0 .8H3.6a.4.4 0 0 1-.4-.4z"/>'
+        + '</svg>'
+        + '</button>');
+    this.makeClickable(moveToFrontButton, () => { this.moveTileToFront(element.data('id')); });
+    menu.append(moveToFrontButton);
+
     let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1">'
         + '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>'
@@ -256,6 +270,7 @@ export class Editor {
 
   deleteTile(id) {
     if (id in this.map.tiles) {
+      this.removeTileFromOrdering(id);
       delete this.map.tiles[id];
       $('#' + id).remove();
     }
@@ -310,6 +325,7 @@ export class Editor {
         flip: original.flip,
         rotate: original.rotate
       };
+      this.replaceTile(this.map.tiles[id], id, true);
       this.replaceTile(clone, 'tile-' + Date.now());
     } else if (id in this.map.sprites) {
       let original = this.map.sprites[id];
@@ -325,7 +341,27 @@ export class Editor {
         rotate: original.rotate
       };
       if ('color' in original) clone.color = original.color;
+      this.replaceSprite(this.map.sprites[id], id, true);
       this.replaceSprite(clone, 'sprite-' + Date.now());
+    }
+  }
+
+  moveTileToFront(id) {
+    if (!(id in this.map.tiles)) {
+      throw 'Tile id does not exist';
+    } else {
+      if (!('tile-ordering' in this.map)) this.map['tile-ordering'] = [];
+      this.removeTileFromOrdering(id);
+      this.map['tile-ordering'].push(id);
+    }
+    this.render();
+  }
+
+  removeTileFromOrdering(id) {
+    if ('tile-ordering' in this.map) {
+      let index = this.map['tile-ordering'].indexOf(id);
+      if (index !== -1)
+        this.map['tile-ordering'].splice([index], 1); // remove item
     }
   }
 
@@ -345,7 +381,6 @@ export class Editor {
           left: (event.clientX - initial.left) * this.grid.css('--grid-scale') - 1 + "px", 
           top: (event.clientY - initial.top) * this.grid.css('--grid-scale') - 1 + "px"
         });
-        console.log(element.css('left'), element.css('top'));
       });
 
       $(document).on('mouseup', (event) => {
@@ -354,10 +389,6 @@ export class Editor {
           left: (gridElement.scrollLeft + (element.offset().left - gridElement.offsetLeft) * this.grid.css('--grid-scale')) / scale,
           top: (gridElement.scrollTop + (element.offset().top - gridElement.offsetTop) * this.grid.css('--grid-scale')) / scale
         };
-        console.log('scroll:', gridElement.scrollLeft, gridElement.scrollTop);
-        console.log('offset:', gridElement.offsetLeft, gridElement.offsetTop);
-        console.log('element:', element.offset().left, element.offset().top);
-        console.log(coords.left, coords.top);
         let sprite;
         if (element.data('type') === 'tile') {
           sprite = this.map.tiles[element.data('id')];

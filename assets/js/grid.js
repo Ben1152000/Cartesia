@@ -69,6 +69,11 @@ export class Grid {
       image.id = id;
       image.classList.add("tile");
       image.classList.add("crispy");
+      if ('tile-ordering' in this.map) {
+        if (this.map['tile-ordering'].includes(id)) {
+          image.style.zIndex = Math.min(499, 2 + this.map['tile-ordering'].indexOf(id));
+        }
+      }
       // Check if source is external image:
       if (tile.source.startsWith('http:')) image.src = tile.source;
       else if (tile.source.startsWith('https:')) image.src = tile.source;

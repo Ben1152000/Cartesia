@@ -238,12 +238,16 @@
 
       <div id="host-toolbar" hidden>
 
-        <h5 class="nav-item" style="display: inline;">
-          <span class="badge badge-secondary mr-1">
+        <button class="btn btn-dark nav-item info-box mr-1">
+          <p class="info-label">
             Server ID: 
             <span id="server-label-host"></span>
-          </span>
-        </h5>
+          </p>
+          <p class="info-label">
+            Players: 
+            <span id="player-label-host">3</span>
+          </p>
+        </button>
 
         <button id="button-edit-host" class="btn btn-info nav-item mr-1" title="Edit map">
           Edit
@@ -326,12 +330,16 @@
 
       <div id="guest-toolbar" hidden>
 
-        <h5 class="nav-item" style="display: inline;">
-          <span class="badge badge-secondary mx-1">
+        <button class="btn btn-dark nav-item info-box mr-1">
+          <p class="info-label">
             Server ID: 
-            <span id="server-label-guest"></span>
-          </span>
-        </h5>
+            <span id="server-label-guest">#</span>
+          </p>
+          <p class="info-label">
+            Players: 
+            <span id="player-label-guest">#</span>
+          </p>
+        </button>
 
         <button id="button-download-guest" class="btn btn-secondary mr-1" title="Download map">
           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -363,11 +371,14 @@
 
       <div id="editor-toolbar" hidden>
 
-        <h5 class="nav-item" style="display: inline;">
-          <span class="badge badge-secondary mr-1">
-            Edit Mode
-          </span>
-        </h5>
+        <button class="btn btn-dark nav-item info-box mr-1">
+          <p class="info-label">
+            Editor
+          </p>
+          <p class="info-label">
+            Mode
+          </p>
+        </button>
 
         <div class="btn-group nav-item mr-1" role="group">
 
