@@ -148,7 +148,7 @@ export class Editor {
 
     if (showMenu) menu.removeAttr('hidden');
 
-    let flipButton = $('<button class="btn btn-info sprite-menu-button ml-1">'
+    let flipButton = $('<button class="btn btn-info sprite-menu-button ml-1" title="Flip tile">'
         + '<svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-arrows-collapse" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8zm6-7a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V1.5A.5.5 0 0 1 8 1z"/>'
         + '<path fill-rule="evenodd" d="M10.354 3.646a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L8 5.293l1.646-1.647a.5.5 0 0 1 .708 0zM8 15a.5.5 0 0 0 .5-.5V10a.5.5 0 0 0-1 0v4.5a.5.5 0 0 0 .5.5z"/>'
@@ -158,7 +158,7 @@ export class Editor {
     this.makeClickable(flipButton, () => { this.flipTile(element.data('id')); });
     menu.append(flipButton);
 
-    let rotateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+    let rotateButton = $('<button class="btn btn-info sprite-menu-button ml-1" title="Rotate tile">' 
         + '<svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M3.17 6.706a5 5 0 0 1 7.103-3.16.5.5 0 1 0 .454-.892A6 6 0 1 0 13.455 5.5a.5.5 0 0 0-.91.417 5 5 0 1 1-9.375.789z"/>'
         + '<path fill-rule="evenodd" d="M8.147.146a.5.5 0 0 1 .707 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 1 1-.707-.708L10.293 3 8.147.854a.5.5 0 0 1 0-.708z"/>'
@@ -167,7 +167,7 @@ export class Editor {
     this.makeClickable(rotateButton, () => { this.rotateTile(element.data('id')); });
     menu.append(rotateButton);
 
-    let duplicateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+    let duplicateButton = $('<button class="btn btn-info sprite-menu-button ml-1" title="Clone tile">' 
         + '<svg width=".8em" height=".8em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy">'
         + '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>'
         + '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>'
@@ -176,7 +176,7 @@ export class Editor {
     this.makeClickable(duplicateButton, () => { this.cloneElement(element.data('id')); });
     menu.append(duplicateButton);
 
-    let moveToFrontButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+    let moveToFrontButton = $('<button class="btn btn-info sprite-menu-button ml-1" title="Bring tile to front">' 
         + '<svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-arrow-bar-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M11.354 5.854a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L8 3.207l2.646 2.647a.5.5 0 0 0 .708 0z"/>'
         + '<path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-1 0v6.5a.5.5 0 0 0 .5.5zm-4.8 1.6c0-.22.18-.4.4-.4h8.8a.4.4 0 0 1 0 .8H3.6a.4.4 0 0 1-.4-.4z"/>'
@@ -185,7 +185,7 @@ export class Editor {
     this.makeClickable(moveToFrontButton, () => { this.moveTileToFront(element.data('id')); });
     menu.append(moveToFrontButton);
 
-    let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1">'
+    let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1" title="Delete tile">'
         + '<svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>'
         + '<path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>'
@@ -211,7 +211,7 @@ export class Editor {
 
     if (showMenu) menu.removeAttr('hidden');
 
-    let flipButton = $('<button class="btn btn-info sprite-menu-button ml-1">'
+    let flipButton = $('<button class="btn btn-info sprite-menu-button ml-1" title="Flip sprite">'
         + '<svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-arrows-collapse" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8zm6-7a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V1.5A.5.5 0 0 1 8 1z"/>'
         + '<path fill-rule="evenodd" d="M10.354 3.646a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L8 5.293l1.646-1.647a.5.5 0 0 1 .708 0zM8 15a.5.5 0 0 0 .5-.5V10a.5.5 0 0 0-1 0v4.5a.5.5 0 0 0 .5.5z"/>'
@@ -221,7 +221,7 @@ export class Editor {
     this.makeClickable(flipButton, () => { this.flipSprite(element.data('id')); });
     menu.append(flipButton);
 
-    let rotateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+    let rotateButton = $('<button class="btn btn-info sprite-menu-button ml-1" title="Rotate sprite">' 
         + '<svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M3.17 6.706a5 5 0 0 1 7.103-3.16.5.5 0 1 0 .454-.892A6 6 0 1 0 13.455 5.5a.5.5 0 0 0-.91.417 5 5 0 1 1-9.375.789z"/>'
         + '<path fill-rule="evenodd" d="M8.147.146a.5.5 0 0 1 .707 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 1 1-.707-.708L10.293 3 8.147.854a.5.5 0 0 1 0-.708z"/>'
@@ -230,7 +230,7 @@ export class Editor {
     this.makeClickable(rotateButton, () => { this.rotateSprite(element.data('id')); });
     menu.append(rotateButton);
 
-    let duplicateButton = $('<button class="btn btn-info sprite-menu-button ml-1">' 
+    let duplicateButton = $('<button class="btn btn-info sprite-menu-button ml-1" title="Clone sprite">' 
         + '<svg width=".8em" height=".8em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy">'
         + '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>'
         + '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>'
@@ -239,7 +239,7 @@ export class Editor {
     this.makeClickable(duplicateButton, () => { this.cloneElement(element.data('id')); });
     menu.append(duplicateButton);
 
-    let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1">'
+    let deleteButton = $('<button class="btn btn-danger sprite-menu-button ml-1" title="Delete sprite">'
         + '<svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'
         + '<path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>'
         + '<path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>'
