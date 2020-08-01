@@ -90,11 +90,13 @@ export class Dom {
     $('#modal-input-alert').removeAttr('hidden').text(message);
   }
 
-  static displayNewMapWindow(title, action, callback) {
+  static displayNewMapWindow(title, action, initial, callback) {
     $('#modal-new-submit').off('click');
     $('#modal-new-alert').attr('hidden', '');
     $('#modal-new-title').text(title);
     $('#modal-new-submit').text(action);
+    if ('width' in initial) $('#modal-new-width').val(initial.width);
+    if ('height' in initial) $('#modal-new-height').val(initial.height);
     $('#modal-new-submit').on('click', (event) => {
       console.log('form submitted');
       event.preventDefault();
