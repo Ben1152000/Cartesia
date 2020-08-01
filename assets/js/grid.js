@@ -5,6 +5,7 @@ export class Grid {
 
   constructor(movementCallback) {
     this.gridElement = document.getElementById("grid");
+    this.grid = $('#grid');
     this.settings = {
       editing: false
     };
@@ -59,14 +60,6 @@ export class Grid {
     }
   }
 
-  // Gets grid coordinates on the map based on screen position.
-  getGridCoords(position) {
-    return {
-      left: (this.gridElement.scrollLeft + position.left - this.gridElement.offsetLeft) / scale,
-      top: (this.gridElement.scrollTop + position.top - this.gridElement.offsetTop) / scale
-    };
-  }
-
   renderTile(tile, id) {
     var cell = document.getElementById(
       "cell-" + parseInt(tile.top) + "-" + parseInt(tile.left)
@@ -76,12 +69,15 @@ export class Grid {
       image.id = id;
       image.classList.add("tile");
       image.classList.add("crispy");
-      // Check if sprite has prefix 'external:'
-      if (tile.source.startsWith("external:")) {
-        image.src = tile.source.substr(9);
-      } else {
-        image.src = "assets/images/tiles/" + tile.source;
+      if ('tile-ordering' in this.map) {
+        if (this.map['tile-ordering'].includes(id)) {
+          image.style.zIndex = Math.min(499, 2 + this.map['tile-ordering'].indexOf(id));
+        }
       }
+      // Check if source is external image:
+      if (tile.source.startsWith('http:')) image.src = tile.source;
+      else if (tile.source.startsWith('https:')) image.src = tile.source;
+      else image.src = 'assets/images/tiles/' + tile.source;
       image.width = parseInt(tile.width * scale);
       image.height = parseInt(tile.height * scale);
       if (tile.flip) {
@@ -104,12 +100,14 @@ export class Grid {
       image.id = id;
       image.classList.add("sprite");
       image.classList.add("crispy");
-      // Check if source has prefix 'external:'
-      if (sprite.source.startsWith("external:")) {
-        image.src = sprite.source.substr(9);
-      } else {
-        image.src = "assets/images/sprites/" + sprite.source;
+      if ('color' in sprite) {
+        image.classList.add('sprite-frame');
+        image.classList.add('frame-' + sprite.color);
       }
+      // Check if source is external image:
+      if (sprite.source.startsWith('http:')) image.src = sprite.source;
+      else if (sprite.source.startsWith('https:')) image.src = sprite.source;
+      else image.src = 'assets/images/sprites/' + sprite.source;
       image.width = parseInt(sprite.width * scale);
       image.height = parseInt(sprite.height * scale);
       if (sprite.flip) {
@@ -143,7 +141,7 @@ export class Grid {
     function dragMouseDown(event) {
       event = event || window.event;
       event.preventDefault();
-      initial = {left: event.clientX + 1, top: event.clientY + 1};
+      initial = {left: event.clientX, top: event.clientY};
       document.onmouseup = closeDragElement;
       document.onmousemove = elementDrag; // call a function whenever the cursor moves
     }
@@ -151,12 +149,15 @@ export class Grid {
     function elementDrag(event) {
       event = event || window.event;
       event.preventDefault();
-      element.style.left = (event.clientX - initial.left) + "px";
-      element.style.top = (event.clientY - initial.top) + "px";
+      element.style.left = (event.clientX - initial.left) * grid.grid.css('--grid-scale') - 1 + "px";
+      element.style.top = (event.clientY - initial.top) * grid.grid.css('--grid-scale') - 1 + "px";
     }
 
     function closeDragElement() {
-      var gridCoords = grid.getGridCoords(element.getBoundingClientRect());
+      var gridCoords = {
+        left: (grid.gridElement.scrollLeft + (element.getBoundingClientRect().left - grid.gridElement.offsetLeft) * grid.grid.css('--grid-scale')) / scale,
+        top: (grid.gridElement.scrollTop + (element.getBoundingClientRect().top - grid.gridElement.offsetTop) * grid.grid.css('--grid-scale')) / scale
+      };
       var column = Math.max(0, Math.min(Math.round(gridCoords.left), grid.map.width - Math.round(element.width / scale)));
       var row = Math.max(0, Math.min(Math.round(gridCoords.top), grid.map.height - Math.round(element.height / scale)));
       grid.map.sprites[element.id].left = column;

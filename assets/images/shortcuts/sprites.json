@@ -1,41 +1,279 @@
 {
     "": {
-        "Dwarf": {
-            "source": "DE/Dwarven Defender.jpg",
-            "width": 1,
-            "height": 1
+        "Default": {"source": "default.jpg", "width": 1, "height": 1},
+        "Hidden": {"source": "hidden.png", "width": 1, "height": 1}
+    },
+    "Human": {
+        "Human Barbarian": {
+            "source": "TC/human/barbarian-male.webp", "width": 1, "height": 1
         },
-        "Elf": {
-            "source": "DE/Elf Spearguard.jpg",
-            "width": 1,
-            "height": 1
+        "Human Bard": {
+            "source": "TC/human/bard-male.webp", "width": 1, "height": 1
         },
-        "Human": {
-            "source": "DE/Human Crossbowman.jpg",
-            "width": 1,
-            "height": 1
+        "Human Cleric (M)": {
+            "source": "TC/human/cleric-male.webp", "width": 1, "height": 1
+        },
+        "Human Cleric (F)": {
+            "source": "TC/human/cleric-female.webp", "width": 1, "height": 1
+        },
+        "Human Druid (M)": {
+            "source": "TC/human/druid-male.webp", "width": 1, "height": 1
+        },
+        "Human Druid (F)": {
+            "source": "TC/human/druid-female.webp", "width": 1, "height": 1
+        },
+        "Human Fighter (M)": {
+            "source": "TC/human/fighter-male.webp", "width": 1, "height": 1
+        },
+        "Human Fighter (F)": {
+            "source": "TC/human/fighter-female.webp", "width": 1, "height": 1
+        },
+        "Human Monk": {
+            "source": "TC/human/monk-male.webp", "width": 1, "height": 1
+        },
+        "Human Paladin (M)": {
+            "source": "TC/human/paladin-male.webp", "width": 1, "height": 1
+        },
+        "Human Paladin (F)": {
+            "source": "TC/human/paladin-female.webp", "width": 1, "height": 1
+        },
+        "Human Ranger (M)": {
+            "source": "TC/human/ranger-male.webp", "width": 1, "height": 1
+        },
+        "Human Ranger (F)": {
+            "source": "TC/human/ranger-male.webp", "width": 1, "height": 1
+        },
+        "Human Rogue": {
+            "source": "TC/human/rogue-male.webp", "width": 1, "height": 1
+        },
+        "Human Sorcerer (M)": {
+            "source": "TC/human/sorcerer-male.webp", "width": 1, "height": 1
+        },
+        "Human Sorcerer (F)": {
+            "source": "TC/human/warlock-female.webp", "width": 1, "height": 1
+        },
+        "Human Wizard (M)": {
+            "source": "TC/human/wizard-male.webp", "width": 1, "height": 1
+        },
+        "Human Wizard (F)": {
+            "source": "TC/human/mystic-female.webp", "width": 1, "height": 1
+        }
+    },
+    "Elf": {
+        "Elven Barbarian (M)": {
+            "source": "TC/elf/barbarian-male.webp", "width": 1, "height": 1
+        },
+        "Elven Barbarian (F)": {
+            "source": "TC/elf/barbarian-female.webp", "width": 1, "height": 1
+        },
+        "Elven Bard": {
+            "source": "TC/elf/bard-male.webp", "width": 1, "height": 1
+        },
+        "Elven Cleric": {
+            "source": "TC/elf/cleric-male.webp", "width": 1, "height": 1
+        },
+        "Elven Druid (M)": {
+            "source": "TC/elf/druid-male.webp", "width": 1, "height": 1
+        },
+        "Elven Druid (F)": {
+            "source": "TC/elf/druid-female.webp", "width": 1, "height": 1
+        },
+        "Elven Fighter (M)": {
+            "source": "TC/elf/fighter-male.webp", "width": 1, "height": 1
+        },
+        "Elven Fighter (F)": {
+            "source": "TC/elf/fighter-female.webp", "width": 1, "height": 1
+        },
+        "Elven Monk": {
+            "source": "TC/elf/monk-female.webp", "width": 1, "height": 1
+        },
+        "Elven Paladin": {
+            "source": "TC/elf/paladin-male.webp", "width": 1, "height": 1
+        },
+        "Elven Ranger (M)": {
+            "source": "TC/elf/ranger-male.webp", "width": 1, "height": 1
+        },
+        "Elven Ranger (F)": {
+            "source": "TC/elf/ranger-female.webp", "width": 1, "height": 1
+        },
+        "Elven Rogue": {
+            "source": "TC/elf/rogue-female.webp", "width": 1, "height": 1
+        },
+        "Elven Sorcerer (M)": {
+            "source": "TC/elf/sorcerer-male.webp", "width": 1, "height": 1
+        },
+        "Elven Sorcerer (F)": {
+            "source": "TC/elf/sorcerer-female.webp", "width": 1, "height": 1
+        },
+        "Elven Wizard (M)": {
+            "source": "TC/elf/mystic-male.webp", "width": 1, "height": 1
+        },
+        "Elven Wizard (F)": {
+            "source": "TC/elf/wizard-female.webp", "width": 1, "height": 1
+        }
+    },
+    "Dwarf": {
+        "Dwarven Barbarian": {
+            "source": "TC/dwarf/barbarian-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Bard (M)": {
+            "source": "TC/dwarf/bard-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Bard (F)": {
+            "source": "TC/dwarf/bard-female.webp", "width": 1, "height": 1
+        },
+        "Dwarven Cleric (M)": {
+            "source": "TC/dwarf/cleric-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Cleric (F)": {
+            "source": "TC/dwarf/cleric-female.webp", "width": 1, "height": 1
+        },
+        "Dwarven Druid (M)": {
+            "source": "TC/dwarf/druid-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Druid (F)": {
+            "source": "TC/dwarf/druid-female.webp", "width": 1, "height": 1
+        },
+        "Dwarven Fighter (M)": {
+            "source": "TC/dwarf/fighter-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Fighter (F)": {
+            "source": "TC/dwarf/fighter-female.webp", "width": 1, "height": 1
+        },
+        "Dwarven Monk (M)": {
+            "source": "TC/dwarf/monk-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Monk (F)": {
+            "source": "TC/dwarf/monk-female.webp", "width": 1, "height": 1
+        },
+        "Dwarven Paladin": {
+            "source": "TC/dwarf/paladin-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Ranger": {
+            "source": "TC/dwarf/ranger-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Rogue": {
+            "source": "TC/dwarf/rogue-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Sorcerer": {
+            "source": "TC/dwarf/mystic-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Wizard (M)": {
+            "source": "TC/dwarf/wizard-male.webp", "width": 1, "height": 1
+        },
+        "Dwarven Wizard (F)": {
+            "source": "TC/dwarf/mystic-female.webp", "width": 1, "height": 1
+        }
+    },
+    "Halfling": {
+        "Halfling Barbarian (M)": {
+            "source": "TC/halfling/barbarian-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Barbarian (F)": {
+            "source": "TC/halfling/barbarian-female.webp", "width": 1, "height": 1
+        },
+        "Halfling Bard (M)": {
+            "source": "TC/halfling/bard-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Bard (F)": {
+            "source": "TC/halfling/bard-female.webp", "width": 1, "height": 1
+        },
+        "Halfling Cleric": {
+            "source": "TC/halfling/cleric-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Druid": {
+            "source": "TC/halfling/druid-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Fighter (M)": {
+            "source": "TC/halfling/fighter-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Fighter (F)": {
+            "source": "TC/halfling/fighter-female.webp", "width": 1, "height": 1
+        },
+        "Halfling Monk": {
+            "source": "TC/halfling/monk-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Paladin (M)": {
+            "source": "TC/halfling/paladin-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Paladin (F)": {
+            "source": "TC/halfling/paladin-female.webp", "width": 1, "height": 1
+        },
+        "Halfling Ranger": {
+            "source": "TC/halfling/ranger-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Rogue": {
+            "source": "TC/halfling/rogue-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Sorcerer (M)": {
+            "source": "TC/halfling/mystic-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Sorcerer (F)": {
+            "source": "TC/halfling/sorcerer-female.webp", "width": 1, "height": 1
+        },
+        "Halfling Wizard (M)": {
+            "source": "TC/halfling/wizard-male.webp", "width": 1, "height": 1
+        },
+        "Halfling Wizard (F)": {
+            "source": "TC/halfling/wizard-female.webp", "width": 1, "height": 1
         }
     },
     "Non-Player Characters": {
-        "Goblin": {
-            "source": "DE/Goblin Warrior.jpg",
-            "width": 1,
-            "height": 1
-        },
-        "Kobold": {
-            "source": "DE/Kobold Skirmisher.jpg",
-            "width": 1,
-            "height": 1
-        },
-        "Orc": {
-            "source": "DE/Orc Druid.jpg",
-            "width": 1,
-            "height": 1
-        },
         "Black Dragon": {
-            "source": "DE/Black Dragon.jpg",
-            "width": 2,
-            "height": 2
+            "source": "DE/Black Dragon.jpg", "width": 2, "height": 2
+        },
+        "Red Dragon": {
+            "source": "Kaster/RedDragon.jpg", "width": 2, "height": 2
+        },
+        "Bugbear": {
+            "source": "TC/bugbear/mage.webp", "width": 1, "height": 1
+        },
+        "Centaur (M)": {
+            "source": "TC/centaur/male.webp", "width": 1, "height": 1
+        },
+        "Centaur (F)": {
+            "source": "TC/centaur/female.webp", "width": 1, "height": 1
+        },
+        "Goblin Melee": {
+            "source": "TC/goblin/fighter.webp", "width": 1, "height": 1
+        },
+        "Goblin Mage": {
+            "source": "TC/goblin/sorcerer.webp", "width": 1, "height": 1
+        },
+        "Kobold Melee": {
+            "source": "TC/kobold/fighter.webp", "width": 1, "height": 1
+        },
+        "Kobold Mage": {
+            "source": "TC/kobold/warlock.webp", "width": 1, "height": 1
+        },
+        "Lizardfolk Melee": {
+            "source": "TC/lizardfolk/ranger.webp", "width": 1, "height": 1
+        },
+        "Lizardfolk Mage": {
+            "source": "TC/lizardfolk/sorcerer.webp", "width": 1, "height": 1
+        },
+        "Orc (M)": {
+            "source": "TC/orc/blood-hunter-male.webp", "width": 1, "height": 1
+        },
+        "Orc (F)": {
+            "source": "TC/orc/druid-female.webp", "width": 1, "height": 1
+        },
+        "Orc Melee": {
+            "source": "TC/orc/fighter-male.webp", "width": 1, "height": 1
+        },
+        "Orc Skirmisher": {
+            "source": "TC/orc/rogue-male.webp", "width": 1, "height": 1
+        },
+        "Orc Mage": {
+            "source": "TC/orc/sorcerer-male.webp", "width": 1, "height": 1
         }
+    },
+    "Kaster": {
+        "Edith": {"source": "Kaster/Gramgby.png", "width": 1, "height": 1},
+        "Fumbledore": {"source": "Kaster/Fugnblemore.png", "width": 1, "height": 1},
+        "Grimrall": {"source": "Kaster/Gimball.png", "width": 1, "height": 1},
+        "Hobart": {"source": "Kaster/Hornbart.png", "width": 1, "height": 1},
+        "Khadim": {"source": "default.jpg", "width": 1, "height": 1},
+        "Tiff": {"source": "Kaster/Differtarius-cropped.png", "width": 1, "height": 1}
     }
 }

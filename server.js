@@ -78,8 +78,16 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     log('disconnected', socket.id);
     // If the user is a host, close their server:
+    console.log('DEBUG', users[socket.id].type);
     if (users[socket.id].type === userType.GUEST) {
-      servers[users[socket.id].server].guests.delete(socket.id);
+      let server = servers[users[socket.id].server];
+      server.guests.delete(socket.id);
+      if (server.host in io.sockets.connected) {
+        io.sockets.connected[server.host].emit('leave', {players: server.guests.size});
+      }
+      server.guests.forEach(
+        guest => io.sockets.connected[guest].emit('leave', {players: server.guests.size})
+      );
     }
     if (users[socket.id].type === userType.HOST) {
       // Tell each guest the server has closed:
@@ -123,7 +131,7 @@ io.on('connection', (socket) => {
     servers[packet.id] = {host: socket.id, guests: new Set(), editing: false};
     users[socket.id].type = userType.HOST;
     users[socket.id].server = packet.id;
-    socket.emit('host-success', {'id': packet.id});
+    socket.emit('host-success', {'id': packet.id, 'players': servers[packet.id].guests.size});
   });
 
   socket.on('join', (packet) => {
@@ -152,11 +160,14 @@ io.on('connection', (socket) => {
       });
       return;
     }
+    io.sockets.connected[servers[packet.id].host].emit('join', {'players': servers[packet.id].guests.size + 1});
+    servers[packet.id].guests.forEach(
+      guest => io.sockets.connected[guest].emit('join', {'players': servers[packet.id].guests.size + 1})
+    );
     servers[packet.id].guests.add(socket.id);
-    io.sockets.connected[servers[packet.id].host].emit('join');
     users[socket.id].type = userType.GUEST;
     users[socket.id].server = packet.id;
-    socket.emit('join-success', {'id': packet.id});
+    socket.emit('join-success', {'id': packet.id, 'players': servers[packet.id].guests.size});
   });
 
   socket.on('push', (packet) => {

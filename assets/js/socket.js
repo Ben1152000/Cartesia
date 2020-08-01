@@ -16,8 +16,8 @@ export class Io {
     console.log('connected');
 
     this.socket.on('host-success', (packet) => {
-      console.log('hosting server:', packet.id);
-      callbacks.success(packet.id);
+      console.log('hosting server:', packet.id, 'players:', packet.players);
+      callbacks.success(packet.id, packet.players);
     });
 
     this.socket.on('host-failure', (packet) => {
@@ -27,13 +27,18 @@ export class Io {
     });
 
     this.socket.on('join', (packet) => {
-      console.log('guest joined');
-      callbacks.join();
+      console.log('guest joined;', 'players:', packet.players);
+      callbacks.join(packet.players);
+    });
+
+    this.socket.on('leave', (packet) => {
+      console.log('guest left;', 'players:', packet.players);
+      callbacks.leave(packet.players);
     });
 
     this.socket.on('join-success', (packet) => {
-      console.log('joined server:', packet.id);
-      callbacks.success(packet.id);
+      console.log('joined server:', packet.id, 'players:', packet.players);
+      callbacks.success(packet.id, packet.players);
     });
 
     this.socket.on('join-failure', (packet) => {

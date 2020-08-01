@@ -23,10 +23,18 @@ body {
   max-height: 24rem;
 }
 
-.grid {
+#grid {
+  position: relative;
   overflow-y: scroll;
   display: grid;
-  background-color: floralwhite;
+  --grid-scale: 1;
+  transform: scale(calc(1 / var(--grid-scale))) translate(calc(50% * (1 - var(--grid-scale))), calc(50% * (1 - var(--grid-scale))));
+  width: calc(100vw * var(--grid-scale));
+  height: calc((100vh - 56px) * var(--grid-scale));
+}
+
+.grid {
+  background-color: papayawhip;
 }
 
 .editor {
@@ -55,16 +63,12 @@ div.cell-editor {
 
 .tile-edit {
   cursor: move;
-  position: absolute;
-  z-index: 1;
-  left: -1px;
-  top: -1px;
 }
 
 .sprite {
   cursor: move;
   position: absolute;
-  z-index: 2;
+  z-index: 500;
   left: -1px;
   top: -1px;
 }
@@ -73,15 +77,28 @@ div.cell-editor {
   position: absolute;
   left: 0px;
   top: 0px;
-  line-height: 0.8em;
+  line-height: 0.7em;
 }
 
 .sprite-menu-button {
-  padding: 0px 4px;
+  padding: 0rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  line-height: 0.8rem;
+}
+
+.tile-select {
+  outline: 2px solid rgba(173, 216, 230, 0.6);
+  outline-offset: -2px;
+}
+
+.sprite-select {
+  outline: 2px solid rgba(173, 216, 230, 0.6);
+  outline-offset: -2px;
 }
 
 #brand {
-  cursor: pointer;
+  cursor: help;
 }
 
 .btn-separator:after {
@@ -133,8 +150,30 @@ button.main {
   border-radius: 2px;
 }
 
-.dropdown-menu {
-  max-height: 200px;
+.dropdown-menu-source {
+  max-height: 300px;
   width: 100%;
   overflow-y: auto;
+}
+
+.menu-color {
+  display: flex;
+  justify-content: space-between;
+}
+
+.color-item {
+  height: 2.1rem;
+  width: 2.1rem;
+  padding: 0rem;
+  color: white;
+}
+
+.info-box {
+  padding: 0.15rem 0.6rem;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-bottom: 0rem;
 }
