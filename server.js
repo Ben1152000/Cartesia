@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
       );
     }
     if (users[socket.id].type === userType.HOST) {
-      // Tell each guest the server has closed:
+      // Tell each guest the server has closed: (legacy)
       servers[users[socket.id].server].guests.forEach(
         guest => io.sockets.connected[guest].emit('close')
       );

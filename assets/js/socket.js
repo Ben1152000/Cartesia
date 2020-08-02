@@ -6,17 +6,6 @@ export class Io {
     this.active = false; // stores whether disconnection was voluntary
   }
 
-  /* // Debug Printing:
-  get active() {
-    return this.active_;
-  }
-
-  set active(value) {
-    alert(value);
-    this.active_ = value;
-  }
-  */
-
   // Connect to socket.io:
   connect(callbacks) {
     if (this.socket) {
@@ -94,7 +83,7 @@ export class Io {
     }
     console.log('disconnecting');
     this.active = false;
-    this.socket.disconnect();
+    this.socket.disconnect(); // only matters if active
     this.socket = null;
   }
 
