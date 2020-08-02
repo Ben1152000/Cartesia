@@ -50,7 +50,15 @@ export function connectToServer(type) {
               Dom.makeToast('Editing disabled', 1.5);
             }
           }
-        }
+        },
+
+        closed: () => {
+          Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
+        },
+
+        disconnected: () => {
+          Dom.setViewMode('welcome', {});
+        },
 
       }); 
     }
@@ -78,9 +86,12 @@ export function connectToServer(type) {
           grid.replaceSprite(packet.sprite, packet.id);
         },
 
-        close: () => {
-          disconnectFromServer();
+        closed: () => {
           Dom.displayAlertWindow('Server Closed', 'You were disconnected from the server.');
+        },
+
+        disconnected: () => {
+          Dom.setViewMode('welcome', {});
         },
 
         join: (players) => {
@@ -108,7 +119,6 @@ export function connectToServer(type) {
 
 export function disconnectFromServer() {
   io.disconnect();
-  Dom.setViewMode('welcome', {});
 }
 
 export function editingButtonClicked() {

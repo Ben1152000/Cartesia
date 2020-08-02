@@ -78,7 +78,6 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     log('disconnected', socket.id);
     // If the user is a host, close their server:
-    console.log('DEBUG', users[socket.id].type);
     if (users[socket.id].type === userType.GUEST) {
       let server = servers[users[socket.id].server];
       server.guests.delete(socket.id);

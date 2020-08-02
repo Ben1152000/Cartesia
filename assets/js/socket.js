@@ -2,8 +2,20 @@
 export class Io {
 
   constructor() {
-    this.socket = null
+    this.socket = null;
+    this.active = false; // stores whether disconnection was voluntary
   }
+
+  /* // Debug Printing:
+  get active() {
+    return this.active_;
+  }
+
+  set active(value) {
+    alert(value);
+    this.active_ = value;
+  }
+  */
 
   // Connect to socket.io:
   connect(callbacks) {
@@ -15,8 +27,18 @@ export class Io {
     this.socket = io();
     console.log('connected');
 
+    this.socket.on('disconnect', () => {
+      if (this.active) {
+        callbacks.closed();
+        this.disconnect();
+      }
+      console.log('disconnected');
+      callbacks.disconnected();
+    });
+
     this.socket.on('host-success', (packet) => {
       console.log('hosting server:', packet.id, 'players:', packet.players);
+      this.active = true;
       callbacks.success(packet.id, packet.players);
     });
 
@@ -38,6 +60,7 @@ export class Io {
 
     this.socket.on('join-success', (packet) => {
       console.log('joined server:', packet.id, 'players:', packet.players);
+      this.active = true;
       callbacks.success(packet.id, packet.players);
     });
 
@@ -45,11 +68,6 @@ export class Io {
       console.log('error:', packet.message);
       this.disconnect();
       callbacks.failure(packet.message);
-    });
-
-    this.socket.on('close', (packet) => {
-      console.log('server closed');
-      callbacks.close();
     });
 
     this.socket.on('push', (packet) => {
@@ -74,9 +92,10 @@ export class Io {
       console.log('not connected');
       return;
     }
+    console.log('disconnecting');
+    this.active = false;
     this.socket.disconnect();
     this.socket = null;
-    console.log('disconnected');
   }
 
   // Host new server with id:
@@ -87,6 +106,7 @@ export class Io {
       callbacks.failure('Already connected to server.');
       return;
     }
+    this.active = false;
     this.connect(callbacks);
     this.socket.emit('host', {id: id});
   }
@@ -99,6 +119,7 @@ export class Io {
       callbacks.failure('Already connected to server.');
       return;
     }
+    this.active = false;
     this.connect(callbacks);
     this.socket.emit('join', {id: id});
   }
