@@ -51,6 +51,23 @@ div.cell {
 
 div.cell-editor {
   color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+div.gridline {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  z-index: 999;
+}
+
+div.gridline-vertical {
+  width: 0px;
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+}
+
+div.gridline-horizontal {
+  width: 0px;
   border: 1px dashed rgba(255, 255, 255, 0.5);
 }
 
