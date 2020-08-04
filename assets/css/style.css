@@ -44,7 +44,7 @@ body {
 div.cell {
   position: relative;
   color: rgba(0, 0, 0, 0.2);
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0px 10px 0px 10px;
   font-size: 30px;
 }
@@ -58,7 +58,7 @@ div.gridline {
   position: absolute;
   top: -2px;
   left: -2px;
-  z-index: 999;
+  z-index: 500;
 }
 
 div.gridline-vertical {
@@ -85,7 +85,7 @@ div.gridline-horizontal {
 .sprite {
   cursor: move;
   position: absolute;
-  z-index: 500;
+  z-index: 501;
   left: -1px;
   top: -1px;
 }
