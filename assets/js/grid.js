@@ -54,7 +54,9 @@ export class Grid {
         var cell = document.createElement("DIV");
         cell.id = "cell-" + parseInt(row) + "-" + parseInt(column);
         cell.classList.add("cell")
-        cell.innerHTML = parseInt(this.map.width * row + column);
+
+        $(cell).append($('<span class="cell-label">' + parseInt(this.map.width * row + column) + '</span>'));
+        //cell.innerHTML = parseInt(this.map.width * row + column);
 
         if (row === 0) {
           let gridline = $('<div class="gridline gridline-vertical"></div>');

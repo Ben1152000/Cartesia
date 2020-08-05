@@ -54,6 +54,11 @@ div.cell-editor {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.cell-label {
+  position: relative;
+  z-index: 500;
+}
+
 div.gridline {
   position: absolute;
   top: -2px;
@@ -63,12 +68,12 @@ div.gridline {
 
 div.gridline-vertical {
   width: 0px;
-  border: 1px dashed rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
 }
 
 div.gridline-horizontal {
   width: 0px;
-  border: 1px dashed rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
 }
 
 .tile {
