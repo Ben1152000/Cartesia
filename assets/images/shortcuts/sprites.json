@@ -103,7 +103,7 @@
         "Fumbledore": {"source": "Kaster/Fugnblemore.png", "width": 1, "height": 1},
         "Grimrall": {"source": "Kaster/Gimball.png", "width": 1, "height": 1},
         "Hobart": {"source": "Kaster/Hornbart.png", "width": 1, "height": 1},
-        "Khadim": {"source": "default.jpg", "width": 1, "height": 1},
+        "Khadim": {"source": "Kaster/Khadim.png", "width": 1, "height": 1},
         "Tiff": {"source": "Kaster/Differtarius-cropped.png", "width": 1, "height": 1}
     }
 }
