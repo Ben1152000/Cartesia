@@ -66,6 +66,29 @@ export class Editor {
             + parseInt(this.map.width * row + column) + '</div>');
         cell.data('left', parseInt(column)); cell.data('top', parseInt(row));
         cell.on('dblclick', () => { this.cloneElement(this.lastNewElement, cell.data('left'), cell.data('top')); });
+        
+        
+        if (row === 0) {
+          let gridline = $('<div class="gridline gridline-vertical"></div>');
+          gridline.css({height: this.map.height * scale});
+          cell.append(gridline);
+          if (column === this.map.width - 1) {
+            let endline = $('<div class="gridline gridline-vertical"></div>');
+            endline.css({height: this.map.height * scale, left: scale - 2, 'border-left': '0px'});
+            cell.append(endline);
+          }
+        }
+        if (column === 0) {
+          let gridline = $('<div class="gridline gridline-horizontal"></div>');
+          gridline.css({width: this.map.width * scale});
+          cell.append(gridline);
+          if (row === this.map.height - 1) {
+            let endline = $('<div class="gridline gridline-horizontal"></div>');
+            endline.css({width: this.map.width * scale, top: scale - 2, 'border-bottom': '0px'});
+            cell.append(endline);
+          }
+        }
+
         this.grid.append(cell);
       }
     }

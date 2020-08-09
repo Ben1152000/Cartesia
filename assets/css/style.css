@@ -44,14 +44,36 @@ body {
 div.cell {
   position: relative;
   color: rgba(0, 0, 0, 0.2);
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0px 10px 0px 10px;
   font-size: 30px;
 }
 
 div.cell-editor {
   color: rgba(255, 255, 255, 0.5);
-  border: 1px dashed rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cell-label {
+  position: relative;
+  z-index: 500;
+}
+
+div.gridline {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  z-index: 500;
+}
+
+div.gridline-vertical {
+  width: 0px;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+div.gridline-horizontal {
+  width: 0px;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
 }
 
 .tile {
@@ -68,7 +90,7 @@ div.cell-editor {
 .sprite {
   cursor: move;
   position: absolute;
-  z-index: 500;
+  z-index: 501;
   left: -1px;
   top: -1px;
 }
