@@ -50,7 +50,7 @@ export class Io {
     this.socket.on('join-success', (packet) => {
       console.log('joined server:', packet.id, 'players:', packet.players);
       this.active = true;
-      callbacks.success(packet.id, packet.players);
+      callbacks.success(packet.id, packet.players, packet.settings);
     });
 
     this.socket.on('join-failure', (packet) => {

@@ -7,6 +7,26 @@ body {
   height: 56px;
 }
 
+@media screen and (max-width: 860px) {
+  .btn-hide-xlg { display: none !important; }
+}
+
+@media screen and (max-width: 708px) {
+  .btn-hide-lg { display: none !important; }
+}
+
+@media screen and (max-width: 560px) {
+  .btn-hide-md { display: none !important; }
+}
+
+@media screen and (max-width: 424px) {
+  .btn-hide-sm { display: none !important; }
+}
+
+@media screen and (max-width: 260px) {
+  .btn-hide-xsm { display: none !important; }
+}
+
 .body {
   height: calc(100vh - 56px);
 }
@@ -20,7 +40,7 @@ body {
 .jumbotron {
   margin: auto;
   /*max-width: 60ch;*/
-  max-height: 24rem;
+  /*max-height: 24rem;*/
 }
 
 #grid {
@@ -192,6 +212,11 @@ button.main {
 
 .info-box {
   padding: 0.15rem 0.6rem;
+}
+
+@media screen and (min-width: 561px) {
+  .info-box-md { padding: 0.15rem 0.6rem; }
+  .info-box-md-label { margin-top: 0.25rem; }
 }
 
 .info-label {

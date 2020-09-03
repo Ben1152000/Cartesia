@@ -65,13 +65,14 @@ export function connectToServer(type) {
     else if (type === "guest") { 
       io.join(id, {
 
-        success: (id, players) => {
+        success: (id, players, settings) => {
           grid = new Grid((packet) => {
             io.move(packet);
           });
           Dom.closeNumericInputWindow();
           Dom.setViewMode('guest', {id: id});
           Dom.setPlayerCount(players);
+          Dom.setEditingInfoBox(settings.editing);
         },
 
         failure: (message) => {
@@ -106,8 +107,10 @@ export function connectToServer(type) {
           if ('editing' in changed) {
             if (changed.editing) {
               Dom.makeToast('Editing enabled', 1.5);
+              Dom.setEditingInfoBox(true);
             } else {
               Dom.makeToast('Editing disabled', 1.5);
+              Dom.setEditingInfoBox(false);
             }
           }
         }
@@ -153,10 +156,13 @@ export function uploadButtonClicked() {
 
 export function editButtonClicked() {
   grid.clear();
-  if (grid.settings.editing) {
+  let editingEnabled = grid.settings.editing;
+  if (editingEnabled) {
     editingButtonClicked();
   }
   editor = new Editor();
+  // Store previous editing state:
+  editor.editingEnabled = editingEnabled;
   editor.map = grid.map;
   Dom.setViewMode('edit');
 }
@@ -308,8 +314,10 @@ export function saveExitButtonClicked() {
   grid = new Grid((packet) => {
     io.move(packet);
   });
+  if (editor.editingEnabled)
+    editingButtonClicked();
   grid.map = editor.map;
-  Dom.setViewMode('host', {editing: grid.editing});
+  Dom.setViewMode('host', {editing: editor.editingEnabled});
   io.push(grid.map);
 }
 
