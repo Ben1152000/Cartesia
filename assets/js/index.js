@@ -156,10 +156,13 @@ export function uploadButtonClicked() {
 
 export function editButtonClicked() {
   grid.clear();
-  if (grid.settings.editing) {
+  let editingEnabled = grid.settings.editing;
+  if (editingEnabled) {
     editingButtonClicked();
   }
   editor = new Editor();
+  // Store previous editing state:
+  editor.editingEnabled = editingEnabled;
   editor.map = grid.map;
   Dom.setViewMode('edit');
 }
@@ -311,8 +314,10 @@ export function saveExitButtonClicked() {
   grid = new Grid((packet) => {
     io.move(packet);
   });
+  if (editor.editingEnabled)
+    editingButtonClicked();
   grid.map = editor.map;
-  Dom.setViewMode('host', {editing: grid.editing});
+  Dom.setViewMode('host', {editing: editor.editingEnabled});
   io.push(grid.map);
 }
 

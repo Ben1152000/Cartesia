@@ -234,10 +234,12 @@ export class Dom {
 
   static setEditingInfoBox(enabled) {
     if (enabled) {
+      $('#guest-editing-info').attr('title', 'Editing enabled');
       $('#guest-editing-info-label').text('Enabled');
       $('#guest-editing-enabled').removeAttr('hidden');
       $('#guest-editing-disabled').attr('hidden', '');
     } else {
+      $('#guest-editing-info').attr('title', 'Editing disabled');
       $('#guest-editing-info-label').text('Disabled');
       $('#guest-editing-enabled').attr('hidden', '');
       $('#guest-editing-disabled').removeAttr('hidden');

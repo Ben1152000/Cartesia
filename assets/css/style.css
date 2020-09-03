@@ -40,7 +40,7 @@ body {
 .jumbotron {
   margin: auto;
   /*max-width: 60ch;*/
-  max-height: 24rem;
+  /*max-height: 24rem;*/
 }
 
 #grid {
