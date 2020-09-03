@@ -23,9 +23,9 @@
 
     <div id="navbar-right">
 
-      <div id="host-toolbar" hidden>
+      <div class="toolbar" id="host-toolbar" hidden>
 
-        <button class="btn btn-dark nav-item info-box mr-1">
+        <button class="btn btn-dark nav-item info-box mr-1 btn-hide-md">
           <p class="info-label">
             Server ID: 
             <span id="server-label-host"></span>
@@ -36,7 +36,7 @@
           </p>
         </button>
 
-        <button id="button-edit-host" class="btn btn-info nav-item mr-1" title="Edit map">
+        <button id="button-edit-host" class="btn btn-info nav-item mr-1 btn-hide-md" title="Edit map">
           Edit
           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -48,7 +48,7 @@
           </script>
         </button>
 
-        <button id="button-editing" class="btn btn-warning nav-item mr-1">
+        <button id="button-editing" class="btn btn-warning nav-item mr-1 btn-hide-sm">
           <svg id="button-editing-enabled" width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-arrow-down-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg" hidden>
             <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
             <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
@@ -64,7 +64,7 @@
           </script>
         </button>
 
-        <div class="btn-group nav-item mr-1" role="group">
+        <div class="btn-group nav-item mr-1 btn-hide-sm" role="group">
 
           <button class="btn btn-secondary" title="Upload map" onclick="document.getElementById('file-upload').click()">
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +101,7 @@
         </div>
 
         <button id="button-leave-host" class="btn btn-danger nav-item" title="Leave">
-          Leave
+          <span class="btn-hide-xsm">Leave</span>
           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M8.146 11.354a.5.5 0 0 1 0-.708L10.793 8 8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 1 8z"/>
@@ -115,9 +115,9 @@
 
       </div>
 
-      <div id="guest-toolbar" hidden>
+      <div class="toolbar" id="guest-toolbar" hidden>
 
-        <button class="btn btn-dark nav-item info-box mr-1">
+        <button class="btn btn-dark nav-item info-box mr-1 btn-hide-sm">
           <p class="info-label">
             Server ID: 
             <span id="server-label-guest">#</span>
@@ -128,7 +128,23 @@
           </p>
         </button>
 
-        <button id="button-download-guest" class="btn btn-secondary mr-1" title="Download map">
+        <button id="guest-editing-info" class="btn btn-warning nav-item info-box-md mr-1 btn-hide-sm">
+          <svg id="guest-editing-enabled" width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-arrow-down-up info-box-md-label" fill="currentColor" xmlns="http://www.w3.org/2000/svg" hidden>
+            <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+            <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+            <path fill-rule="evenodd" d="M5 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+          </svg>
+          <svg id="guest-editing-disabled" width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-slash-circle info-box-md-label" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+          </svg>
+          <div class="ml-2 btn-hide-md" style="float: right;">
+            <p class="info-label">Editing</p>
+            <p class="info-label" id="guest-editing-info-label">Disabled</p>
+          </div>
+        </button>
+
+        <button id="button-download-guest" class="btn btn-secondary mr-1 btn-hide-sm" title="Download map">
           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
             <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
@@ -142,7 +158,7 @@
         </button>
 
         <button id="button-leave-guest" class="btn btn-danger nav-item">
-          Leave
+          <span class="btn-hide-xsm">Leave</span>
           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M8.146 11.354a.5.5 0 0 1 0-.708L10.793 8 8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 1 8z"/>
@@ -156,9 +172,9 @@
 
       </div>
 
-      <div id="editor-toolbar" hidden>
+      <div class="toolbar" id="editor-toolbar" hidden>
 
-        <button class="btn btn-dark nav-item info-box mr-1">
+        <button class="btn btn-dark nav-item info-box mr-1 btn-hide-sm">
           <p class="info-label">
             Editor
           </p>
@@ -167,10 +183,10 @@
           </p>
         </button>
 
-        <div class="btn-group nav-item mr-1" role="group">
+        <div class="btn-group nav-item mr-1 btn-hide-lg" role="group">
 
           <button id="button-new-editor" class="btn btn-info nav-item" title="Create map">
-            New
+            <span class="btn-hide-xlg">New</span>
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z"/>
               <path fill-rule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/>
@@ -185,7 +201,7 @@
           <span class="btn-separator bg-dark"></span>
 
           <button id="button-resize-editor" class="btn btn-secondary nav-item" title="Resize map">
-            Resize
+            <span class="btn-hide-xlg">Resize</span>
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-arrows-fullscreen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M1.464 10.536a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3.5a.5.5 0 0 1-.5-.5v-3.5a.5.5 0 0 1 .5-.5z"/>
               <path fill-rule="evenodd" d="M5.964 10a.5.5 0 0 1 0 .707l-4.146 4.147a.5.5 0 0 1-.707-.708L5.257 10a.5.5 0 0 1 .707 0zm8.854-8.854a.5.5 0 0 1 0 .708L10.672 6a.5.5 0 0 1-.708-.707l4.147-4.147a.5.5 0 0 1 .707 0z"/>
@@ -202,7 +218,7 @@
           <span class="btn-separator bg-dark"></span>
   
           <button id="button-add-tile-editor" class="btn btn-secondary nav-item" title="Add tile">
-            Add Tile
+            <span class="btn-hide-xlg">Add </span><span>Tile</span>
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
               <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
@@ -216,7 +232,7 @@
           <span class="btn-separator bg-dark"></span>
   
           <button id="button-add-sprite-editor" class="btn btn-secondary nav-item" title="Add sprite">
-            Add Sprite
+            <span class="btn-hide-xlg">Add </span><span>Sprite</span>
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
               <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
@@ -229,7 +245,7 @@
 
         </div>
 
-        <div class="btn-group nav-item mr-1" role="group">
+        <div class="btn-group nav-item mr-1 btn-hide-sm" role="group">
 
           <button class="btn btn-secondary" title="Upload map" onclick="document.getElementById('file-upload-editor').click()">
             <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -266,7 +282,7 @@
         </div>
 
         <button id="button-leave-editor" class="btn btn-primary nav-item" title="Exit editor">
-          Save & Exit
+          <span class="btn-hide-xsm">Save & Exit</span>
           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M8.146 11.354a.5.5 0 0 1 0-.708L10.793 8 8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 1 8z"/>

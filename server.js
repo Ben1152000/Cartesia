@@ -166,7 +166,11 @@ io.on('connection', (socket) => {
     servers[packet.id].guests.add(socket.id);
     users[socket.id].type = userType.GUEST;
     users[socket.id].server = packet.id;
-    socket.emit('join-success', {'id': packet.id, 'players': servers[packet.id].guests.size});
+    socket.emit('join-success', {
+      'id': packet.id, 
+      'players': servers[packet.id].guests.size, 
+      'settings': {editing: servers[packet.id].editing}
+    });
   });
 
   socket.on('push', (packet) => {
