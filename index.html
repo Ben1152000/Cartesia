@@ -3,11 +3,20 @@
   <meta charset="utf-8">
   <title>Cartesia</title>
   <meta name="description" content="Welcome to Cartesia! A Free, Interactive, Online D&D Mapping Tool"/>
+
+  <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/popper.js/dist/umd/popper.min.js"></script>
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+  <!-- These links were for the node.js client
   <link href="/css/bootstrap.min.css" rel="stylesheet">
   <script src="/js/jquery.min.js"></script>
   <script src="/js/popper.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="/socket.io/socket.io.js"></script> -->
+
   <link rel="icon" href="assets/icons/favicon.ico">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/image.css">
@@ -375,10 +384,27 @@
             </button>
           </div>
           <div class="modal-body">
-            <form class="input-group mb-2">
-              <input id="modal-input-form" class="form-control form-control-xlg" type="number" min="0" value="0">
-              <div class="input-group-append">
-                <button id="modal-input-submit" type="submit" class="btn btn-primary">Join</button>
+            <form class="mb-2">
+              <div class="input-group">
+                <input id="modal-input-form" class="form-control form-control-xlg" type="number" min="0" value="0">
+                <div class="input-group-append">
+                  <button id="modal-input-submit" type="submit" class="btn btn-primary">Join</button>
+                </div>
+              </div>
+              <div id="toggle-frame-menu" class="mt-2" style="display: flex;">
+                <div class="custom-control custom-switch">
+                  <input id="toggle-hostname-frame" type="checkbox" class="custom-control-input">
+                  <label class="custom-control-label" for="toggle-hostname-frame">Self-hosting</label>
+                  <script type="module">
+                    import { Dom } from '/assets/js/dom.js';
+                    Dom.toggleHostnameFrame();
+                    $('#toggle-hostname-frame').on('click', Dom.toggleHostnameFrame);
+                  </script>
+                </div>
+              </div>
+              <div id="hostname-select-menu" class="mt-2" data-color="maroon" hidden>
+                <h6>Hostname:</h6>
+                <input id="modal-input-hostname" class="form-control form-control-xlg" type="text" placeholder="pi.bdarnell.com">
               </div>
             </form>
             <div id="modal-input-alert" class="alert alert-danger alert-sm mt-3 mb-1" role="alert" hidden>

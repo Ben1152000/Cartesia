@@ -3,15 +3,15 @@ import { Dom } from '/assets/js/dom.js';
 import { Grid } from '/assets/js/grid.js';
 import { Editor } from '/assets/js/editor.js';
 
-let io = new Io();
+let io = new Io("pi.bdarnell.com", 62298);
 let grid;
 let editor;
 
 export function connectToServer(type) {
 
-  Dom.requestNumericInputWindow((id) => {
+  Dom.requestNumericInputWindow((id, hostname) => {
     if (type === "host") { 
-      io.host(id, {
+      io.host(id, hostname, {
 
         success: (id, players) => {
           grid = new Grid((packet) => {
@@ -63,7 +63,7 @@ export function connectToServer(type) {
       }); 
     }
     else if (type === "guest") { 
-      io.join(id, {
+      io.join(id, hostname, {
 
         success: (id, players, settings) => {
           grid = new Grid((packet) => {
