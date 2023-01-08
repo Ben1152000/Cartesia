@@ -1,8 +1,11 @@
 // This class acts as an interface with the server via socket.io
 export class Io {
 
-  constructor() {
+  constructor(hostname, port) {
+    this.default_hostname = hostname; // ip address of socket server
+    this.hostname = null; // use default hostname
     this.socket = null;
+    this.port = port;
     this.active = false; // stores whether disconnection was voluntary
   }
 
@@ -13,8 +16,22 @@ export class Io {
       callbacks.failure('Already connected to server.');
       return;
     }
-    this.socket = io();
-    console.log('connected');
+    let address = "ws://" + ((this.hostname === null) ? this.default_hostname : this.hostname) + ":" + this.port;
+    this.socket = io(address);
+    console.log(address);
+
+    this.socket.on('connect', () => {
+      console.log('connected');
+    });
+
+    this.socket.on('connect_error', () => {
+      console.log("connection error");
+      if (!this.active) { // if the connection was never established delete the socket
+        callbacks.failure('Unable to connect.');
+        this.socket.disconnect();
+        this.socket = null;
+      }
+    });
 
     this.socket.on('disconnect', () => {
       if (this.active) {
@@ -88,7 +105,7 @@ export class Io {
   }
 
   // Host new server with id:
-  host(id, callbacks) {
+  host(id, hostname, callbacks) {
     console.log('hosting:', id);
     if (this.socket) {
       console.log('already connected');
@@ -96,12 +113,13 @@ export class Io {
       return;
     }
     this.active = false;
+    this.hostname = hostname;
     this.connect(callbacks);
     this.socket.emit('host', {id: id});
   }
 
   // Join existing server with id:
-  join(id, callbacks) {
+  join(id, hostname, callbacks) {
     console.log('joining:', id);
     if (this.socket) {
       console.log('already connected');
@@ -109,6 +127,7 @@ export class Io {
       return;
     }
     this.active = false;
+    this.hostname = hostname;
     this.connect(callbacks);
     this.socket.emit('join', {id: id});
   }

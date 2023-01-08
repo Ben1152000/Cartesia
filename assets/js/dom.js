@@ -77,9 +77,20 @@ export class Dom {
     $('#modal-input-submit').on('click', (event) => {
       console.log('form submitted');
       event.preventDefault();
-      callback(parseInt($('#modal-input-form').val()));
+      callback(
+        parseInt($('#modal-input-form').val()),
+        $('#toggle-hostname-frame').is(':checked')? $('#modal-input-hostname').val() : null
+      );
     });
     $('#modal-input-launch').click();
+  }
+
+  static toggleHostnameFrame() {
+    if ($('#toggle-hostname-frame').is(':checked')) {
+      $('#hostname-select-menu').removeAttr('hidden');
+    } else {
+      $('#hostname-select-menu').attr('hidden', '');
+    }
   }
 
   static closeNumericInputWindow() {
