@@ -18,7 +18,6 @@ export class Io {
     }
     let address = "ws://" + ((this.hostname === null) ? this.default_hostname : this.hostname) + ":" + this.port;
     this.socket = io(address);
-    console.log(address);
 
     this.socket.on('connect', () => {
       console.log('connected');
