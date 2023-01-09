@@ -217,6 +217,14 @@ io.on('connection', (socket) => {
 
 });
 
+// This is the old client functionality, only here for testing.
+const path = require('path');
+app.use('/node_modules', express.static(path.join(__dirname, "node_modules")));
+app.use('/assets', express.static('assets'))  // Statically serve assets/ directory
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 // var server = http.listen(62298, "0.0.0.0", () => {
 //   var host = server.address().address;
 //   var port = server.address().port;
