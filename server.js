@@ -1,7 +1,13 @@
 var express = require('express');
 var app = express();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
 const userType = { NONE: 0, HOST: 1, GUEST: 2 }
 let servers = {};
