@@ -225,13 +225,14 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-// var server = http.listen(62298, "0.0.0.0", () => {
+// var server = http.listen(8040, "0.0.0.0", () => {
 //   var host = server.address().address;
 //   var port = server.address().port;
 //   console.log("Serving HTTP on " + host + " port " + port + " (http://" + host + ":" + port + "/) ...");
 // });
 
-var server = http.listen(process.env.PORT || 62298, () => {
+var server = http.listen(process.env.PORT || 8040, () => {
+  var host = server.address().address;
   var port = server.address().port;
   require('dns').lookup(require('os').hostname(), function (err, host, fam) {
     console.log("Serving HTTP on " + host + ":" + port + " ...");
