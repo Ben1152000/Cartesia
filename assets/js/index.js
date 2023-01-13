@@ -3,7 +3,7 @@ import { Dom } from '/assets/js/dom.js';
 import { Grid } from '/assets/js/grid.js';
 import { Editor } from '/assets/js/editor.js';
 
-let io = new Io("pi.bdarnell.com", 62298);
+let io = new Io("pi.bdarnell.com", 8040);
 let grid;
 let editor;
 
