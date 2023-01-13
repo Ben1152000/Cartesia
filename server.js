@@ -1,7 +1,13 @@
 var express = require('express');
 var app = express();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
 const userType = { NONE: 0, HOST: 1, GUEST: 2 }
 let servers = {};
@@ -211,6 +217,14 @@ io.on('connection', (socket) => {
 
 });
 
+// This is the old client functionality, only here for testing.
+const path = require('path');
+app.use('/node_modules', express.static(path.join(__dirname, "node_modules")));
+app.use('/assets', express.static('assets'))  // Statically serve assets/ directory
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 // var server = http.listen(8040, "0.0.0.0", () => {
 //   var host = server.address().address;
 //   var port = server.address().port;
@@ -220,5 +234,7 @@ io.on('connection', (socket) => {
 var server = http.listen(process.env.PORT || 8040, () => {
   var host = server.address().address;
   var port = server.address().port;
-  console.log("Serving HTTP on " + port + " ...");
+  require('dns').lookup(require('os').hostname(), function (err, host, fam) {
+    console.log("Serving HTTP on " + host + ":" + port + " ...");
+  })
 });
