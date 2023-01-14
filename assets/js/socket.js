@@ -16,7 +16,11 @@ export class Io {
       callbacks.failure('Already connected to server.');
       return;
     }
-    let address = "ws://" + ((this.hostname === null) ? this.default_hostname : this.hostname) + ":" + this.port;
+    let address = "ws://" +
+                  ((this.hostname === null || this.hostname === "")
+                       ? this.default_hostname
+                       : this.hostname) +
+                  ":" + this.port;
     this.socket = io(address);
 
     this.socket.on('connect', () => {
