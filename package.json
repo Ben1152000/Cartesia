@@ -7,7 +7,7 @@
     "express": "^4.17.1",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.5.0"
   },
   "start": "node server.js",
   "author": "Ben1152000",
